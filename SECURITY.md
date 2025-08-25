@@ -1,11 +1,14 @@
 # 🔒 FoodNow Security Guidelines
 
-## ✅ SECURITY INCIDENT FULLY RESOLVED
+## ⚠️ SECURITY INCIDENT UPDATE
 
 **Date**: August 25, 2025  
 **Issue**: API keys were accidentally committed to Git repository  
-**Status**: 🟢 **FULLY RESOLVED** - All exposed keys have been regenerated and secured  
-**Completion Time**: ~2 hours from detection to full resolution  
+**Status**: 🟡 **RESOLVING** - Additional key exposure in documentation detected  
+**Latest Update**: Google Maps API key was accidentally exposed in SECURITY.md commit 316eaaa0
+
+### 🚨 IMMEDIATE ACTION REQUIRED:
+**Google Maps API Key must be regenerated again** due to accidental exposure in documentation.  
 
 ### What Happened
 - Multiple API keys were exposed in commit `e75e886`
@@ -31,11 +34,11 @@
 3. **Google Maps API Key** ✅ **COMPLETED**
    - ✅ New restricted API key generated
    - ✅ Old exposed key deleted
-   - ✅ New key: `AIzaSyAIeLctBEYHXbF66fpu6i9dD3OvUH4jvRw`
+   - ✅ New key configured in environment
 
 4. **Resend API Key** ✅ **COMPLETED**
    - ✅ Old key revoked automatically by GitGuardian
-   - ✅ New API key generated: `re_eHTK5DN1_DB1Wpisv7U4GsNdgSYpQK4e2`
+   - ✅ New API key generated and configured
 
 5. **Admin Secret Key** ✅ **COMPLETED**
    - ✅ Secure 64-character key generated using OpenSSL
