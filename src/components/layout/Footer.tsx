@@ -1,5 +1,7 @@
 'use client'
 
+import { useState } from 'react'
+import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { 
   EnvelopeIcon, 
@@ -7,38 +9,50 @@ import {
   MapPinIcon,
   HeartIcon
 } from '@heroicons/react/24/outline'
+import ComingSoonModal from '@/components/ui/ComingSoonModal'
 
 const Footer = () => {
+  const [showModal, setShowModal] = useState(false)
+  const [modalContent, setModalContent] = useState({ title: '', description: '' })
+
+  const handleComingSoon = (title: string, description?: string) => {
+    setModalContent({ 
+      title, 
+      description: description || "We're working hard to bring you this feature. Stay tuned for updates!" 
+    })
+    setShowModal(true)
+  }
+
   const companyLinks = [
-    { name: 'About FoodNow', href: '#about' },
-    { name: 'Our Mission', href: '#mission' },
-    { name: 'Careers', href: '#careers' },
-    { name: 'Press Kit', href: '#press' },
-    { name: 'Blog', href: '#blog' }
+    { name: 'About FoodNow', href: '/about', isPage: true },
+    { name: 'Our Mission', href: '#mission', isPage: false },
+    { name: 'Careers', href: '#careers', isPage: false },
+    { name: 'Press Kit', href: '#press', isPage: false },
+    { name: 'Blog', href: '#blog', isPage: false }
   ]
 
   const serviceLinks = [
-    { name: 'Food Delivery', href: '#delivery' },
-    { name: 'Restaurant Partners', href: '#restaurants' },
-    { name: 'Rider Network', href: '#riders' },
-    { name: 'Corporate Catering', href: '#corporate' },
-    { name: 'API Integration', href: '#api' }
+    { name: 'Food Delivery', href: '#delivery', isPage: false },
+    { name: 'Restaurant Partners', href: '/restaurants', isPage: true },
+    { name: 'Rider Network', href: '/riders', isPage: true },
+    { name: 'Corporate Catering', href: '#corporate', isPage: false },
+    { name: 'API Integration', href: '#api', isPage: false }
   ]
 
   const partnerLinks = [
-    { name: 'Become a Partner', href: '#partner' },
-    { name: 'Restaurant Portal', href: '#portal' },
-    { name: 'Rider Application', href: '#apply' },
-    { name: 'Business Solutions', href: '#business' },
-    { name: 'Franchise Opportunities', href: '#franchise' }
+    { name: 'Become a Partner', href: '/restaurants', isPage: true },
+    { name: 'Restaurant Portal', href: '#portal', isPage: false },
+    { name: 'Rider Application', href: '/riders', isPage: true },
+    { name: 'Business Solutions', href: '#business', isPage: false },
+    { name: 'Franchise Opportunities', href: '#franchise', isPage: false }
   ]
 
   const socialLinks = [
-    { name: 'Facebook', href: '#', icon: '📘' },
-    { name: 'Instagram', href: '#', icon: '📷' },
-    { name: 'Twitter', href: '#', icon: '🐦' },
-    { name: 'LinkedIn', href: '#', icon: '💼' },
-    { name: 'YouTube', href: '#', icon: '📺' }
+    { name: 'Facebook', href: 'https://facebook.com/foodnow', icon: '📘' },
+    { name: 'Instagram', href: 'https://instagram.com/foodnow', icon: '📷' },
+    { name: 'Twitter', href: 'https://twitter.com/foodnow', icon: '🐦' },
+    { name: 'LinkedIn', href: 'https://linkedin.com/company/foodnow', icon: '💼' },
+    { name: 'YouTube', href: 'https://youtube.com/@foodnow', icon: '📺' }
   ]
 
   return (
@@ -106,12 +120,21 @@ const Footer = () => {
                     whileHover={{ x: 5 }}
                     transition={{ type: "spring", stiffness: 300 }}
                   >
-                    <a
-                      href={link.href}
-                      className="text-gray-400 hover:text-orange-400 transition-colors duration-300 text-sm"
-                    >
-                      {link.name}
-                    </a>
+                    {link.isPage ? (
+                      <Link
+                        href={link.href}
+                        className="text-gray-400 hover:text-orange-400 transition-colors duration-300 text-sm"
+                      >
+                        {link.name}
+                      </Link>
+                    ) : (
+                      <button
+                        onClick={() => handleComingSoon(`${link.name} Coming Soon!`)}
+                        className="text-gray-400 hover:text-orange-400 transition-colors duration-300 text-sm text-left"
+                      >
+                        {link.name}
+                      </button>
+                    )}
                   </motion.li>
                 ))}
               </ul>
@@ -135,12 +158,21 @@ const Footer = () => {
                     whileHover={{ x: 5 }}
                     transition={{ type: "spring", stiffness: 300 }}
                   >
-                    <a
-                      href={link.href}
-                      className="text-gray-400 hover:text-orange-400 transition-colors duration-300 text-sm"
-                    >
-                      {link.name}
-                    </a>
+                    {link.isPage ? (
+                      <Link
+                        href={link.href}
+                        className="text-gray-400 hover:text-orange-400 transition-colors duration-300 text-sm"
+                      >
+                        {link.name}
+                      </Link>
+                    ) : (
+                      <button
+                        onClick={() => handleComingSoon(`${link.name} Coming Soon!`)}
+                        className="text-gray-400 hover:text-orange-400 transition-colors duration-300 text-sm text-left"
+                      >
+                        {link.name}
+                      </button>
+                    )}
                   </motion.li>
                 ))}
               </ul>
@@ -172,12 +204,21 @@ const Footer = () => {
                     whileHover={{ x: 5 }}
                     transition={{ type: "spring", stiffness: 300 }}
                   >
-                    <a
-                      href={link.href}
-                      className="text-gray-400 hover:text-orange-400 transition-colors duration-300 text-sm"
-                    >
-                      {link.name}
-                    </a>
+                    {link.isPage ? (
+                      <Link
+                        href={link.href}
+                        className="text-gray-400 hover:text-orange-400 transition-colors duration-300 text-sm"
+                      >
+                        {link.name}
+                      </Link>
+                    ) : (
+                      <button
+                        onClick={() => handleComingSoon(`${link.name} Coming Soon!`)}
+                        className="text-gray-400 hover:text-orange-400 transition-colors duration-300 text-sm text-left"
+                      >
+                        {link.name}
+                      </button>
+                    )}
                   </motion.li>
                 ))}
               </ul>
@@ -260,6 +301,8 @@ const Footer = () => {
                   <motion.a
                     key={index}
                     href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     whileHover={{ scale: 1.1, y: -2 }}
                     whileTap={{ scale: 0.95 }}
                     className="w-10 h-10 bg-gray-800 hover:bg-gradient-to-br hover:from-orange-500 hover:to-red-500 rounded-xl flex items-center justify-center transition-all duration-300 border border-gray-700 hover:border-orange-500"
@@ -286,9 +329,24 @@ const Footer = () => {
                 © 2024 FoodNow. All rights reserved.
               </p>
               <div className="flex space-x-6 text-xs text-gray-500">
-                <a href="#privacy" className="hover:text-orange-400 transition-colors">Privacy Policy</a>
-                <a href="#terms" className="hover:text-orange-400 transition-colors">Terms of Service</a>
-                <a href="#cookies" className="hover:text-orange-400 transition-colors">Cookie Policy</a>
+                <button 
+                  onClick={() => handleComingSoon('Privacy Policy Coming Soon!')}
+                  className="hover:text-orange-400 transition-colors"
+                >
+                  Privacy Policy
+                </button>
+                <button 
+                  onClick={() => handleComingSoon('Terms of Service Coming Soon!')}
+                  className="hover:text-orange-400 transition-colors"
+                >
+                  Terms of Service
+                </button>
+                <button 
+                  onClick={() => handleComingSoon('Cookie Policy Coming Soon!')}
+                  className="hover:text-orange-400 transition-colors"
+                >
+                  Cookie Policy
+                </button>
               </div>
             </div>
             
@@ -300,6 +358,14 @@ const Footer = () => {
           </div>
         </motion.div>
       </div>
+
+      {/* Coming Soon Modal */}
+      <ComingSoonModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        title={modalContent.title}
+        description={modalContent.description}
+      />
     </footer>
   )
 }

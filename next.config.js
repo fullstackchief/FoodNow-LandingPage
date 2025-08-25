@@ -63,7 +63,32 @@ const nextConfig = {
     minimumCacheTTL: 31536000,
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-    domains: ['foodnow.ng', 'cdn.foodnow.ng'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.supabase.co',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'foodnow.ng',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdn.foodnow.ng',
+        port: '',
+        pathname: '/**',
+      },
+    ],
   },
 
   // Redirects for external links
@@ -89,3 +114,5 @@ const nextConfig = {
   poweredByHeader: false,
   trailingSlash: false,
 }
+
+module.exports = nextConfig

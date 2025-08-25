@@ -1,6 +1,9 @@
 import type { Metadata } from 'next'
 import { Inter, Poppins } from 'next/font/google'
 import StructuredData from '@/components/seo/StructuredData'
+import { AdminProvider } from '@/contexts/AdminContext'
+import { EnhancedAdminProvider } from '@/contexts/EnhancedAdminContext'
+import StoreProvider from '@/store/StoreProvider'
 import './globals.css'
 
 const inter = Inter({
@@ -136,9 +139,15 @@ export default function RootLayout({
       </head>
       <body className={`${inter.className} antialiased`}>
         <StructuredData />
-        <div id="root">
-          {children}
-        </div>
+        <StoreProvider>
+          <AdminProvider>
+            <EnhancedAdminProvider>
+              <div id="root">
+                {children}
+              </div>
+            </EnhancedAdminProvider>
+          </AdminProvider>
+        </StoreProvider>
       </body>
     </html>
   )
