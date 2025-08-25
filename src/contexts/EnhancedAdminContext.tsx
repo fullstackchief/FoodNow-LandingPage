@@ -52,7 +52,6 @@ interface EnhancedAdminContextType {
 const EnhancedAdminContext = createContext<EnhancedAdminContextType | undefined>(undefined)
 
 // Mock data for development - this simulates backend data
-const ADMIN_PORTAL_KEY = 'foodnow-admin-portal-7k9x2m' // Hidden portal identifier
 
 export function EnhancedAdminProvider({ children }: { children: ReactNode }) {
   const [currentAdmin, setCurrentAdmin] = useState<AdminUser | null>(null)
@@ -60,7 +59,7 @@ export function EnhancedAdminProvider({ children }: { children: ReactNode }) {
   const [adminUsers, setAdminUsers] = useState<AdminUser[]>([])
   const [invitations, setInvitations] = useState<AdminInvitation[]>([])
   const [auditLogs, setAuditLogs] = useState<AdminAuditLog[]>([])
-  const [securitySettings, setSecuritySettings] = useState<SecuritySettings>(DEFAULT_SECURITY_SETTINGS)
+  const [securitySettings] = useState<SecuritySettings>(DEFAULT_SECURITY_SETTINGS)
 
   // Initialize with default super admin
   useEffect(() => {
@@ -125,6 +124,46 @@ export function EnhancedAdminProvider({ children }: { children: ReactNode }) {
     initializeAdminSystem()
   }, [])
 
+  // Helper functions needed by other functions
+  const logAdminAction = useCallback((action: string, details: string) => {
+    if (!currentAdmin) return
+    
+    const logEntry: AdminAuditLog = {
+      id: generateId(),
+      adminId: currentAdmin.id,
+      adminEmail: currentAdmin.email,
+      action,
+      details,
+      timestamp: new Date(),
+      ipAddress: '127.0.0.1', // Mock IP
+      userAgent: navigator.userAgent
+    }
+    
+    const updatedLogs = [logEntry, ...auditLogs].slice(0, 1000) // Keep last 1000 logs
+    setAuditLogs(updatedLogs)
+    localStorage.setItem('foodnow-audit-logs', JSON.stringify(updatedLogs))
+  }, [currentAdmin, auditLogs])
+
+  const isPasswordExpired = useCallback((admin: AdminUser): boolean => {
+    const daysSinceChange = (new Date().getTime() - admin.passwordLastChanged.getTime()) / (1000 * 60 * 60 * 24)
+    return daysSinceChange > securitySettings.passwordChangeInterval
+  }, [securitySettings])
+
+  // Helper functions for ID generation
+  const generateId = (): string => {
+    return Math.random().toString(36).substring(2) + Date.now().toString(36)
+  }
+
+  const hasPermission = useCallback((category: keyof AdminPermissions, action: keyof AdminPermissions[keyof AdminPermissions]): boolean => {
+    if (!currentAdmin) return false
+    return (currentAdmin.permissions[category] as Record<string, boolean>)[action as string] === true
+  }, [currentAdmin])
+
+  const hasRole = useCallback((role: AdminRole): boolean => {
+    if (!currentAdmin) return false
+    return currentAdmin.role === role
+  }, [currentAdmin])
+
   const login = useCallback(async (email: string, password: string): Promise<{ success: boolean; error?: string; requirePasswordChange?: boolean }> => {
     const admin = adminUsers.find(a => a.email.toLowerCase() === email.toLowerCase() && a.isActive)
     
@@ -186,14 +225,24 @@ export function EnhancedAdminProvider({ children }: { children: ReactNode }) {
     setSession(newSession)
     localStorage.setItem('foodnow-admin-session', JSON.stringify(newSession))
     
-    // Log the login
-    logAdminAction('LOGIN', `Admin ${admin.email} logged in successfully`)
+    // Log the login (inline to avoid dependency issues)
+    const log: AdminAuditLog = {
+      id: generateId(),
+      adminId: admin.id,
+      adminEmail: admin.email,
+      action: 'LOGIN',
+      details: `Admin ${admin.email} logged in successfully`,
+      timestamp: new Date(),
+      ipAddress: '127.0.0.1',
+      userAgent: 'Next.js App'
+    }
+    setAuditLogs(prev => [log, ...prev].slice(0, 100))
     
     return { 
       success: true, 
       requirePasswordChange: admin.mustChangePassword || isPasswordExpired(admin)
     }
-  }, [adminUsers, securitySettings])
+  }, [adminUsers, securitySettings, isPasswordExpired])
 
   const logout = useCallback(() => {
     if (currentAdmin) {
@@ -203,7 +252,7 @@ export function EnhancedAdminProvider({ children }: { children: ReactNode }) {
     setCurrentAdmin(null)
     setSession(null)
     localStorage.removeItem('foodnow-admin-session')
-  }, [currentAdmin])
+  }, [currentAdmin, logAdminAction])
 
   const changePassword = useCallback(async (currentPassword: string, newPassword: string): Promise<{ success: boolean; error?: string }> => {
     if (!currentAdmin) {
@@ -235,7 +284,7 @@ export function EnhancedAdminProvider({ children }: { children: ReactNode }) {
     logAdminAction('PASSWORD_CHANGE', 'Admin password changed successfully')
     
     return { success: true }
-  }, [currentAdmin, adminUsers])
+  }, [currentAdmin, adminUsers, logAdminAction])
 
   const createAdminInvitation = useCallback(async (email: string, role: AdminRole, permissions?: AdminPermissions): Promise<{ success: boolean; error?: string }> => {
     if (!currentAdmin || !hasRole('super_admin')) {
@@ -276,9 +325,9 @@ export function EnhancedAdminProvider({ children }: { children: ReactNode }) {
     logAdminAction('ADMIN_INVITE_CREATED', `Invitation sent to ${email} with role ${role}`)
     
     return { success: true }
-  }, [currentAdmin, adminUsers, invitations])
+  }, [currentAdmin, adminUsers, invitations, hasRole, logAdminAction])
 
-  const acceptInvitation = useCallback(async (token: string, password: string): Promise<{ success: boolean; error?: string }> => {
+  const acceptInvitation = useCallback(async (token: string, _password: string): Promise<{ success: boolean; error?: string }> => {
     const invitation = invitations.find(i => i.inviteToken === token && !i.isUsed)
     
     if (!invitation) {
@@ -323,36 +372,7 @@ export function EnhancedAdminProvider({ children }: { children: ReactNode }) {
     logAdminAction('ADMIN_CREATED', `New admin created: ${invitation.email}`)
     
     return { success: true }
-  }, [invitations, adminUsers])
-
-  const hasPermission = useCallback((category: keyof AdminPermissions, action: keyof AdminPermissions[keyof AdminPermissions]): boolean => {
-    if (!currentAdmin) return false
-    return (currentAdmin.permissions[category] as any)[action] === true
-  }, [currentAdmin])
-
-  const hasRole = useCallback((role: AdminRole): boolean => {
-    if (!currentAdmin) return false
-    return currentAdmin.role === role
-  }, [currentAdmin])
-
-  const logAdminAction = useCallback((action: string, details: string) => {
-    if (!currentAdmin) return
-    
-    const logEntry: AdminAuditLog = {
-      id: generateId(),
-      adminId: currentAdmin.id,
-      adminEmail: currentAdmin.email,
-      action,
-      details,
-      timestamp: new Date(),
-      ipAddress: '127.0.0.1', // Mock IP
-      userAgent: navigator.userAgent
-    }
-    
-    const updatedLogs = [logEntry, ...auditLogs].slice(0, 1000) // Keep last 1000 logs
-    setAuditLogs(updatedLogs)
-    localStorage.setItem('foodnow-audit-logs', JSON.stringify(updatedLogs))
-  }, [currentAdmin, auditLogs])
+  }, [invitations, adminUsers, logAdminAction])
 
   const isSessionExpired = useCallback((): boolean => {
     if (!session) return true
@@ -387,29 +407,20 @@ export function EnhancedAdminProvider({ children }: { children: ReactNode }) {
     return 'inv_' + Math.random().toString(36).substring(2) + Date.now().toString(36)
   }
 
-  const generateId = (): string => {
-    return Math.random().toString(36).substring(2) + Date.now().toString(36)
-  }
-
-  const isPasswordExpired = (admin: AdminUser): boolean => {
-    const daysSinceChange = (new Date().getTime() - admin.passwordLastChanged.getTime()) / (1000 * 60 * 60 * 24)
-    return daysSinceChange > securitySettings.passwordChangeInterval
-  }
-
   // Stub methods for admin management
-  const updateAdminUser = async (adminId: string, updates: Partial<AdminUser>) => {
+  const updateAdminUser = async (_adminId: string, _updates: Partial<AdminUser>) => {
     return { success: true }
   }
 
-  const deleteAdminUser = async (adminId: string) => {
+  const deleteAdminUser = async (_adminId: string) => {
     return { success: true }
   }
 
-  const suspendAdminUser = async (adminId: string) => {
+  const suspendAdminUser = async (_adminId: string) => {
     return { success: true }
   }
 
-  const updateSecuritySettings = async (settings: Partial<SecuritySettings>) => {
+  const updateSecuritySettings = async (_settings: Partial<SecuritySettings>) => {
     return { success: true }
   }
 

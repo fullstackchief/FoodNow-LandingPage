@@ -10,7 +10,6 @@ import {
   ExclamationTriangleIcon,
   CheckCircleIcon,
   LockClosedIcon,
-  UserIcon,
   CogIcon
 } from '@heroicons/react/24/outline'
 import { SecuritySettings as SecuritySettingsType, DEFAULT_SECURITY_SETTINGS } from '@/types/admin'
@@ -22,13 +21,15 @@ const SecuritySettings = () => {
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState('')
 
-  if (!hasRole('super_admin') && !hasPermission('settings', 'edit')) {
+  type PermCategory = Parameters<typeof hasPermission>[0]
+  type PermAction = Parameters<typeof hasPermission>[1]
+  if (!hasRole('super_admin') && !hasPermission('settings' as PermCategory, 'edit' as PermAction)) {
     return (
       <div className="bg-white rounded-3xl p-8 shadow-lg border border-gray-100">
         <div className="text-center">
           <ExclamationTriangleIcon className="w-16 h-16 text-red-500 mx-auto mb-4" />
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Access Denied</h2>
-          <p className="text-gray-600">You don't have permission to modify security settings.</p>
+          <p className="text-gray-600">You don&apos;t have permission to modify security settings.</p>
         </div>
       </div>
     )
@@ -47,6 +48,7 @@ const SecuritySettings = () => {
         setError(result.error || 'Failed to update settings')
       }
     } catch (err) {
+      console.error('Security settings update error:', err)
       setError('An unexpected error occurred')
     } finally {
       setIsLoading(false)
