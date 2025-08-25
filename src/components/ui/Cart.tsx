@@ -120,11 +120,14 @@ const Cart = () => {
                                 <li key={`${item.id}-${JSON.stringify(item.customizations)}`} className="flex py-6">
                                   <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-xl border border-gray-200 bg-gray-100 flex items-center justify-center">
                                     {item.image ? (
-                                      <img
-                                        src={item.image}
-                                        alt={item.name}
-                                        className="h-full w-full object-cover object-center"
-                                      />
+                                      <>
+                                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                                        <img
+                                          src={item.image}
+                                          alt={item.name}
+                                          className="h-full w-full object-cover object-center"
+                                        />
+                                      </>
                                     ) : (
                                       <span className="text-2xl">🍽️</span>
                                     )}

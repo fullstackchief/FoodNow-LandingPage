@@ -7,7 +7,6 @@ import {
   DocumentTextIcon,
   MagnifyingGlassIcon,
   FunnelIcon,
-  CalendarDaysIcon,
   UserIcon,
   ExclamationTriangleIcon,
   ClockIcon,
@@ -15,7 +14,6 @@ import {
   ArrowDownTrayIcon,
   ShieldCheckIcon
 } from '@heroicons/react/24/outline'
-import { AdminAuditLog } from '@/types/admin'
 
 const AuditLogger = () => {
   const { auditLogs, hasPermission } = useEnhancedAdmin()

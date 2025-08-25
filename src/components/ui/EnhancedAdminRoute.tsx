@@ -175,7 +175,9 @@ const EnhancedAdminRoute = ({ children, requiredPermission, requiredRole }: Enha
   }
 
   // Check specific permission requirements
-  if (requiredPermission && !hasPermission(requiredPermission.category as any, requiredPermission.action as any)) {
+  type PermCategory = Parameters<typeof hasPermission>[0]
+  type PermAction = Parameters<typeof hasPermission>[1]
+  if (requiredPermission && !hasPermission(requiredPermission.category as PermCategory, requiredPermission.action as PermAction)) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex items-center justify-center">
         <motion.div
@@ -190,7 +192,7 @@ const EnhancedAdminRoute = ({ children, requiredPermission, requiredRole }: Enha
             
             <h1 className="text-2xl font-bold text-gray-900 mb-4">Permission Denied</h1>
             <p className="text-gray-600 mb-8">
-              You don't have permission to access this feature. Required: <span className="font-semibold">{requiredPermission.category}.{requiredPermission.action}</span>
+              You don&apos;t have permission to access this feature. Required: <span className="font-semibold">{requiredPermission.category}.{requiredPermission.action}</span>
             </p>
             
             <button

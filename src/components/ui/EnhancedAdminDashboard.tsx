@@ -8,7 +8,6 @@ import {
   BuildingStorefrontIcon,
   UserGroupIcon,
   ChartBarIcon,
-  CogIcon,
   ShieldCheckIcon,
   ClockIcon,
   ExclamationTriangleIcon,
@@ -19,7 +18,6 @@ import {
 } from '@heroicons/react/24/outline'
 import Navigation from '@/components/layout/Navigation'
 import AdminUserManagement from '@/components/ui/AdminUserManagement'
-import PermissionMatrix from '@/components/ui/PermissionMatrix'
 import SecuritySettings from '@/components/ui/SecuritySettings'
 import AuditLogger from '@/components/ui/AuditLogger'
 import PasswordChangeModal from '@/components/ui/PasswordChangeModal'
@@ -94,7 +92,9 @@ const EnhancedAdminDashboard = () => {
 
   const filteredNavItems = navigationItems.filter(item => {
     if (!item.permission) return true
-    return hasPermission(item.permission.category as any, item.permission.action as any)
+    type PermCategory = Parameters<typeof hasPermission>[0]
+    type PermAction = Parameters<typeof hasPermission>[1]
+    return hasPermission(item.permission.category as PermCategory, item.permission.action as PermAction)
   })
 
   const renderContent = () => {
@@ -244,7 +244,7 @@ const EnhancedAdminDashboard = () => {
             <div className="bg-white rounded-3xl p-8 shadow-lg border border-gray-100">
               <h2 className="text-2xl font-bold text-gray-900 mb-6">Recent Admin Activity</h2>
               <div className="space-y-4">
-                {auditLogs.slice(0, 5).map((log, index) => (
+                {auditLogs.slice(0, 5).map((log, _index) => (
                   <div key={log.id} className="flex items-center space-x-4 p-4 bg-gray-50 rounded-xl">
                     <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
                       <BellIcon className="w-5 h-5 text-blue-600" />

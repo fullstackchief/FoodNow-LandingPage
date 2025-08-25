@@ -106,11 +106,14 @@ export default function ImageUploader({
               supabasePath={uploadedPath}
             />
           ) : (
-            <img
-              src={preview}
-              alt="Preview"
-              className="w-full h-full object-cover rounded-lg"
-            />
+            <>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={preview}
+                alt="Preview"
+                className="w-full h-full object-cover rounded-lg"
+              />
+            </>
           )}
           
           {isUploading && (

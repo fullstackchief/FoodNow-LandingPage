@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { Search, X, Clock, TrendingUp, MapPin } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useAppDispatch, useAppSelector } from '@/store'
-import { setSearchQuery, setSearchOpen } from '@/store/slices/uiSlice'
+import { setSearchQuery } from '@/store/slices/uiSlice'
 import { setSearchQuery as setRestaurantSearchQuery } from '@/store/slices/restaurantSlice'
 import { api } from '@/lib/api'
 import { cn } from '@/lib/utils'
@@ -35,25 +35,24 @@ export default function SearchBar({
   const searchInputRef = useRef<HTMLInputElement>(null)
   const suggestionsRef = useRef<HTMLDivElement>(null)
   
-  const { searchQuery, isSearchOpen } = useAppSelector((state) => state.ui)
+  const { searchQuery } = useAppSelector((state) => state.ui)
   const [localQuery, setLocalQuery] = useState(searchQuery)
   const [suggestions, setSuggestions] = useState<SearchSuggestion[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [showDropdown, setShowDropdown] = useState(false)
   const [selectedIndex, setSelectedIndex] = useState(-1)
 
-  // Debounced search function
-  const debouncedSearch = useCallback(
-    debounce(async (query: string) => {
-      if (!query.trim() || query.length < 2) {
-        setSuggestions([])
-        return
-      }
+  // Debounced search function - create the debounced function outside useCallback
+  const searchSuggestions = async (query: string) => {
+    if (!query.trim() || query.length < 2) {
+      setSuggestions([])
+      return
+    }
 
-      setIsLoading(true)
-      try {
-        // Get search suggestions from API
-        const restaurants = await api.restaurants.search(query)
+    setIsLoading(true)
+    try {
+      // Get search suggestions from API
+      const restaurants = await api.restaurants.search(query)
         const recentSearches = getRecentSearches()
         const popularSearches = getPopularSearches()
 
@@ -97,7 +96,13 @@ export default function SearchBar({
       } finally {
         setIsLoading(false)
       }
-    }, 300),
+  }
+
+  const debouncedSearch = useCallback(
+    (query: string) => {
+      const fn = debounce((q: string) => searchSuggestions(q), 300)
+      fn(query)
+    },
     []
   )
 
@@ -212,7 +217,7 @@ export default function SearchBar({
     if (searchQuery !== localQuery) {
       setLocalQuery(searchQuery)
     }
-  }, [searchQuery])
+  }, [searchQuery, localQuery])
 
   return (
     <div className={cn("relative w-full max-w-2xl", className)}>
@@ -274,11 +279,14 @@ export default function SearchBar({
                   {/* Icon */}
                   <div className="flex-shrink-0">
                     {suggestion.icon ? (
-                      <img 
-                        src={suggestion.icon} 
-                        alt="" 
-                        className="h-8 w-8 rounded-full object-cover"
-                      />
+                      <>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img 
+                          src={suggestion.icon} 
+                          alt="" 
+                          className="h-8 w-8 rounded-full object-cover"
+                        />
+                      </>
                     ) : suggestion.type === 'recent' ? (
                       <Clock className="h-5 w-5 text-gray-400" />
                     ) : suggestion.type === 'popular' ? (
@@ -306,7 +314,7 @@ export default function SearchBar({
             </div>
           ) : localQuery.length >= 2 ? (
             <div className="p-6 text-center text-gray-500">
-              No suggestions found for "{localQuery}"
+              No suggestions found for &quot;{localQuery}&quot;
             </div>
           ) : null}
         </div>
@@ -344,13 +352,13 @@ function getPopularSearches(): string[] {
 }
 
 // Debounce utility function
-function debounce<T extends (...args: any[]) => any>(
-  func: T,
+function debounce<T extends unknown[]>(
+  func: (...args: T) => unknown,
   wait: number
-): (...args: Parameters<T>) => void {
+): (...args: T) => void {
   let timeout: NodeJS.Timeout | null = null
   
-  return (...args: Parameters<T>) => {
+  return (...args: T) => {
     if (timeout) clearTimeout(timeout)
     timeout = setTimeout(() => func(...args), wait)
   }

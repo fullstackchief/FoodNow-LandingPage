@@ -267,12 +267,37 @@ const orderSlice = createSlice({
     // Cancel Order
     cancelOrder: (state, action: PayloadAction<{ orderId: string; reason: string }>) => {
       const { orderId, reason } = action.payload
+      const timestamp = new Date().toISOString()
       
-      state.updateOrderStatus({
-        orderId,
-        status: 'cancelled',
-        message: `Order cancelled: ${reason}`,
-      })
+      const updateOrderWithStatus = (order: Order) => {
+        order.status = 'cancelled'
+        const orderWithHistory = order as Order & { statusHistory?: Array<{ status: string; timestamp: string; message: string }> }
+        if (orderWithHistory.statusHistory) {
+          orderWithHistory.statusHistory.push({
+            status: 'cancelled',
+            timestamp,
+            message: `Order cancelled: ${reason}`
+          })
+        }
+        order.updatedAt = timestamp
+      }
+      
+      // Update in current order
+      if (state.currentOrder && state.currentOrder.id === orderId) {
+        updateOrderWithStatus(state.currentOrder)
+      }
+      
+      // Update in orders array
+      const orderIndex = state.orders.findIndex(order => order.id === orderId)
+      if (orderIndex !== -1) {
+        updateOrderWithStatus(state.orders[orderIndex])
+      }
+      
+      // Update in past orders
+      const pastOrderIndex = state.pastOrders.findIndex(order => order.id === orderId)
+      if (pastOrderIndex !== -1) {
+        updateOrderWithStatus(state.pastOrders[pastOrderIndex])
+      }
     },
 
     // Loading and Error states

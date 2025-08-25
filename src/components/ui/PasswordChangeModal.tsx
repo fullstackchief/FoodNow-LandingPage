@@ -101,7 +101,7 @@ const PasswordChangeModal = ({ isOpen, onClose }: PasswordChangeModalProps) => {
       } else {
         setError(result.error || 'Failed to change password')
       }
-    } catch (err) {
+    } catch {
       setError('An unexpected error occurred')
     } finally {
       setIsLoading(false)
@@ -166,7 +166,7 @@ const PasswordChangeModal = ({ isOpen, onClose }: PasswordChangeModalProps) => {
                   <div className="flex items-center space-x-2">
                     <ShieldCheckIcon className="w-5 h-5 text-blue-600" />
                     <p className="text-sm text-blue-800">
-                      <span className="font-semibold">Security Reminder:</span> Keep your password secure and don't share it with others.
+                      <span className="font-semibold">Security Reminder:</span> Keep your password secure and don&apos;t share it with others.
                     </p>
                   </div>
                 </div>

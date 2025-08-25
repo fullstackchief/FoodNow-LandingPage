@@ -2,7 +2,7 @@
 
 import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { 
   Filter, 
   Grid3X3, 
@@ -25,12 +25,6 @@ import SearchBar from '@/components/ui/SearchBar'
 import OptimizedImage from '@/components/ui/OptimizedImage'
 import AdvancedFilters, { type AdvancedFiltersState } from '@/components/ui/AdvancedFilters'
 import { cn } from '@/lib/utils'
-
-interface FilterOption {
-  id: string
-  label: string
-  count?: number
-}
 
 interface SearchResultsContentProps {
   query: string
@@ -58,37 +52,7 @@ function SearchResultsContent({ query }: SearchResultsContentProps) {
     offers: []
   })
 
-  // Filter options
-  const cuisineOptions: FilterOption[] = [
-    { id: 'all', label: 'All Cuisines' },
-    { id: 'nigerian', label: 'Nigerian', count: 45 },
-    { id: 'fast-food', label: 'Fast Food', count: 32 },
-    { id: 'continental', label: 'Continental', count: 25 },
-    { id: 'asian', label: 'Asian', count: 20 },
-    { id: 'healthy', label: 'Healthy', count: 18 }
-  ]
 
-  const priceRangeOptions: FilterOption[] = [
-    { id: 'all', label: 'Any Price' },
-    { id: '$', label: '₦ (Under ₦2,000)' },
-    { id: '$$', label: '₦₦ (₦2,000 - ₦4,000)' },
-    { id: '$$$', label: '₦₦₦ (₦4,000 - ₦8,000)' },
-    { id: '$$$$', label: '₦₦₦₦ (Above ₦8,000)' }
-  ]
-
-  const ratingOptions: FilterOption[] = [
-    { id: 'all', label: 'Any Rating' },
-    { id: '4.5', label: '4.5+ Stars' },
-    { id: '4.0', label: '4.0+ Stars' },
-    { id: '3.5', label: '3.5+ Stars' }
-  ]
-
-  // const deliveryTimeOptions: FilterOption[] = [
-  //   { id: 'all', label: 'Any Time' },
-  //   { id: '15', label: 'Under 15 min' },
-  //   { id: '30', label: 'Under 30 min' },
-  //   { id: '45', label: 'Under 45 min' }
-  // ]
 
   const sortOptions = [
     { id: 'popular', label: 'Most Popular' },
@@ -111,7 +75,20 @@ function SearchResultsContent({ query }: SearchResultsContentProps) {
           rating: selectedFilters.rating || undefined
         })
         
-        dispatch(setRestaurants(results))
+        // Type adapter: API results to Redux store format
+        const adaptedResults = results.map((r: Record<string, unknown>) => ({
+          ...r,
+          reviewCount: r.review_count,
+          priceRange: r.price_range,
+          cuisineType: (r.cuisine_types as string[])?.[0] || '',
+          deliveryTime: r.delivery_time || '30-40 min',
+          image: r.image_url || '/api/placeholder/400/300',
+          deliveryFee: r.delivery_fee || 0,
+          minimumOrder: r.minimum_order || 0,
+          isOpen: r.is_available !== false,
+          cuisineTypes: r.cuisine_types || []
+        }))
+        dispatch(setRestaurants(adaptedResults as unknown as Parameters<typeof setRestaurants>[0]))
       } catch (error) {
         console.error('Search error:', error)
         dispatch(setRestaurants([]))
@@ -123,11 +100,6 @@ function SearchResultsContent({ query }: SearchResultsContentProps) {
     searchRestaurants()
   }, [query, selectedFilters, dispatch])
 
-  // Apply filters
-  const applyFilters = () => {
-    dispatch(updateFilters(selectedFilters))
-    setShowFilters(false)
-  }
 
   // Apply advanced filters
   const applyAdvancedFilters = () => {
@@ -139,7 +111,7 @@ function SearchResultsContent({ query }: SearchResultsContentProps) {
       deliveryTime: advancedFilters.deliveryTime,
       features: advancedFilters.features,
       dietary: advancedFilters.dietary,
-      sortBy: advancedFilters.sortBy as any,
+      sortBy: advancedFilters.sortBy as 'popular' | 'rating' | 'deliveryTime' | 'priceAsc' | 'priceDesc',
       searchQuery: query
     }
     setSelectedFilters(reduxFilters)
@@ -224,7 +196,7 @@ function SearchResultsContent({ query }: SearchResultsContentProps) {
                 value={selectedFilters.sortBy}
                 onChange={(e) => setSelectedFilters({
                   ...selectedFilters,
-                  sortBy: e.target.value as any
+                  sortBy: e.target.value as 'popular' | 'rating' | 'deliveryTime' | 'priceAsc' | 'priceDesc'
                 })}
                 className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
               >
@@ -401,7 +373,7 @@ function SearchResultsContent({ query }: SearchResultsContentProps) {
                 {restaurants.map((restaurant) => (
                   <RestaurantCard
                     key={restaurant.id}
-                    restaurant={restaurant}
+                    restaurant={restaurant as unknown as Restaurant}
                     isFavorite={favorites.includes(restaurant.id)}
                     onToggleFavorite={() => toggleFavorite(restaurant.id)}
                     viewMode={viewMode}
@@ -445,8 +417,34 @@ function SearchResultsContent({ query }: SearchResultsContentProps) {
 }
 
 // Restaurant Card Component
+interface Restaurant {
+  id: string
+  name: string
+  description: string
+  image_url?: string
+  image?: string
+  cover_image_url?: string
+  rating: number
+  review_count: number
+  delivery_time: string
+  delivery_fee: number
+  cuisine_types: string[]
+  price_range: string
+  address?: string
+  phone?: string
+  is_available?: boolean
+  opening_hours?: Record<string, string>
+  minimum_order?: number
+  features?: string[]
+  dietary_options?: string[]
+  delivery_radius?: number
+  estimated_prep_time?: string
+  is_premium?: boolean
+  promotions?: Record<string, unknown>
+}
+
 interface RestaurantCardProps {
-  restaurant: any
+  restaurant: Restaurant
   isFavorite: boolean
   onToggleFavorite: () => void
   viewMode: 'grid' | 'list'

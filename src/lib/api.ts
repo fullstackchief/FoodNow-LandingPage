@@ -141,7 +141,7 @@ export const api = {
     create: async (orderData: Database['public']['Tables']['orders']['Insert']): Promise<Order> => {
       const { data, error } = await supabase
         .from('orders')
-        .insert(orderData)
+        .insert(orderData as never)
         .select()
         .single()
       
@@ -192,7 +192,7 @@ export const api = {
         location?: { lat: number; lng: number }
       }
     ): Promise<void> => {
-      const updateData: any = { status, updated_at: new Date().toISOString() }
+      const updateData: Record<string, unknown> = { status, updated_at: new Date().toISOString() }
       
       if (trackingUpdate) {
         const { data: currentOrder } = await supabase
@@ -202,7 +202,7 @@ export const api = {
           .single()
         
         if (currentOrder) {
-          const updates = currentOrder.tracking_updates || []
+          const updates = (currentOrder as Record<string, unknown>).tracking_updates as unknown[] || []
           updates.push({
             ...trackingUpdate,
             timestamp: new Date().toISOString()
@@ -213,7 +213,7 @@ export const api = {
       
       const { error } = await supabase
         .from('orders')
-        .update(updateData)
+        .update(updateData as never)
         .eq('id', orderId)
       
       if (error) throw new Error(handleSupabaseError(error))
@@ -222,7 +222,7 @@ export const api = {
     addReview: async (orderId: string, rating: number, review: string): Promise<void> => {
       const { error } = await supabase
         .from('orders')
-        .update({ rating, review, updated_at: new Date().toISOString() })
+        .update({ rating, review, updated_at: new Date().toISOString() } as never)
         .eq('id', orderId)
       
       if (error) throw new Error(handleSupabaseError(error))
@@ -234,7 +234,7 @@ export const api = {
     create: async (userData: Database['public']['Tables']['users']['Insert']): Promise<User> => {
       const { data, error } = await supabase
         .from('users')
-        .insert(userData)
+        .insert(userData as never)
         .select()
         .single()
       
@@ -259,7 +259,7 @@ export const api = {
     update: async (id: string, updates: Database['public']['Tables']['users']['Update']): Promise<void> => {
       const { error } = await supabase
         .from('users')
-        .update({ ...updates, updated_at: new Date().toISOString() })
+        .update({ ...updates, updated_at: new Date().toISOString() } as never)
         .eq('id', id)
       
       if (error) throw new Error(handleSupabaseError(error))
@@ -269,7 +269,7 @@ export const api = {
       const { error } = await supabase.rpc('add_loyalty_points', {
         user_id: id,
         points_to_add: points
-      })
+      } as never)
       
       if (error) throw new Error(handleSupabaseError(error))
     }
@@ -291,7 +291,7 @@ export const api = {
     create: async (addressData: Database['public']['Tables']['addresses']['Insert']): Promise<Address> => {
       const { data, error } = await supabase
         .from('addresses')
-        .insert(addressData)
+        .insert(addressData as never)
         .select()
         .single()
       
@@ -302,7 +302,7 @@ export const api = {
     update: async (id: string, updates: Database['public']['Tables']['addresses']['Update']): Promise<void> => {
       const { error } = await supabase
         .from('addresses')
-        .update({ ...updates, updated_at: new Date().toISOString() })
+        .update({ ...updates, updated_at: new Date().toISOString() } as never)
         .eq('id', id)
       
       if (error) throw new Error(handleSupabaseError(error))
@@ -334,7 +334,7 @@ export const api = {
     create: async (paymentData: Database['public']['Tables']['payment_methods']['Insert']): Promise<PaymentMethod> => {
       const { data, error } = await supabase
         .from('payment_methods')
-        .insert(paymentData)
+        .insert(paymentData as never)
         .select()
         .single()
       
@@ -361,13 +361,13 @@ export const api = {
         .eq('user_id', userId)
       
       if (error) throw new Error(handleSupabaseError(error))
-      return data?.map(f => f.restaurant_id) || []
+      return data?.map(f => (f as Record<string, unknown>).restaurant_id as string) || []
     },
 
     add: async (userId: string, restaurantId: string): Promise<void> => {
       const { error } = await supabase
         .from('favorites')
-        .insert({ user_id: userId, restaurant_id: restaurantId })
+        .insert({ user_id: userId, restaurant_id: restaurantId } as never)
       
       if (error) throw new Error(handleSupabaseError(error))
     },

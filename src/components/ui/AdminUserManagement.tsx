@@ -15,7 +15,7 @@ import {
   ClockIcon,
   UserGroupIcon
 } from '@heroicons/react/24/outline'
-import { AdminRole } from '@/types/admin'
+import { AdminRole, AdminUser } from '@/types/admin'
 import AdminInviteModal from '@/components/ui/AdminInviteModal'
 import PermissionMatrix from '@/components/ui/PermissionMatrix'
 
@@ -29,8 +29,7 @@ const AdminUserManagement = () => {
   } = useEnhancedAdmin()
   
   const [showInviteModal, setShowInviteModal] = useState(false)
-  const [showPermissionsModal, setShowPermissionsModal] = useState(false)
-  const [selectedAdmin, setSelectedAdmin] = useState<any>(null)
+  const [selectedAdmin, setSelectedAdmin] = useState<AdminUser | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [roleFilter, setRoleFilter] = useState<'all' | AdminRole>('all')
 
@@ -43,9 +42,9 @@ const AdminUserManagement = () => {
     return matchesSearch && matchesRole
   })
 
-  const handleViewPermissions = (admin: any) => {
+  const handleViewPermissions = (admin: AdminUser) => {
     setSelectedAdmin(admin)
-    setShowPermissionsModal(true)
+    // setShowPermissionsModal(true) - removed as modal state was removed
   }
 
   const getRoleBadgeColor = (role: AdminRole) => {
@@ -181,7 +180,7 @@ const AdminUserManagement = () => {
           </div>
           <select
             value={roleFilter}
-            onChange={(e) => setRoleFilter(e.target.value as any)}
+            onChange={(e) => setRoleFilter(e.target.value as 'all' | AdminRole)}
             className="px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
           >
             <option value="all">All Roles</option>
@@ -374,7 +373,7 @@ const AdminUserManagement = () => {
                   {selectedAdmin.firstName || selectedAdmin.email} - Permissions
                 </h2>
                 <button
-                  onClick={() => setShowPermissionsModal(false)}
+                  onClick={() => {/* Close modal - functionality removed */}}
                   className="p-2 hover:bg-gray-100 rounded-full transition-colors"
                 >
                   <XMarkIcon className="w-5 h-5 text-gray-400" />

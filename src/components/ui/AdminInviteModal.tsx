@@ -55,7 +55,7 @@ const AdminInviteModal = ({ isOpen, onClose }: AdminInviteModalProps) => {
       } else {
         setError(result.error || 'Failed to create invitation')
       }
-    } catch (err) {
+    } catch {
       setError('An unexpected error occurred')
     } finally {
       setIsLoading(false)

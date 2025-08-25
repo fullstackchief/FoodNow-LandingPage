@@ -194,17 +194,19 @@ export default function AdvancedFilters({
     const newFilters = { ...filters }
 
     if (section.type === 'checkbox' && section.multiple) {
-      const currentValues = (newFilters as any)[sectionId] || []
+      const filterKey = sectionId as keyof AdvancedFiltersState
+      const currentValues = Array.isArray(newFilters[filterKey]) ? newFilters[filterKey] as string[] : []
       if (checked) {
-        newFilters[sectionId as keyof AdvancedFiltersState] = [...currentValues, optionId] as any
+        (newFilters[filterKey] as string[]) = [...currentValues, optionId]
       } else {
-        newFilters[sectionId as keyof AdvancedFiltersState] = currentValues.filter((id: string) => id !== optionId) as any
+        (newFilters[filterKey] as string[]) = currentValues.filter((id: string) => id !== optionId)
       }
     } else if (section.type === 'radio') {
       if (sectionId === 'deliveryTime') {
         newFilters.deliveryTime = checked ? Number(optionId) : 0
       } else {
-        newFilters[sectionId as keyof AdvancedFiltersState] = checked ? [optionId] : [] as any
+        const filterKey = sectionId as keyof AdvancedFiltersState
+        (newFilters[filterKey] as string[]) = checked ? [optionId] : []
       }
     }
 
@@ -368,9 +370,9 @@ export default function AdvancedFilters({
                     <div className="flex items-center space-x-3">
                       {section.icon}
                       <span className="font-medium">{section.title}</span>
-                      {(filters as any)[section.id]?.length > 0 && (
+                      {((filters[section.id as keyof AdvancedFiltersState] as string[])?.length || 0) > 0 && (
                         <span className="bg-brand-100 text-brand-800 text-xs font-bold px-2 py-1 rounded-full">
-                          {(filters as any)[section.id].length}
+                          {(filters[section.id as keyof AdvancedFiltersState] as string[])?.length || 0}
                         </span>
                       )}
                     </div>
@@ -393,9 +395,9 @@ export default function AdvancedFilters({
                         <div className="p-4 space-y-2 max-h-64 overflow-y-auto">
                           {section.options.map((option) => {
                             const isChecked = section.type === 'radio' 
-                              ? (filters as any)[section.id]?.includes(option.id) || 
+                              ? (filters[section.id as keyof AdvancedFiltersState] as string[])?.includes(option.id) || 
                                 (section.id === 'deliveryTime' && filters.deliveryTime === Number(option.id))
-                              : (filters as any)[section.id]?.includes(option.id)
+                              : (filters[section.id as keyof AdvancedFiltersState] as string[])?.includes(option.id)
 
                             return (
                               <label 

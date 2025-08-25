@@ -53,7 +53,7 @@ const EnhancedAdminLoginModal = ({ isOpen, onClose, onSuccess }: EnhancedAdminLo
           setShowCredentialsHint(true)
         }
       }
-    } catch (err) {
+    } catch {
       setError('An unexpected error occurred')
     } finally {
       setIsLoading(false)

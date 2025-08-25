@@ -18,6 +18,12 @@ import {
 } from '@heroicons/react/24/outline'
 import Navigation from '@/components/layout/Navigation'
 import EnhancedAddMenuItemModal from '@/components/ui/EnhancedAddMenuItemModal'
+
+interface AddOn {
+  name: string
+  price: number
+}
+
 import OrderManagement from '@/components/ui/OrderManagement'
 
 interface MenuItem {
@@ -173,7 +179,24 @@ const RestaurantDashboard = () => {
   //   ))
   // }
 
-  const addMenuItem = (enhancedItem: any) => {
+  interface EnhancedMenuItemData {
+    id: string
+    name: string
+    description: string
+    basePrice: number
+    portions: {
+      small?: { price: number }
+      standard?: { price: number }
+      large?: { price: number }
+    }
+    addOns: AddOn[]
+    dietaryTags?: string[]
+    preparationTime: number
+    isAvailable: boolean
+    spicy?: boolean
+  }
+
+  const addMenuItem = (enhancedItem: EnhancedMenuItemData) => {
     const menuItem: MenuItem = {
       id: enhancedItem.id,
       name: enhancedItem.name,
@@ -184,11 +207,11 @@ const RestaurantDashboard = () => {
         regular: enhancedItem.portions.standard?.price,
         large: enhancedItem.portions.large?.price
       },
-      addOns: enhancedItem.addOns.map((addon: any) => ({
+      addOns: enhancedItem.addOns.map((addon: AddOn) => ({
         name: addon.name,
         price: addon.price
       })),
-      dietaryTags: enhancedItem.dietaryTags,
+      dietaryTags: enhancedItem.dietaryTags || [],
       preparationTime: enhancedItem.preparationTime,
       available: enhancedItem.isAvailable,
       spicy: enhancedItem.spicy
