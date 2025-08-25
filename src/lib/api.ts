@@ -51,9 +51,12 @@ export const api = {
       return data || []
     },
 
-    getNearby: async (lat: number, lng: number, radius = 5000): Promise<Restaurant[]> => {
+    getNearby: async (lat: number, lng: number, _radius = 5000): Promise<Restaurant[]> => {
       // This would require PostGIS extension for geolocation queries
       // For now, return all restaurants (can be enhanced later)
+      // Note: lat, lng parameters available for future geolocation implementation
+      console.log(`Searching near coordinates: ${lat}, ${lng}`)
+      
       const { data, error } = await supabase
         .from('restaurants')
         .select('*')

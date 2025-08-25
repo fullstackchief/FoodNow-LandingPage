@@ -11,7 +11,6 @@ import {
   TrendingUp, 
   Clock, 
   Star, 
-  MapPin,
   ChevronRight,
   Filter,
   Sparkles
@@ -159,7 +158,6 @@ const trendingRestaurants = [
 
 export default function ExplorePage() {
   const router = useRouter()
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
 
   const handleCategoryClick = (categoryId: string) => {
     router.push(`/browse?category=${categoryId}`)
@@ -390,7 +388,7 @@ export default function ExplorePage() {
         <section className="py-16 bg-gradient-to-r from-brand-500 to-brand-600">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl font-bold text-white mb-4">
-              Can't find what you're looking for?
+              Can&apos;t find what you&apos;re looking for?
             </h2>
             <p className="text-xl text-white/90 mb-8">
               Browse all restaurants or use our advanced search

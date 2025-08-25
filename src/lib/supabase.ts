@@ -22,15 +22,15 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
 })
 
 // Helper function to handle Supabase errors
-export function handleSupabaseError(error: any) {
+export function handleSupabaseError(error: unknown) {
   console.error('Supabase error:', error)
   
-  if (error?.message) {
-    return error.message
+  if (error && typeof error === 'object' && 'message' in error) {
+    return (error as { message: string }).message
   }
   
-  if (error?.error_description) {
-    return error.error_description
+  if (error && typeof error === 'object' && 'error_description' in error) {
+    return (error as { error_description: string }).error_description
   }
   
   return 'An unexpected error occurred'
@@ -38,7 +38,7 @@ export function handleSupabaseError(error: any) {
 
 // Auth helpers
 export const supabaseAuth = {
-  signUp: async (email: string, password: string, metadata?: Record<string, any>) => {
+  signUp: async (email: string, password: string, metadata?: Record<string, unknown>) => {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,

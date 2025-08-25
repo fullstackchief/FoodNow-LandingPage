@@ -4,7 +4,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 export interface Modal {
   id: string
   type: string
-  data?: any
+  data?: unknown
   isOpen: boolean
 }
 
@@ -82,7 +82,7 @@ const uiSlice = createSlice({
   initialState,
   reducers: {
     // Modals
-    openModal: (state, action: PayloadAction<{ type: string; data?: any }>) => {
+    openModal: (state, action: PayloadAction<{ type: string; data?: unknown }>) => {
       const { type, data } = action.payload
       const id = `${type}-${Date.now()}`
       

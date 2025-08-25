@@ -13,7 +13,6 @@ import {
   Leaf,
   Zap,
   Heart,
-  Shield,
   Award,
   MapPin
 } from 'lucide-react'

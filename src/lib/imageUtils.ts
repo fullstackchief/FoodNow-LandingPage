@@ -141,7 +141,7 @@ export function optimizeImage(url: string, width: number = 800, height: number =
 }
 
 // Get placeholder with better loading
-export function getImageWithFallback(primaryUrl: string, fallbackUrl?: string): ImageSource {
+export function getImageWithFallback(primaryUrl: string, _fallbackUrl?: string): ImageSource {
   return {
     url: primaryUrl,
     alt: 'Delicious food',

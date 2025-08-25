@@ -407,16 +407,20 @@ export const handlers = [
   }),
 
   http.post('/api/orders', async ({ request }) => {
-    const orderData = await request.json()
+    const orderData = await request.json() as { 
+      total?: number; 
+      restaurant?: Pick<Restaurant, 'id' | 'name' | 'image'>; 
+      items?: Array<{ id: string; name: string; price: number; quantity: number }>
+    }
     
     const newOrder: Order = {
       id: `order-${Date.now()}`,
       orderNumber: `FN${new Date().getFullYear()}${String(Date.now()).slice(-6)}`,
       status: 'pending',
-      total: (orderData as any).total || 0,
+      total: orderData.total || 0,
       createdAt: new Date().toISOString(),
-      restaurant: (orderData as any).restaurant,
-      items: (orderData as any).items || []
+      restaurant: orderData.restaurant || { id: '', name: '', image: '' },
+      items: orderData.items || []
     }
 
     mockOrders.unshift(newOrder)
@@ -446,16 +450,16 @@ export const handlers = [
 
   // User Authentication (mock)
   http.post('/api/auth/login', async ({ request }) => {
-    const credentials = await request.json()
+    const credentials = await request.json() as { email?: string; password?: string }
     
     // Simple mock authentication
-    if ((credentials as any).email && (credentials as any).password) {
+    if (credentials.email && credentials.password) {
       return HttpResponse.json({
         success: true,
         data: {
           user: {
             id: 'user-1',
-            email: (credentials as any).email,
+            email: credentials.email,
             firstName: 'John',
             lastName: 'Doe',
             phone: '+234 801 234 5678'
