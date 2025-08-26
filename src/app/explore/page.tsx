@@ -1,12 +1,13 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import { useState, useEffect } from 'react'
 import Navigation from '@/components/layout/Navigation'
 import Footer from '@/components/layout/Footer'
 import OptimizedImage from '@/components/ui/OptimizedImage'
+import EnhancedSearchBar from '@/components/ui/EnhancedSearchBar'
 import { motion } from 'framer-motion'
 import { 
-  Search, 
   TrendingUp, 
   Clock, 
   Star, 
@@ -14,6 +15,7 @@ import {
   Filter,
   Sparkles
 } from 'lucide-react'
+import { searchAPI } from '@/lib/search'
 import { cn } from '@/lib/utils'
 
 // Category data with beautiful images
@@ -157,6 +159,11 @@ const trendingRestaurants = [
 
 export default function ExplorePage() {
   const router = useRouter()
+  const [popularSearches, setPopularSearches] = useState<string[]>([])
+  useEffect(() => {
+    // Load popular searches and trending data
+    searchAPI.getPopularSearches(12).then(setPopularSearches)
+  }, [])
 
   const handleCategoryClick = (categoryId: string) => {
     router.push(`/browse?category=${categoryId}`)
@@ -164,6 +171,14 @@ export default function ExplorePage() {
 
   const handleDishClick = (dishName: string) => {
     router.push(`/browse?q=${encodeURIComponent(dishName)}`)
+  }
+
+  const handleSearch = (query: string) => {
+    router.push(`/search?q=${encodeURIComponent(query)}`)
+  }
+
+  const handlePopularSearchClick = (search: string) => {
+    router.push(`/search?q=${encodeURIComponent(search)}`)
   }
 
   return (
@@ -186,25 +201,40 @@ export default function ExplorePage() {
                 Discover cuisines from around the world, delivered to your door
               </p>
               
-              {/* Search Bar */}
+              {/* Enhanced Search Bar */}
               <div className="max-w-2xl mx-auto">
-                <div className="relative">
-                  <input
-                    type="text"
-                    placeholder="Search for restaurants, dishes, or cuisines..."
-                    className="w-full px-6 py-4 pr-12 rounded-full text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-4 focus:ring-white/30"
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        const value = (e.target as HTMLInputElement).value
-                        if (value) router.push(`/browse?q=${encodeURIComponent(value)}`)
-                      }
-                    }}
-                  />
-                  <button className="absolute right-2 top-1/2 -translate-y-1/2 p-3 bg-brand-600 text-white rounded-full hover:bg-brand-700 transition-colors">
-                    <Search className="w-5 h-5" />
-                  </button>
-                </div>
+                <EnhancedSearchBar
+                  placeholder="Search for restaurants, dishes, or cuisines..."
+                  onSearch={handleSearch}
+                  autoFocus={false}
+                  className="w-full"
+                />
               </div>
+              
+              {/* Popular Searches */}
+              {popularSearches.length > 0 && (
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className="mt-8"
+                >
+                  <p className="text-white/80 mb-4 text-sm">Popular searches:</p>
+                  <div className="flex flex-wrap gap-2 justify-center">
+                    {popularSearches.slice(0, 6).map((search) => (
+                      <motion.button
+                        key={search}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => handlePopularSearchClick(search)}
+                        className="px-4 py-2 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white rounded-full text-sm font-medium transition-all border border-white/20"
+                      >
+                        {search}
+                      </motion.button>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
             </motion.div>
           </div>
         </section>
