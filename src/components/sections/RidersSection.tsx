@@ -286,7 +286,7 @@ const RidersSection = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => window.open('https://riders.usefoodnow.com', '_blank')}
+                onClick={() => window.location.href = '/riders'}
                 className="group bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold text-xl py-5 px-12 rounded-full shadow-xl shadow-orange-500/30 hover:shadow-2xl hover:shadow-orange-500/40 transition-all duration-300"
               >
                 <span className="mr-2">Start Earning</span>

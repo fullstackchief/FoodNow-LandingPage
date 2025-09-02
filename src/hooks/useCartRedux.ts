@@ -7,8 +7,10 @@ import {
   clearCart as clearCartAction,
   toggleCart as toggleCartAction,
   setCartOpen as setCartOpenAction,
+  restoreCart as restoreCartAction,
   type CartItem,
   type Restaurant,
+  type CartState,
 } from '@/store/slices/cartSlice'
 
 // Redux-compatible cart hook that maintains the same API as the Context version
@@ -45,6 +47,10 @@ export function useCartRedux() {
     dispatch(setCartOpenAction(isOpen))
   }, [dispatch])
 
+  const restoreCart = useCallback((cartState: CartState) => {
+    dispatch(restoreCartAction(cartState))
+  }, [dispatch])
+
   // Calculate totals
   const getCartTotal = useCallback(() => {
     return cartState.items.reduce((total, item) => total + (item.price * item.quantity), 0)
@@ -73,6 +79,7 @@ export function useCartRedux() {
     clearCart,
     toggleCart,
     setCartOpen,
+    restoreCart,
     
     // Helper functions
     getCartTotal,

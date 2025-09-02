@@ -1,15 +1,30 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { ChevronRightIcon, ArrowDownIcon } from '@heroicons/react/24/solid'
 import { SparklesIcon, MapPinIcon, UsersIcon } from '@heroicons/react/24/outline'
+import { useLocation } from '@/contexts/LocationContext'
+import LocationModal from '@/components/ui/LocationModal'
 import ComingSoonModal from '@/components/ui/ComingSoonModal'
 
 const HeroSection = () => {
   const [showOrderModal, setShowOrderModal] = useState(false)
   const [showAppModal, setShowAppModal] = useState(false)
+  const [showLocationModal, setShowLocationModal] = useState(false)
+  const { hasLocation, location } = useLocation()
+  
+  // Show location modal after a delay for new users
+  useEffect(() => {
+    if (!hasLocation) {
+      const timer = setTimeout(() => {
+        setShowLocationModal(true)
+      }, 3000) // Show after 3 seconds
+      
+      return () => clearTimeout(timer)
+    }
+  }, [hasLocation])
   
   const serviceAreas = ['Isolo', 'Surulere', 'Ipaja', 'Ikeja', 'Yaba']
   
@@ -86,12 +101,23 @@ const HeroSection = () => {
               transition={{ delay: 0.4, duration: 0.8 }}
               className="flex flex-col sm:flex-row gap-4"
             >
-              <Link href="/browse">
-                <button className="group relative bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold text-lg py-4 px-10 rounded-full transition-all duration-300 transform hover:scale-105 shadow-xl shadow-orange-500/30 hover:shadow-2xl hover:shadow-orange-500/40 flex items-center justify-center space-x-2">
-                  <span>Order Now</span>
+              {hasLocation ? (
+                <Link href="/explore">
+                  <button className="group relative bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold text-lg py-4 px-10 rounded-full transition-all duration-300 transform hover:scale-105 shadow-xl shadow-orange-500/30 hover:shadow-2xl hover:shadow-orange-500/40 flex items-center justify-center space-x-2">
+                    <span>Order Now</span>
+                    <ChevronRightIcon className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </button>
+                </Link>
+              ) : (
+                <button 
+                  onClick={() => setShowLocationModal(true)}
+                  className="group relative bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold text-lg py-4 px-10 rounded-full transition-all duration-300 transform hover:scale-105 shadow-xl shadow-orange-500/30 hover:shadow-2xl hover:shadow-orange-500/40 flex items-center justify-center space-x-2"
+                >
+                  <MapPinIcon className="w-5 h-5" />
+                  <span>Set Location to Order</span>
                   <ChevronRightIcon className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </button>
-              </Link>
+              )}
               
               <button 
                 onClick={() => setShowAppModal(true)}
@@ -104,27 +130,54 @@ const HeroSection = () => {
               </button>
             </motion.div>
 
-            {/* Service Areas */}
+            {/* Location Status / Service Areas */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.8 }}
               className="flex items-center space-x-4"
             >
-              <div className="flex items-center space-x-2 text-gray-600">
-                <MapPinIcon className="w-5 h-5 text-orange-500" />
-                <span className="text-sm font-medium">Delivering to:</span>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {serviceAreas.map((area, _index) => (
-                  <span 
-                    key={area}
-                    className="text-xs font-semibold text-gray-700 bg-white/80 backdrop-blur-sm px-3 py-1 rounded-full border border-gray-200"
+              {hasLocation ? (
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center space-x-2 text-gray-600">
+                    <MapPinIcon className="w-5 h-5 text-green-500" />
+                    <span className="text-sm font-medium">Delivering to:</span>
+                  </div>
+                  <div className="bg-green-50 border border-green-200 rounded-full px-4 py-2">
+                    <span className="text-sm font-semibold text-green-800">
+                      {location?.city || location?.address?.split(',')[0] || 'Your Location'}
+                    </span>
+                  </div>
+                  <button
+                    onClick={() => setShowLocationModal(true)}
+                    className="text-sm text-orange-600 hover:text-orange-700 font-medium underline"
                   >
-                    {area}
-                  </span>
-                ))}
-              </div>
+                    Change location
+                  </button>
+                </div>
+              ) : (
+                <div className="w-full">
+                  <div className="flex items-center space-x-2 text-gray-600 mb-2">
+                    <MapPinIcon className="w-5 h-5 text-orange-500" />
+                    <span className="text-sm font-medium">We deliver to:</span>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {serviceAreas.map((area, _index) => (
+                      <span 
+                        key={area}
+                        className="text-xs font-semibold text-gray-700 bg-white/80 backdrop-blur-sm px-3 py-1 rounded-full border border-gray-200"
+                      >
+                        {area}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="mt-3 bg-orange-50 border border-orange-200 rounded-xl px-4 py-3">
+                    <p className="text-orange-800 text-sm font-medium">
+                      📍 Set your location to see restaurants that deliver to you
+                    </p>
+                  </div>
+                </div>
+              )}
             </motion.div>
 
             {/* Stats */}
@@ -341,6 +394,13 @@ const HeroSection = () => {
         onClose={() => setShowAppModal(false)}
         title="Mobile App Coming Soon!"
         description="Our mobile app is in development! Soon you'll be able to order your favorite Nigerian dishes with just a few taps."
+      />
+
+      <LocationModal
+        isOpen={showLocationModal}
+        onClose={() => setShowLocationModal(false)}
+        title="Welcome to FoodNow! 🍽️"
+        subtitle="Set your location to discover amazing restaurants that deliver to you with accurate delivery times."
       />
     </section>
   )

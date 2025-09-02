@@ -170,6 +170,19 @@ const cartSlice = createSlice({
       state.promoDiscount = 0
     },
 
+    // Restore entire cart state (for guest-to-auth migration)
+    restoreCart: (state, action: PayloadAction<CartState>) => {
+      const restoredState = action.payload
+      state.items = restoredState.items
+      state.restaurant = restoredState.restaurant
+      state.deliveryAddress = restoredState.deliveryAddress
+      state.specialInstructions = restoredState.specialInstructions
+      state.scheduledFor = restoredState.scheduledFor
+      state.promoCode = restoredState.promoCode
+      state.promoDiscount = restoredState.promoDiscount
+      // Keep current isOpen state
+    },
+
     // Add notes to specific item
     addItemNotes: (state, action: PayloadAction<{ itemId: string; notes: string; customizations?: string[] }>) => {
       const { itemId, notes, customizations } = action.payload
@@ -199,6 +212,7 @@ export const {
   setScheduledFor,
   applyPromoCode,
   removePromoCode,
+  restoreCart,
   addItemNotes,
 } = cartSlice.actions
 

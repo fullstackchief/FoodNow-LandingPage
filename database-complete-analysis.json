@@ -1,0 +1,624 @@
+{
+  "connection": {
+    "status": "connected",
+    "url": "https://fkcxijuikfsvxgojjbgp.supabase.co"
+  },
+  "tables": {
+    "users": {
+      "exists": true,
+      "row_count": 18,
+      "sample_data": [
+        {
+          "id": "22222222-2222-2222-2222-222222222222",
+          "email": "kemi.olatunji@yahoo.com",
+          "first_name": "Kemi",
+          "last_name": "Olatunji",
+          "phone": "+2348023456789",
+          "avatar_url": null,
+          "date_of_birth": null,
+          "gender": null,
+          "loyalty_points": 8500,
+          "tier": "gold",
+          "total_orders": 1,
+          "total_spent": 9639.75,
+          "referral_code": "FA231D8B",
+          "referred_by": null,
+          "preferences": {
+            "cuisine": [
+              "Italian",
+              "Chinese",
+              "Healthy"
+            ],
+            "dietary": [
+              "vegetarian"
+            ],
+            "allergens": [
+              "nuts"
+            ],
+            "spiceLevel": "mild",
+            "notifications": {
+              "promotions": true,
+              "orderUpdates": true,
+              "newRestaurants": true
+            }
+          },
+          "is_active": true,
+          "last_login": null,
+          "created_at": "2023-11-20T14:15:00+00:00",
+          "updated_at": "2025-08-26T21:10:21.949064+00:00",
+          "user_role": "customer",
+          "is_verified": false,
+          "verification_requested_at": null,
+          "verification_completed_at": null,
+          "onboarding_completed": false,
+          "metadata": null
+        },
+        {
+          "id": "33333333-3333-3333-3333-333333333333",
+          "email": "tunde.bakare@outlook.com",
+          "first_name": "Tunde",
+          "last_name": "Bakare",
+          "phone": "+2348034567890",
+          "avatar_url": null,
+          "date_of_birth": null,
+          "gender": null,
+          "loyalty_points": 450,
+          "tier": "bronze",
+          "total_orders": 1,
+          "total_spent": 5234.25,
+          "referral_code": "E2F72C98",
+          "referred_by": null,
+          "preferences": {
+            "cuisine": [
+              "Nigerian",
+              "Fast Food"
+            ],
+            "dietary": [],
+            "allergens": [],
+            "spiceLevel": "hot",
+            "notifications": {
+              "promotions": false,
+              "orderUpdates": true,
+              "newRestaurants": false
+            }
+          },
+          "is_active": true,
+          "last_login": null,
+          "created_at": "2024-03-10T09:00:00+00:00",
+          "updated_at": "2025-08-26T21:10:21.949064+00:00",
+          "user_role": "customer",
+          "is_verified": false,
+          "verification_requested_at": null,
+          "verification_completed_at": null,
+          "onboarding_completed": false,
+          "metadata": null
+        }
+      ],
+      "columns": [
+        "id",
+        "email",
+        "first_name",
+        "last_name",
+        "phone",
+        "avatar_url",
+        "date_of_birth",
+        "gender",
+        "loyalty_points",
+        "tier",
+        "total_orders",
+        "total_spent",
+        "referral_code",
+        "referred_by",
+        "preferences",
+        "is_active",
+        "last_login",
+        "created_at",
+        "updated_at",
+        "user_role",
+        "is_verified",
+        "verification_requested_at",
+        "verification_completed_at",
+        "onboarding_completed",
+        "metadata"
+      ]
+    },
+    "restaurants": {
+      "exists": true,
+      "row_count": 8,
+      "sample_data": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440001",
+          "name": "Mama Cass Kitchen",
+          "slug": "mama-cass-kitchen",
+          "description": "Authentic Nigerian cuisine with traditional recipes passed down through generations. Home of the best Jollof Rice in Lagos.",
+          "image_url": "https://images.unsplash.com/photo-1596797038530-2c107229654b?w=800&h=600&fit=crop&auto=format",
+          "cover_image_url": "https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=1200&h=600&fit=crop&auto=format",
+          "rating": 4.8,
+          "review_count": 342,
+          "price_range": "$$",
+          "cuisine_types": [
+            "Nigerian",
+            "African"
+          ],
+          "delivery_time": "25-35 min",
+          "delivery_fee": 500,
+          "minimum_order": 2000,
+          "commission_rate": 15,
+          "is_open": true,
+          "is_featured": true,
+          "status": "approved",
+          "opening_hours": {
+            "friday": {
+              "open": "08:00",
+              "close": "23:00"
+            },
+            "monday": {
+              "open": "08:00",
+              "close": "22:00"
+            },
+            "sunday": {
+              "open": "10:00",
+              "close": "21:00"
+            },
+            "tuesday": {
+              "open": "08:00",
+              "close": "22:00"
+            },
+            "saturday": {
+              "open": "09:00",
+              "close": "23:00"
+            },
+            "thursday": {
+              "open": "08:00",
+              "close": "22:00"
+            },
+            "wednesday": {
+              "open": "08:00",
+              "close": "22:00"
+            }
+          },
+          "location": {
+            "area": "Victoria Island",
+            "city": "Lagos",
+            "coordinates": {
+              "lat": 6.4281,
+              "lng": 3.4219
+            }
+          },
+          "features": [
+            "Fast Delivery",
+            "Nigerian Cuisine",
+            "Family Friendly"
+          ],
+          "phone_number": "+234 901 234 5678",
+          "email": "info@mamacasskitchen.com",
+          "total_orders": 2847,
+          "total_revenue": 0,
+          "established_year": 2015,
+          "owner_id": null,
+          "promotions": {
+            "active": true,
+            "discount": 15,
+            "description": "15% off first order"
+          },
+          "settings": {},
+          "created_at": "2025-08-29T08:55:39.868175+00:00",
+          "updated_at": "2025-08-29T08:55:39.868175+00:00"
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440002",
+          "name": "Dragon Wok Chinese Kitchen",
+          "slug": "dragon-wok-chinese-kitchen",
+          "description": "Authentic Chinese cuisine with fresh ingredients and traditional cooking methods. Best dim sum and noodles in Lagos.",
+          "image_url": "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=800&h=600&fit=crop&auto=format",
+          "cover_image_url": "https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=1200&h=600&fit=crop&auto=format",
+          "rating": 4.7,
+          "review_count": 198,
+          "price_range": "$$$",
+          "cuisine_types": [
+            "Chinese",
+            "Asian"
+          ],
+          "delivery_time": "30-45 min",
+          "delivery_fee": 800,
+          "minimum_order": 3000,
+          "commission_rate": 15,
+          "is_open": true,
+          "is_featured": true,
+          "status": "approved",
+          "opening_hours": {
+            "friday": {
+              "open": "11:00",
+              "close": "23:30"
+            },
+            "monday": {
+              "open": "11:00",
+              "close": "22:30"
+            },
+            "sunday": {
+              "open": "12:00",
+              "close": "22:00"
+            },
+            "tuesday": {
+              "open": "11:00",
+              "close": "22:30"
+            },
+            "saturday": {
+              "open": "11:00",
+              "close": "23:30"
+            },
+            "thursday": {
+              "open": "11:00",
+              "close": "22:30"
+            },
+            "wednesday": {
+              "open": "11:00",
+              "close": "22:30"
+            }
+          },
+          "location": {
+            "area": "Lekki Phase 1",
+            "city": "Lagos",
+            "coordinates": {
+              "lat": 6.4474,
+              "lng": 3.4553
+            }
+          },
+          "features": [
+            "Authentic Chinese",
+            "Vegetarian Options",
+            "Fresh Ingredients"
+          ],
+          "phone_number": "+234 802 345 6789",
+          "email": "orders@dragonwok.ng",
+          "total_orders": 1654,
+          "total_revenue": 0,
+          "established_year": 2018,
+          "owner_id": null,
+          "promotions": {
+            "active": false
+          },
+          "settings": {},
+          "created_at": "2025-08-29T08:55:39.868175+00:00",
+          "updated_at": "2025-08-29T08:55:39.868175+00:00"
+        }
+      ],
+      "columns": [
+        "id",
+        "name",
+        "slug",
+        "description",
+        "image_url",
+        "cover_image_url",
+        "rating",
+        "review_count",
+        "price_range",
+        "cuisine_types",
+        "delivery_time",
+        "delivery_fee",
+        "minimum_order",
+        "commission_rate",
+        "is_open",
+        "is_featured",
+        "status",
+        "opening_hours",
+        "location",
+        "features",
+        "phone_number",
+        "email",
+        "total_orders",
+        "total_revenue",
+        "established_year",
+        "owner_id",
+        "promotions",
+        "settings",
+        "created_at",
+        "updated_at"
+      ]
+    },
+    "menu_items": {
+      "exists": true,
+      "row_count": 17,
+      "sample_data": [
+        {
+          "id": "8d36f456-892b-4af2-8d02-b59781820d44",
+          "restaurant_id": "550e8400-e29b-41d4-a716-446655440001",
+          "category_id": null,
+          "name": "Special Jollof Rice",
+          "description": "Our signature jollof rice cooked with premium basmati rice, fresh tomatoes, and authentic spices. Served with fried plantain.",
+          "base_price": 2500,
+          "image_url": "https://images.unsplash.com/photo-1596797038530-2c107229654b?w=400&h=300&fit=crop&auto=format",
+          "is_available": true,
+          "is_popular": false,
+          "preparation_time": 15,
+          "calories": 680,
+          "tags": [
+            "Popular",
+            "Signature Dish",
+            "Spicy"
+          ],
+          "allergens": null,
+          "customizations": {
+            "extras": [
+              "Extra Plantain (+₦200)",
+              "Coleslaw (+₦300)",
+              "Moi Moi (+₦400)"
+            ],
+            "protein": [
+              "Chicken (+₦500)",
+              "Beef (+₦800)",
+              "Fish (+₦600)",
+              "None"
+            ],
+            "spice_level": [
+              "Mild",
+              "Medium",
+              "Hot"
+            ]
+          },
+          "nutrition_info": {
+            "fat": "28g",
+            "carbs": "75g",
+            "protein": "25g",
+            "calories": 680
+          },
+          "display_order": 0,
+          "created_at": "2025-08-29T08:55:40.295226+00:00",
+          "updated_at": "2025-08-29T08:55:40.295226+00:00"
+        },
+        {
+          "id": "28c6e176-cc99-4683-b881-dfbe4e463456",
+          "restaurant_id": "550e8400-e29b-41d4-a716-446655440001",
+          "category_id": null,
+          "name": "Pounded Yam & Egusi Soup",
+          "description": "Fresh pounded yam served with rich egusi soup loaded with assorted meat, fish, and vegetables.",
+          "base_price": 3200,
+          "image_url": "https://images.unsplash.com/photo-1596797038530-2c107229654b?w=400&h=300&fit=crop&auto=format",
+          "is_available": true,
+          "is_popular": false,
+          "preparation_time": 25,
+          "calories": 850,
+          "tags": [
+            "Traditional",
+            "Heavy Meal"
+          ],
+          "allergens": null,
+          "customizations": {
+            "protein": [
+              "Assorted Meat (included)",
+              "Extra Fish (+₦400)",
+              "Extra Meat (+₦600)"
+            ],
+            "yam_portion": [
+              "Regular",
+              "Large (+₦300)"
+            ]
+          },
+          "nutrition_info": {
+            "fat": "32g",
+            "carbs": "90g",
+            "protein": "35g",
+            "calories": 850
+          },
+          "display_order": 0,
+          "created_at": "2025-08-29T08:55:40.295226+00:00",
+          "updated_at": "2025-08-29T08:55:40.295226+00:00"
+        }
+      ],
+      "columns": [
+        "id",
+        "restaurant_id",
+        "category_id",
+        "name",
+        "description",
+        "base_price",
+        "image_url",
+        "is_available",
+        "is_popular",
+        "preparation_time",
+        "calories",
+        "tags",
+        "allergens",
+        "customizations",
+        "nutrition_info",
+        "display_order",
+        "created_at",
+        "updated_at"
+      ]
+    },
+    "orders": {
+      "exists": true,
+      "row_count": 15,
+      "sample_data": [
+        {
+          "id": "d9f96c01-2a45-4cc1-af0b-11c083d59343",
+          "order_number": "TEST-1756641124592",
+          "user_id": "22222222-2222-2222-2222-222222222222",
+          "restaurant_id": "550e8400-e29b-41d4-a716-446655440001",
+          "status": "pending",
+          "payment_method": "cash",
+          "payment_status": "pending",
+          "payment_reference": null,
+          "subtotal": 2500,
+          "delivery_fee": 500,
+          "service_fee": 0,
+          "tax": 0,
+          "discount": 0,
+          "commission_fee": 0,
+          "total": 3000,
+          "delivery_info": {
+            "area": "Victoria Island",
+            "city": "Lagos",
+            "state": "Lagos",
+            "street_address": "123 Test Street"
+          },
+          "rider_id": null,
+          "estimated_delivery_time": "2025-08-31T12:37:04.592+00:00",
+          "actual_delivery_time": null,
+          "preparation_started_at": null,
+          "ready_at": null,
+          "picked_up_at": null,
+          "special_instructions": "Test order - please ignore",
+          "promo_code_id": null,
+          "promo_discount": 0,
+          "rating": null,
+          "review": null,
+          "tracking_updates": [],
+          "refund_amount": 0,
+          "refund_reason": null,
+          "created_at": "2025-08-31T11:52:04.88976+00:00",
+          "updated_at": "2025-08-31T11:52:04.88976+00:00"
+        },
+        {
+          "id": "08527ad0-72d3-451a-9bf3-9ba2a389a00a",
+          "order_number": "TEST-1756641218607",
+          "user_id": "22222222-2222-2222-2222-222222222222",
+          "restaurant_id": "550e8400-e29b-41d4-a716-446655440001",
+          "status": "pending",
+          "payment_method": "cash",
+          "payment_status": "pending",
+          "payment_reference": null,
+          "subtotal": 2500,
+          "delivery_fee": 500,
+          "service_fee": 0,
+          "tax": 0,
+          "discount": 0,
+          "commission_fee": 0,
+          "total": 3000,
+          "delivery_info": {
+            "area": "Victoria Island",
+            "city": "Lagos",
+            "state": "Lagos",
+            "street_address": "123 Test Street"
+          },
+          "rider_id": null,
+          "estimated_delivery_time": "2025-08-31T12:38:38.607+00:00",
+          "actual_delivery_time": null,
+          "preparation_started_at": null,
+          "ready_at": null,
+          "picked_up_at": null,
+          "special_instructions": "Test order - please ignore",
+          "promo_code_id": null,
+          "promo_discount": 0,
+          "rating": null,
+          "review": null,
+          "tracking_updates": [],
+          "refund_amount": 0,
+          "refund_reason": null,
+          "created_at": "2025-08-31T11:53:38.887791+00:00",
+          "updated_at": "2025-08-31T11:53:38.887791+00:00"
+        }
+      ],
+      "columns": [
+        "id",
+        "order_number",
+        "user_id",
+        "restaurant_id",
+        "status",
+        "payment_method",
+        "payment_status",
+        "payment_reference",
+        "subtotal",
+        "delivery_fee",
+        "service_fee",
+        "tax",
+        "discount",
+        "commission_fee",
+        "total",
+        "delivery_info",
+        "rider_id",
+        "estimated_delivery_time",
+        "actual_delivery_time",
+        "preparation_started_at",
+        "ready_at",
+        "picked_up_at",
+        "special_instructions",
+        "promo_code_id",
+        "promo_discount",
+        "rating",
+        "review",
+        "tracking_updates",
+        "refund_amount",
+        "refund_reason",
+        "created_at",
+        "updated_at"
+      ]
+    },
+    "order_items": {
+      "exists": true,
+      "row_count": 14,
+      "columns": [
+        "id",
+        "order_id",
+        "menu_item_id",
+        "quantity",
+        "unit_price",
+        "total_price",
+        "customizations",
+        "notes",
+        "created_at"
+      ]
+    },
+    "notifications": {
+      "exists": true,
+      "row_count": 4
+    }
+  },
+  "policies": {
+    "users": {
+      "rls_enabled": false
+    },
+    "restaurants": {
+      "rls_enabled": false
+    },
+    "menu_items": {
+      "rls_enabled": false
+    },
+    "orders": {
+      "rls_enabled": false
+    },
+    "order_items": {
+      "rls_enabled": false
+    },
+    "notifications": {
+      "rls_enabled": false
+    }
+  },
+  "indexes": {},
+  "functions": {},
+  "data_counts": {
+    "users": 18,
+    "restaurants": 8,
+    "menu_items": 17,
+    "orders": 15,
+    "order_items": 14,
+    "notifications": 4
+  },
+  "missing_tables": [
+    "delivery_zones",
+    "support_tickets",
+    "payment_transactions",
+    "delivery_assignments",
+    "rider_documents",
+    "restaurant_documents",
+    "admin_permissions",
+    "system_settings",
+    "rider_guarantors",
+    "payout_history",
+    "delivery_zones",
+    "support_tickets",
+    "payment_transactions",
+    "delivery_assignments",
+    "rider_documents",
+    "restaurant_documents",
+    "admin_permissions",
+    "system_settings",
+    "rider_guarantors",
+    "payout_history"
+  ],
+  "recommendations": [
+    "🚨 URGENT: Create missing tables for core functionality",
+    "🔒 SECURITY: Enable RLS on users table",
+    "🔒 SECURITY: Enable RLS on orders table"
+  ]
+}

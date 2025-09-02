@@ -1,4 +1,4 @@
-import { supabase, handleSupabaseError } from './supabase'
+import { supabase, handleSupabaseError } from './supabase-client'
 import { Database } from './database.types'
 
 // Type aliases for easier usage
@@ -277,78 +277,44 @@ export const api = {
 
   // Address operations
   addresses: {
-    getByUserId: async (userId: string): Promise<Address[]> => {
-      const { data, error } = await supabase
-        .from('addresses')
-        .select('*')
-        .eq('user_id', userId)
-        .order('is_default', { ascending: false })
-      
-      if (error) throw new Error(handleSupabaseError(error))
-      return data || []
+    getByUserId: async (_userId: string): Promise<Address[]> => {
+      // TODO: addresses table not yet implemented in database
+      // Return empty array until table is created
+      return []
     },
 
-    create: async (addressData: Database['public']['Tables']['addresses']['Insert']): Promise<Address> => {
-      const { data, error } = await supabase
-        .from('addresses')
-        .insert(addressData as never)
-        .select()
-        .single()
-      
-      if (error) throw new Error(handleSupabaseError(error))
-      return data
+    create: async (_addressData: any): Promise<Address> => {
+      // TODO: addresses table not yet implemented in database
+      throw new Error('Addresses feature not yet implemented')
     },
 
-    update: async (id: string, updates: Database['public']['Tables']['addresses']['Update']): Promise<void> => {
-      const { error } = await supabase
-        .from('addresses')
-        .update({ ...updates, updated_at: new Date().toISOString() } as never)
-        .eq('id', id)
-      
-      if (error) throw new Error(handleSupabaseError(error))
+    update: async (_id: string, _updates: any): Promise<void> => {
+      // TODO: addresses table not yet implemented in database
+      throw new Error('Addresses feature not yet implemented')
     },
 
-    delete: async (id: string): Promise<void> => {
-      const { error } = await supabase
-        .from('addresses')
-        .delete()
-        .eq('id', id)
-      
-      if (error) throw new Error(handleSupabaseError(error))
+    delete: async (_id: string): Promise<void> => {
+      // TODO: addresses table not yet implemented in database
+      throw new Error('Addresses feature not yet implemented')
     }
   },
 
   // Payment methods
   paymentMethods: {
-    getByUserId: async (userId: string): Promise<PaymentMethod[]> => {
-      const { data, error } = await supabase
-        .from('payment_methods')
-        .select('*')
-        .eq('user_id', userId)
-        .order('is_default', { ascending: false })
-      
-      if (error) throw new Error(handleSupabaseError(error))
-      return data || []
+    getByUserId: async (_userId: string): Promise<PaymentMethod[]> => {
+      // TODO: payment_methods table not yet implemented in database
+      // Return empty array until table is created
+      return []
     },
 
-    create: async (paymentData: Database['public']['Tables']['payment_methods']['Insert']): Promise<PaymentMethod> => {
-      const { data, error } = await supabase
-        .from('payment_methods')
-        .insert(paymentData as never)
-        .select()
-        .single()
-      
-      if (error) throw new Error(handleSupabaseError(error))
-      return data
+    create: async (_paymentData: any): Promise<PaymentMethod> => {
+      // TODO: payment_methods table not yet implemented in database
+      throw new Error('Payment methods feature not yet implemented')
     },
 
-    delete: async (id: string): Promise<void> => {
-      const { error } = await supabase
-        .from('payment_methods')
-        .delete()
-        .eq('id', id)
-      
-      if (error) throw new Error(handleSupabaseError(error))
+    delete: async (_id: string): Promise<void> => {
+      // TODO: payment_methods table not yet implemented in database
+      throw new Error('Payment methods feature not yet implemented')
     }
   },
 

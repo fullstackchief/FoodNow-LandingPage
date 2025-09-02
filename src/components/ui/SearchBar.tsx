@@ -74,7 +74,7 @@ export default function SearchBar({
             type: 'restaurant' as const,
             title: restaurant.name,
             subtitle: `${restaurant.cuisine_types.join(', ')} • ${restaurant.delivery_time}`,
-            icon: restaurant.image_url
+            icon: restaurant.image_url || undefined
           })),
           
           // Popular searches

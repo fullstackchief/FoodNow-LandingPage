@@ -3,6 +3,8 @@ import { Inter, Poppins } from 'next/font/google'
 import StructuredData from '@/components/seo/StructuredData'
 import { AdminProvider } from '@/contexts/AdminContext'
 import { EnhancedAdminProvider } from '@/contexts/EnhancedAdminContext'
+import { LocationProvider } from '@/contexts/LocationContext'
+import { AuthProvider } from '@/contexts/AuthContext'
 import StoreProvider from '@/store/StoreProvider'
 import './globals.css'
 
@@ -138,15 +140,66 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body className={`${inter.className} antialiased`}>
+        {process.env.NODE_ENV === 'development' && (
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+                // Development cache cleanup to prevent HMR issues
+                (function() {
+                  // Unregister all service workers
+                  if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                      for(let registration of registrations) {
+                        registration.unregister();
+                        console.log('[Dev] Unregistered service worker:', registration.scope);
+                      }
+                    });
+                  }
+                  
+                  // Clear all caches
+                  if ('caches' in window) {
+                    caches.keys().then(function(names) {
+                      for (let name of names) {
+                        caches.delete(name);
+                        console.log('[Dev] Cleared cache:', name);
+                      }
+                    });
+                  }
+                  
+                  // Clear module cache on page visibility change
+                  document.addEventListener('visibilitychange', function() {
+                    if (document.hidden) return;
+                    // Clear session storage HMR cache
+                    try {
+                      const keys = Object.keys(sessionStorage);
+                      keys.forEach(key => {
+                        if (key.includes('webpack') || key.includes('turbopack') || key.includes('module')) {
+                          sessionStorage.removeItem(key);
+                        }
+                      });
+                    } catch (e) {}
+                  });
+                  
+                  // Add cache-busting for development
+                  window.__CACHE_BUST_ID__ = Date.now();
+                })();
+              `,
+            }}
+          />
+        )}
         <StructuredData />
         <StoreProvider>
-          <AdminProvider>
-            <EnhancedAdminProvider>
-              <div id="root">
-                {children}
-              </div>
-            </EnhancedAdminProvider>
-          </AdminProvider>
+          <LocationProvider>
+            <AuthProvider>
+              <AdminProvider>
+                <EnhancedAdminProvider>
+                  <div id="root">
+                    {children}
+                  </div>
+                </EnhancedAdminProvider>
+              </AdminProvider>
+            </AuthProvider>
+          </LocationProvider>
         </StoreProvider>
       </body>
     </html>

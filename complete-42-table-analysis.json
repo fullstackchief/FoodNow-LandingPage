@@ -1,0 +1,223 @@
+{
+  "timestamp": "2025-09-02T01:47:41.784Z",
+  "total_tables": 43,
+  "rls_enabled_count": 0,
+  "rls_disabled_count": 43,
+  "tables": [
+    {
+      "table": "users",
+      "rows": 18,
+      "rls": "❌ DISABLED"
+    },
+    {
+      "table": "restaurants",
+      "rows": 8,
+      "rls": "❌ DISABLED"
+    },
+    {
+      "table": "menu_items",
+      "rows": 17,
+      "rls": "❌ DISABLED"
+    },
+    {
+      "table": "orders",
+      "rows": 22,
+      "rls": "❌ DISABLED"
+    },
+    {
+      "table": "order_items",
+      "rows": 21,
+      "rls": "❌ DISABLED"
+    },
+    {
+      "table": "notifications",
+      "rows": 4,
+      "rls": "❌ DISABLED"
+    },
+    {
+      "table": "admin_users",
+      "rows": 1,
+      "rls": "❌ DISABLED"
+    },
+    {
+      "table": "admin_sessions",
+      "rows": 0,
+      "rls": "❌ DISABLED"
+    },
+    {
+      "table": "role_applications",
+      "rows": 0,
+      "rls": "❌ DISABLED"
+    },
+    {
+      "table": "guarantor_verifications",
+      "rows": 0,
+      "rls": "❌ DISABLED"
+    },
+    {
+      "table": "delivery_zones",
+      "rows": 0,
+      "rls": "❌ DISABLED"
+    },
+    {
+      "table": "support_tickets",
+      "rows": 0,
+      "rls": "❌ DISABLED"
+    },
+    {
+      "table": "payment_transactions",
+      "rows": 0,
+      "rls": "❌ DISABLED"
+    },
+    {
+      "table": "delivery_assignments",
+      "rows": 0,
+      "rls": "❌ DISABLED"
+    },
+    {
+      "table": "rider_documents",
+      "rows": 0,
+      "rls": "❌ DISABLED"
+    },
+    {
+      "table": "restaurant_documents",
+      "rows": 0,
+      "rls": "❌ DISABLED"
+    },
+    {
+      "table": "admin_permissions",
+      "rows": 0,
+      "rls": "❌ DISABLED"
+    },
+    {
+      "table": "system_settings",
+      "rows": 9,
+      "rls": "❌ DISABLED"
+    },
+    {
+      "table": "rider_guarantors",
+      "rows": 0,
+      "rls": "❌ DISABLED"
+    },
+    {
+      "table": "payout_history",
+      "rows": 0,
+      "rls": "❌ DISABLED"
+    },
+    {
+      "table": "payment_transactions",
+      "rows": 0,
+      "rls": "❌ DISABLED"
+    },
+    {
+      "table": "payout_history",
+      "rows": 0,
+      "rls": "❌ DISABLED"
+    },
+    {
+      "table": "promo_code_usage",
+      "rows": 0,
+      "rls": "❌ DISABLED"
+    },
+    {
+      "table": "promo_codes",
+      "rows": 5,
+      "rls": "❌ DISABLED"
+    },
+    {
+      "table": "push_subscriptions",
+      "rows": 0,
+      "rls": "❌ DISABLED"
+    },
+    {
+      "table": "rate_limits",
+      "rows": 0,
+      "rls": "❌ DISABLED"
+    },
+    {
+      "table": "restaurant_analytics",
+      "rows": 0,
+      "rls": "❌ DISABLED"
+    },
+    {
+      "table": "restaurant_settings",
+      "rows": 0,
+      "rls": "❌ DISABLED"
+    },
+    {
+      "table": "restaurant_subscriptions",
+      "rows": 0,
+      "rls": "❌ DISABLED"
+    },
+    {
+      "table": "review_votes",
+      "rows": 0,
+      "rls": "❌ DISABLED"
+    },
+    {
+      "table": "reviews",
+      "rows": 0,
+      "rls": "❌ DISABLED"
+    },
+    {
+      "table": "rider_documents",
+      "rows": 0,
+      "rls": "❌ DISABLED"
+    },
+    {
+      "table": "rider_guarantors",
+      "rows": 0,
+      "rls": "❌ DISABLED"
+    },
+    {
+      "table": "riders",
+      "rows": 3,
+      "rls": "❌ DISABLED"
+    },
+    {
+      "table": "service_areas",
+      "rows": 0,
+      "rls": "❌ DISABLED"
+    },
+    {
+      "table": "spatial_ref_sys",
+      "rows": 8500,
+      "rls": "❌ DISABLED"
+    },
+    {
+      "table": "system_analytics",
+      "rows": 1,
+      "rls": "❌ DISABLED"
+    },
+    {
+      "table": "system_settings",
+      "rows": 9,
+      "rls": "❌ DISABLED"
+    },
+    {
+      "table": "user_order_history",
+      "rows": 15,
+      "rls": "❌ DISABLED"
+    },
+    {
+      "table": "user_preferences",
+      "rows": 0,
+      "rls": "❌ DISABLED"
+    },
+    {
+      "table": "user_ratings",
+      "rows": 0,
+      "rls": "❌ DISABLED"
+    },
+    {
+      "table": "user_reviews",
+      "rows": 0,
+      "rls": "❌ DISABLED"
+    },
+    {
+      "table": "zones",
+      "rows": 0,
+      "rls": "❌ DISABLED"
+    }
+  ]
+}

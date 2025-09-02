@@ -1,5 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Explicitly expose server-side environment variables
+  env: {
+    SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
+  },
+  
   // Enable experimental features for better performance
   experimental: {
     optimizeCss: true,
@@ -102,12 +107,6 @@ const nextConfig = {
         permanent: false,
         basePath: false
       },
-      {
-        source: '/riders',
-        destination: process.env.NEXT_PUBLIC_RIDER_URL || 'https://riders.usefoodnow.com',
-        permanent: false,
-        basePath: false
-      }
     ]
   },
 

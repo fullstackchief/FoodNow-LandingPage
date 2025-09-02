@@ -1,0 +1,9 @@
+{
+  "timestamp": "2025-09-02T02:19:54.130Z",
+  "method": "information_schema.tables",
+  "total_tables": 1,
+  "table_names": [
+    null
+  ],
+  "problem_table_exists": false
+}

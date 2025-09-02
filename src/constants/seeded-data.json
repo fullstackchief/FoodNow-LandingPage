@@ -1,0 +1,1743 @@
+{
+  "restaurants": [
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440001",
+      "name": "Mama Cass Kitchen",
+      "slug": "mama-cass-kitchen",
+      "description": "Authentic Nigerian cuisine with traditional recipes passed down through generations. Home of the best Jollof Rice in Lagos.",
+      "image_url": "https://images.unsplash.com/photo-1596797038530-2c107229654b?w=800&h=600&fit=crop&auto=format",
+      "cover_image_url": "https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=1200&h=600&fit=crop&auto=format",
+      "rating": 4.8,
+      "review_count": 342,
+      "price_range": "$$",
+      "cuisine_types": [
+        "Nigerian",
+        "African"
+      ],
+      "delivery_time": "25-35 min",
+      "delivery_fee": 500,
+      "minimum_order": 2000,
+      "commission_rate": 15,
+      "is_open": true,
+      "is_featured": true,
+      "status": "approved",
+      "opening_hours": {
+        "friday": {
+          "open": "08:00",
+          "close": "23:00"
+        },
+        "monday": {
+          "open": "08:00",
+          "close": "22:00"
+        },
+        "sunday": {
+          "open": "10:00",
+          "close": "21:00"
+        },
+        "tuesday": {
+          "open": "08:00",
+          "close": "22:00"
+        },
+        "saturday": {
+          "open": "09:00",
+          "close": "23:00"
+        },
+        "thursday": {
+          "open": "08:00",
+          "close": "22:00"
+        },
+        "wednesday": {
+          "open": "08:00",
+          "close": "22:00"
+        }
+      },
+      "location": {
+        "area": "Victoria Island",
+        "city": "Lagos",
+        "coordinates": {
+          "lat": 6.4281,
+          "lng": 3.4219
+        }
+      },
+      "features": [
+        "Fast Delivery",
+        "Nigerian Cuisine",
+        "Family Friendly"
+      ],
+      "phone_number": "+234 901 234 5678",
+      "email": "info@mamacasskitchen.com",
+      "total_orders": 2847,
+      "total_revenue": 0,
+      "established_year": 2015,
+      "owner_id": null,
+      "promotions": {
+        "active": true,
+        "discount": 15,
+        "description": "15% off first order"
+      },
+      "settings": {},
+      "created_at": "2025-08-29T08:55:39.868175+00:00",
+      "updated_at": "2025-08-29T08:55:39.868175+00:00"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440002",
+      "name": "Dragon Wok Chinese Kitchen",
+      "slug": "dragon-wok-chinese-kitchen",
+      "description": "Authentic Chinese cuisine with fresh ingredients and traditional cooking methods. Best dim sum and noodles in Lagos.",
+      "image_url": "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=800&h=600&fit=crop&auto=format",
+      "cover_image_url": "https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=1200&h=600&fit=crop&auto=format",
+      "rating": 4.7,
+      "review_count": 198,
+      "price_range": "$$$",
+      "cuisine_types": [
+        "Chinese",
+        "Asian"
+      ],
+      "delivery_time": "30-45 min",
+      "delivery_fee": 800,
+      "minimum_order": 3000,
+      "commission_rate": 15,
+      "is_open": true,
+      "is_featured": true,
+      "status": "approved",
+      "opening_hours": {
+        "friday": {
+          "open": "11:00",
+          "close": "23:30"
+        },
+        "monday": {
+          "open": "11:00",
+          "close": "22:30"
+        },
+        "sunday": {
+          "open": "12:00",
+          "close": "22:00"
+        },
+        "tuesday": {
+          "open": "11:00",
+          "close": "22:30"
+        },
+        "saturday": {
+          "open": "11:00",
+          "close": "23:30"
+        },
+        "thursday": {
+          "open": "11:00",
+          "close": "22:30"
+        },
+        "wednesday": {
+          "open": "11:00",
+          "close": "22:30"
+        }
+      },
+      "location": {
+        "area": "Lekki Phase 1",
+        "city": "Lagos",
+        "coordinates": {
+          "lat": 6.4474,
+          "lng": 3.4553
+        }
+      },
+      "features": [
+        "Authentic Chinese",
+        "Vegetarian Options",
+        "Fresh Ingredients"
+      ],
+      "phone_number": "+234 802 345 6789",
+      "email": "orders@dragonwok.ng",
+      "total_orders": 1654,
+      "total_revenue": 0,
+      "established_year": 2018,
+      "owner_id": null,
+      "promotions": {
+        "active": false
+      },
+      "settings": {},
+      "created_at": "2025-08-29T08:55:39.868175+00:00",
+      "updated_at": "2025-08-29T08:55:39.868175+00:00"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440003",
+      "name": "Pizza Paradise Lagos",
+      "slug": "pizza-paradise-lagos",
+      "description": "Wood-fired pizzas made with imported Italian ingredients. The finest pizza experience in Lagos with authentic flavors.",
+      "image_url": "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800&h=600&fit=crop&auto=format",
+      "cover_image_url": "https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=1200&h=600&fit=crop&auto=format",
+      "rating": 4.6,
+      "review_count": 267,
+      "price_range": "$$$",
+      "cuisine_types": [
+        "Italian",
+        "Pizza"
+      ],
+      "delivery_time": "20-30 min",
+      "delivery_fee": 600,
+      "minimum_order": 2500,
+      "commission_rate": 15,
+      "is_open": true,
+      "is_featured": true,
+      "status": "approved",
+      "opening_hours": {
+        "friday": {
+          "open": "10:00",
+          "close": "24:00"
+        },
+        "monday": {
+          "open": "10:00",
+          "close": "23:00"
+        },
+        "sunday": {
+          "open": "11:00",
+          "close": "23:00"
+        },
+        "tuesday": {
+          "open": "10:00",
+          "close": "23:00"
+        },
+        "saturday": {
+          "open": "10:00",
+          "close": "24:00"
+        },
+        "thursday": {
+          "open": "10:00",
+          "close": "23:00"
+        },
+        "wednesday": {
+          "open": "10:00",
+          "close": "23:00"
+        }
+      },
+      "location": {
+        "area": "Ikeja GRA",
+        "city": "Lagos",
+        "coordinates": {
+          "lat": 6.5966,
+          "lng": 3.3515
+        }
+      },
+      "features": [
+        "Wood-fired Pizza",
+        "Italian Cuisine",
+        "Late Night"
+      ],
+      "phone_number": "+234 703 456 7890",
+      "email": "hello@pizzaparadise.ng",
+      "total_orders": 3421,
+      "total_revenue": 0,
+      "established_year": 2017,
+      "owner_id": null,
+      "promotions": {
+        "active": true,
+        "discount": 20,
+        "description": "Buy 2 Get 1 Free on weekends"
+      },
+      "settings": {},
+      "created_at": "2025-08-29T08:55:39.868175+00:00",
+      "updated_at": "2025-08-29T08:55:39.868175+00:00"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440004",
+      "name": "Burger Express",
+      "slug": "burger-express",
+      "description": "Premium burgers made with 100% beef patties and fresh ingredients. Fast, fresh, and delicious American-style burgers.",
+      "image_url": "https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=800&h=600&fit=crop&auto=format",
+      "cover_image_url": "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=1200&h=600&fit=crop&auto=format",
+      "rating": 4.4,
+      "review_count": 156,
+      "price_range": "$$",
+      "cuisine_types": [
+        "American",
+        "Fast Food",
+        "Burgers"
+      ],
+      "delivery_time": "15-25 min",
+      "delivery_fee": 400,
+      "minimum_order": 1500,
+      "commission_rate": 15,
+      "is_open": true,
+      "is_featured": false,
+      "status": "approved",
+      "opening_hours": {
+        "friday": {
+          "open": "07:00",
+          "close": "24:00"
+        },
+        "monday": {
+          "open": "07:00",
+          "close": "23:00"
+        },
+        "sunday": {
+          "open": "09:00",
+          "close": "22:00"
+        },
+        "tuesday": {
+          "open": "07:00",
+          "close": "23:00"
+        },
+        "saturday": {
+          "open": "08:00",
+          "close": "24:00"
+        },
+        "thursday": {
+          "open": "07:00",
+          "close": "23:00"
+        },
+        "wednesday": {
+          "open": "07:00",
+          "close": "23:00"
+        }
+      },
+      "location": {
+        "area": "Surulere",
+        "city": "Lagos",
+        "coordinates": {
+          "lat": 6.4969,
+          "lng": 3.3841
+        }
+      },
+      "features": [
+        "Fast Delivery",
+        "100% Beef",
+        "American Style"
+      ],
+      "phone_number": "+234 805 678 9012",
+      "email": "orders@burgerexpress.ng",
+      "total_orders": 2156,
+      "total_revenue": 0,
+      "established_year": 2019,
+      "owner_id": null,
+      "promotions": {
+        "active": false
+      },
+      "settings": {},
+      "created_at": "2025-08-29T08:55:39.868175+00:00",
+      "updated_at": "2025-08-29T08:55:39.868175+00:00"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440005",
+      "name": "Green Bowl Healthy Kitchen",
+      "slug": "green-bowl-healthy-kitchen",
+      "description": "Fresh, healthy meals made with organic ingredients. Salads, smoothie bowls, and nutritious meals for a healthy lifestyle.",
+      "image_url": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800&h=600&fit=crop&auto=format",
+      "cover_image_url": "https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=1200&h=600&fit=crop&auto=format",
+      "rating": 4.5,
+      "review_count": 89,
+      "price_range": "$$$",
+      "cuisine_types": [
+        "Healthy",
+        "Vegetarian",
+        "Salads"
+      ],
+      "delivery_time": "20-30 min",
+      "delivery_fee": 700,
+      "minimum_order": 2200,
+      "commission_rate": 15,
+      "is_open": true,
+      "is_featured": false,
+      "status": "approved",
+      "opening_hours": {
+        "friday": {
+          "open": "06:30",
+          "close": "21:00"
+        },
+        "monday": {
+          "open": "06:30",
+          "close": "20:00"
+        },
+        "sunday": {
+          "open": "08:00",
+          "close": "19:00"
+        },
+        "tuesday": {
+          "open": "06:30",
+          "close": "20:00"
+        },
+        "saturday": {
+          "open": "07:00",
+          "close": "21:00"
+        },
+        "thursday": {
+          "open": "06:30",
+          "close": "20:00"
+        },
+        "wednesday": {
+          "open": "06:30",
+          "close": "20:00"
+        }
+      },
+      "location": {
+        "area": "Ikoyi",
+        "city": "Lagos",
+        "coordinates": {
+          "lat": 6.4541,
+          "lng": 3.4316
+        }
+      },
+      "features": [
+        "Organic",
+        "Healthy Options",
+        "Vegetarian"
+      ],
+      "phone_number": "+234 814 567 8901",
+      "email": "hello@greenbowl.ng",
+      "total_orders": 876,
+      "total_revenue": 0,
+      "established_year": 2020,
+      "owner_id": null,
+      "promotions": {
+        "active": true,
+        "discount": 10,
+        "description": "10% off healthy meals"
+      },
+      "settings": {},
+      "created_at": "2025-08-29T08:55:39.868175+00:00",
+      "updated_at": "2025-08-29T08:55:39.868175+00:00"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440006",
+      "name": "Italian Corner",
+      "slug": "italian-corner",
+      "description": "Authentic Italian pasta, risotto, and desserts. Family recipes brought from Italy to Lagos with love and tradition.",
+      "image_url": "https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=800&h=600&fit=crop&auto=format",
+      "cover_image_url": "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=1200&h=600&fit=crop&auto=format",
+      "rating": 4.7,
+      "review_count": 234,
+      "price_range": "$$$",
+      "cuisine_types": [
+        "Italian",
+        "Pasta",
+        "European"
+      ],
+      "delivery_time": "25-35 min",
+      "delivery_fee": 650,
+      "minimum_order": 2800,
+      "commission_rate": 15,
+      "is_open": true,
+      "is_featured": true,
+      "status": "approved",
+      "opening_hours": {
+        "friday": {
+          "open": "11:00",
+          "close": "23:00"
+        },
+        "monday": {
+          "open": "11:00",
+          "close": "22:00"
+        },
+        "sunday": {
+          "open": "12:00",
+          "close": "21:00"
+        },
+        "tuesday": {
+          "open": "11:00",
+          "close": "22:00"
+        },
+        "saturday": {
+          "open": "11:00",
+          "close": "23:00"
+        },
+        "thursday": {
+          "open": "11:00",
+          "close": "22:00"
+        },
+        "wednesday": {
+          "open": "11:00",
+          "close": "22:00"
+        }
+      },
+      "location": {
+        "area": "Victoria Island",
+        "city": "Lagos",
+        "coordinates": {
+          "lat": 6.4284,
+          "lng": 3.4219
+        }
+      },
+      "features": [
+        "Authentic Italian",
+        "Family Recipes",
+        "Wine Selection"
+      ],
+      "phone_number": "+234 806 789 0123",
+      "email": "ciao@italiancorner.ng",
+      "total_orders": 1987,
+      "total_revenue": 0,
+      "established_year": 2016,
+      "owner_id": null,
+      "promotions": {
+        "active": false
+      },
+      "settings": {},
+      "created_at": "2025-08-29T08:55:39.868175+00:00",
+      "updated_at": "2025-08-29T08:55:39.868175+00:00"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440007",
+      "name": "Bukka Hut",
+      "slug": "bukka-hut",
+      "description": "Traditional Nigerian bukka-style meals served fresh and hot. Home-style cooking that reminds you of mama's kitchen.",
+      "image_url": "https://images.unsplash.com/photo-1596797038530-2c107229654b?w=800&h=600&fit=crop&auto=format",
+      "cover_image_url": "https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=1200&h=600&fit=crop&auto=format",
+      "rating": 4.3,
+      "review_count": 445,
+      "price_range": "$",
+      "cuisine_types": [
+        "Nigerian",
+        "African",
+        "Local Food"
+      ],
+      "delivery_time": "20-30 min",
+      "delivery_fee": 300,
+      "minimum_order": 1200,
+      "commission_rate": 15,
+      "is_open": true,
+      "is_featured": false,
+      "status": "approved",
+      "opening_hours": {
+        "friday": {
+          "open": "07:00",
+          "close": "22:00"
+        },
+        "monday": {
+          "open": "07:00",
+          "close": "21:00"
+        },
+        "sunday": {
+          "open": "09:00",
+          "close": "20:00"
+        },
+        "tuesday": {
+          "open": "07:00",
+          "close": "21:00"
+        },
+        "saturday": {
+          "open": "08:00",
+          "close": "22:00"
+        },
+        "thursday": {
+          "open": "07:00",
+          "close": "21:00"
+        },
+        "wednesday": {
+          "open": "07:00",
+          "close": "21:00"
+        }
+      },
+      "location": {
+        "area": "Yaba",
+        "city": "Lagos",
+        "coordinates": {
+          "lat": 6.5158,
+          "lng": 3.3696
+        }
+      },
+      "features": [
+        "Budget Friendly",
+        "Local Cuisine",
+        "Quick Service"
+      ],
+      "phone_number": "+234 807 890 1234",
+      "email": "orders@bukkahut.ng",
+      "total_orders": 4523,
+      "total_revenue": 0,
+      "established_year": 2014,
+      "owner_id": null,
+      "promotions": {
+        "active": true,
+        "discount": 12,
+        "description": "Student discount available"
+      },
+      "settings": {},
+      "created_at": "2025-08-29T08:55:39.868175+00:00",
+      "updated_at": "2025-08-29T08:55:39.868175+00:00"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440008",
+      "name": "Sushi Tokyo",
+      "slug": "sushi-tokyo",
+      "description": "Fresh sushi and Japanese cuisine prepared by experienced Japanese chefs. Premium quality fish and authentic flavors.",
+      "image_url": "https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=800&h=600&fit=crop&auto=format",
+      "cover_image_url": "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=1200&h=600&fit=crop&auto=format",
+      "rating": 4.9,
+      "review_count": 156,
+      "price_range": "$$$$",
+      "cuisine_types": [
+        "Japanese",
+        "Sushi",
+        "Asian"
+      ],
+      "delivery_time": "35-50 min",
+      "delivery_fee": 1000,
+      "minimum_order": 4000,
+      "commission_rate": 15,
+      "is_open": true,
+      "is_featured": true,
+      "status": "approved",
+      "opening_hours": {
+        "friday": {
+          "open": "12:00",
+          "close": "23:00"
+        },
+        "monday": {
+          "open": "12:00",
+          "close": "22:00"
+        },
+        "sunday": {
+          "open": "14:00",
+          "close": "21:00"
+        },
+        "tuesday": {
+          "open": "12:00",
+          "close": "22:00"
+        },
+        "saturday": {
+          "open": "12:00",
+          "close": "23:00"
+        },
+        "thursday": {
+          "open": "12:00",
+          "close": "22:00"
+        },
+        "wednesday": {
+          "open": "12:00",
+          "close": "22:00"
+        }
+      },
+      "location": {
+        "area": "Lekki Phase 1",
+        "city": "Lagos",
+        "coordinates": {
+          "lat": 6.4474,
+          "lng": 3.4553
+        }
+      },
+      "features": [
+        "Premium Sushi",
+        "Japanese Chefs",
+        "Fresh Fish"
+      ],
+      "phone_number": "+234 809 012 3456",
+      "email": "info@sushitokyo.ng",
+      "total_orders": 967,
+      "total_revenue": 0,
+      "established_year": 2021,
+      "owner_id": null,
+      "promotions": {
+        "active": false
+      },
+      "settings": {},
+      "created_at": "2025-08-29T08:55:39.868175+00:00",
+      "updated_at": "2025-08-29T08:55:39.868175+00:00"
+    }
+  ],
+  "menuItems": [
+    {
+      "id": "8d36f456-892b-4af2-8d02-b59781820d44",
+      "restaurant_id": "550e8400-e29b-41d4-a716-446655440001",
+      "category_id": null,
+      "name": "Special Jollof Rice",
+      "description": "Our signature jollof rice cooked with premium basmati rice, fresh tomatoes, and authentic spices. Served with fried plantain.",
+      "base_price": 2500,
+      "image_url": "https://images.unsplash.com/photo-1596797038530-2c107229654b?w=400&h=300&fit=crop&auto=format",
+      "is_available": true,
+      "is_popular": false,
+      "preparation_time": 15,
+      "calories": 680,
+      "tags": [
+        "Popular",
+        "Signature Dish",
+        "Spicy"
+      ],
+      "allergens": null,
+      "customizations": {
+        "extras": [
+          "Extra Plantain (+₦200)",
+          "Coleslaw (+₦300)",
+          "Moi Moi (+₦400)"
+        ],
+        "protein": [
+          "Chicken (+₦500)",
+          "Beef (+₦800)",
+          "Fish (+₦600)",
+          "None"
+        ],
+        "spice_level": [
+          "Mild",
+          "Medium",
+          "Hot"
+        ]
+      },
+      "nutrition_info": {
+        "fat": "28g",
+        "carbs": "75g",
+        "protein": "25g",
+        "calories": 680
+      },
+      "display_order": 0,
+      "created_at": "2025-08-29T08:55:40.295226+00:00",
+      "updated_at": "2025-08-29T08:55:40.295226+00:00"
+    },
+    {
+      "id": "28c6e176-cc99-4683-b881-dfbe4e463456",
+      "restaurant_id": "550e8400-e29b-41d4-a716-446655440001",
+      "category_id": null,
+      "name": "Pounded Yam & Egusi Soup",
+      "description": "Fresh pounded yam served with rich egusi soup loaded with assorted meat, fish, and vegetables.",
+      "base_price": 3200,
+      "image_url": "https://images.unsplash.com/photo-1596797038530-2c107229654b?w=400&h=300&fit=crop&auto=format",
+      "is_available": true,
+      "is_popular": false,
+      "preparation_time": 25,
+      "calories": 850,
+      "tags": [
+        "Traditional",
+        "Heavy Meal"
+      ],
+      "allergens": null,
+      "customizations": {
+        "protein": [
+          "Assorted Meat (included)",
+          "Extra Fish (+₦400)",
+          "Extra Meat (+₦600)"
+        ],
+        "yam_portion": [
+          "Regular",
+          "Large (+₦300)"
+        ]
+      },
+      "nutrition_info": {
+        "fat": "32g",
+        "carbs": "90g",
+        "protein": "35g",
+        "calories": 850
+      },
+      "display_order": 0,
+      "created_at": "2025-08-29T08:55:40.295226+00:00",
+      "updated_at": "2025-08-29T08:55:40.295226+00:00"
+    },
+    {
+      "id": "9b04af74-941c-4e97-9d87-240b01b6d982",
+      "restaurant_id": "550e8400-e29b-41d4-a716-446655440001",
+      "category_id": null,
+      "name": "Pepper Soup (Catfish)",
+      "description": "Spicy and aromatic catfish pepper soup with traditional herbs and spices. Perfect for any weather.",
+      "base_price": 2800,
+      "image_url": "https://images.unsplash.com/photo-1596797038530-2c107229654b?w=400&h=300&fit=crop&auto=format",
+      "is_available": true,
+      "is_popular": false,
+      "preparation_time": 20,
+      "calories": 420,
+      "tags": [
+        "Spicy",
+        "Healthy",
+        "Low Carb"
+      ],
+      "allergens": [
+        "Fish"
+      ],
+      "customizations": {
+        "extras": [
+          "Yam (+₦400)",
+          "Plantain (+₦200)"
+        ],
+        "spice_level": [
+          "Mild",
+          "Hot",
+          "Extra Hot"
+        ]
+      },
+      "nutrition_info": {
+        "fat": "18g",
+        "carbs": "8g",
+        "protein": "45g",
+        "calories": 420
+      },
+      "display_order": 0,
+      "created_at": "2025-08-29T08:55:40.295226+00:00",
+      "updated_at": "2025-08-29T08:55:40.295226+00:00"
+    },
+    {
+      "id": "033d1047-9354-4ec8-b69c-7901926a860c",
+      "restaurant_id": "550e8400-e29b-41d4-a716-446655440002",
+      "category_id": null,
+      "name": "Dragon Special Fried Rice",
+      "description": "Wok-fried rice with prawns, chicken, beef, and vegetables. Cooked with our secret sauce blend.",
+      "base_price": 3500,
+      "image_url": "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400&h=300&fit=crop&auto=format",
+      "is_available": true,
+      "is_popular": false,
+      "preparation_time": 18,
+      "calories": 720,
+      "tags": [
+        "Popular",
+        "Mixed Protein"
+      ],
+      "allergens": [
+        "Shellfish",
+        "Soy"
+      ],
+      "customizations": {
+        "protein": [
+          "Mixed (included)",
+          "Chicken Only",
+          "Beef Only",
+          "Prawns Only (+₦500)"
+        ],
+        "spice_level": [
+          "No Spice",
+          "Mild",
+          "Medium",
+          "Hot"
+        ]
+      },
+      "nutrition_info": {
+        "fat": "30g",
+        "carbs": "65g",
+        "protein": "38g",
+        "calories": 720
+      },
+      "display_order": 0,
+      "created_at": "2025-08-29T08:55:40.295226+00:00",
+      "updated_at": "2025-08-29T08:55:40.295226+00:00"
+    },
+    {
+      "id": "c75f6a1d-1912-456b-8c81-3e7e2b57f5af",
+      "restaurant_id": "550e8400-e29b-41d4-a716-446655440002",
+      "category_id": null,
+      "name": "Sweet & Sour Chicken",
+      "description": "Crispy chicken pieces glazed in our homemade sweet and sour sauce with bell peppers and pineapple.",
+      "base_price": 3200,
+      "image_url": "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400&h=300&fit=crop&auto=format",
+      "is_available": true,
+      "is_popular": false,
+      "preparation_time": 22,
+      "calories": 650,
+      "tags": [
+        "Sweet",
+        "Crispy",
+        "Popular"
+      ],
+      "allergens": [
+        "Soy"
+      ],
+      "customizations": {
+        "rice": [
+          "Steamed Rice (included)",
+          "Fried Rice (+₦200)",
+          "No Rice (-₦150)"
+        ],
+        "serving_size": [
+          "Regular",
+          "Large (+₦500)"
+        ]
+      },
+      "nutrition_info": {
+        "fat": "26g",
+        "carbs": "58g",
+        "protein": "32g",
+        "calories": 650
+      },
+      "display_order": 0,
+      "created_at": "2025-08-29T08:55:40.295226+00:00",
+      "updated_at": "2025-08-29T08:55:40.295226+00:00"
+    },
+    {
+      "id": "dfc85c91-91ac-4bda-96b1-56909911917a",
+      "restaurant_id": "550e8400-e29b-41d4-a716-446655440003",
+      "category_id": null,
+      "name": "Margherita Pizza",
+      "description": "Classic Italian pizza with fresh mozzarella, tomato sauce, and basil leaves on our wood-fired crust.",
+      "base_price": 4200,
+      "image_url": "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&h=300&fit=crop&auto=format",
+      "is_available": true,
+      "is_popular": false,
+      "preparation_time": 15,
+      "calories": 580,
+      "tags": [
+        "Classic",
+        "Vegetarian"
+      ],
+      "allergens": [
+        "Gluten",
+        "Dairy"
+      ],
+      "customizations": {
+        "size": [
+          "Medium (included)",
+          "Large (+₦800)",
+          "Family Size (+₦1500)"
+        ],
+        "crust": [
+          "Thin Crust",
+          "Thick Crust"
+        ],
+        "extras": [
+          "Extra Cheese (+₦300)",
+          "Extra Basil (+₦100)"
+        ]
+      },
+      "nutrition_info": {
+        "fat": "28g",
+        "carbs": "52g",
+        "protein": "25g",
+        "calories": 580
+      },
+      "display_order": 0,
+      "created_at": "2025-08-29T08:55:40.295226+00:00",
+      "updated_at": "2025-08-29T08:55:40.295226+00:00"
+    },
+    {
+      "id": "1e063316-e04c-445e-b144-6dfeaff66206",
+      "restaurant_id": "550e8400-e29b-41d4-a716-446655440003",
+      "category_id": null,
+      "name": "Meat Lovers Pizza",
+      "description": "Loaded with pepperoni, sausage, bacon, and ham on our signature tomato base with mozzarella cheese.",
+      "base_price": 5800,
+      "image_url": "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&h=300&fit=crop&auto=format",
+      "is_available": true,
+      "is_popular": false,
+      "preparation_time": 18,
+      "calories": 780,
+      "tags": [
+        "Meat Lovers",
+        "Heavy",
+        "Popular"
+      ],
+      "allergens": [
+        "Gluten",
+        "Dairy"
+      ],
+      "customizations": {
+        "size": [
+          "Medium (included)",
+          "Large (+₦800)",
+          "Family Size (+₦1500)"
+        ],
+        "crust": [
+          "Thin Crust",
+          "Thick Crust"
+        ]
+      },
+      "nutrition_info": {
+        "fat": "45g",
+        "carbs": "48g",
+        "protein": "42g",
+        "calories": 780
+      },
+      "display_order": 0,
+      "created_at": "2025-08-29T08:55:40.295226+00:00",
+      "updated_at": "2025-08-29T08:55:40.295226+00:00"
+    },
+    {
+      "id": "31cef30a-94ff-49aa-b666-117955c8c3df",
+      "restaurant_id": "550e8400-e29b-41d4-a716-446655440004",
+      "category_id": null,
+      "name": "Classic Beef Burger",
+      "description": "100% beef patty with lettuce, tomato, onions, pickles, and our special sauce. Served with crispy fries.",
+      "base_price": 2800,
+      "image_url": "https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400&h=300&fit=crop&auto=format",
+      "is_available": true,
+      "is_popular": false,
+      "preparation_time": 12,
+      "calories": 650,
+      "tags": [
+        "Classic",
+        "Beef",
+        "Popular"
+      ],
+      "allergens": [
+        "Gluten"
+      ],
+      "customizations": {
+        "fries": [
+          "Regular Fries (included)",
+          "Sweet Potato Fries (+₦300)",
+          "No Fries (-₦200)"
+        ],
+        "patty": [
+          "Single (included)",
+          "Double (+₦500)"
+        ],
+        "cheese": [
+          "No Cheese",
+          "American Cheese (+₦200)",
+          "Cheddar Cheese (+₦200)"
+        ]
+      },
+      "nutrition_info": {
+        "fat": "38g",
+        "carbs": "45g",
+        "protein": "28g",
+        "calories": 650
+      },
+      "display_order": 0,
+      "created_at": "2025-08-29T08:55:40.295226+00:00",
+      "updated_at": "2025-08-29T08:55:40.295226+00:00"
+    },
+    {
+      "id": "e87e7127-4a67-4b40-ab8c-2f7f754832e2",
+      "restaurant_id": "550e8400-e29b-41d4-a716-446655440004",
+      "category_id": null,
+      "name": "Chicken Deluxe Burger",
+      "description": "Grilled chicken breast with avocado, lettuce, tomato, and mayo on a brioche bun. Served with fries.",
+      "base_price": 3200,
+      "image_url": "https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400&h=300&fit=crop&auto=format",
+      "is_available": true,
+      "is_popular": false,
+      "preparation_time": 15,
+      "calories": 580,
+      "tags": [
+        "Chicken",
+        "Healthy",
+        "Avocado"
+      ],
+      "allergens": [
+        "Gluten"
+      ],
+      "customizations": {
+        "extras": [
+          "Bacon (+₦300)",
+          "Extra Avocado (+₦250)"
+        ],
+        "chicken": [
+          "Grilled (included)",
+          "Crispy (+₦200)"
+        ]
+      },
+      "nutrition_info": {
+        "fat": "28g",
+        "carbs": "42g",
+        "protein": "35g",
+        "calories": 580
+      },
+      "display_order": 0,
+      "created_at": "2025-08-29T08:55:40.295226+00:00",
+      "updated_at": "2025-08-29T08:55:40.295226+00:00"
+    },
+    {
+      "id": "68f2fbaa-5bae-4e1d-b8dd-67268aa1bc58",
+      "restaurant_id": "550e8400-e29b-41d4-a716-446655440005",
+      "category_id": null,
+      "name": "Mediterranean Power Bowl",
+      "description": "Quinoa, grilled chicken, mixed greens, cherry tomatoes, cucumber, olives, and feta with lemon herb dressing.",
+      "base_price": 3800,
+      "image_url": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop&auto=format",
+      "is_available": true,
+      "is_popular": false,
+      "preparation_time": 10,
+      "calories": 520,
+      "tags": [
+        "Healthy",
+        "High Protein",
+        "Mediterranean"
+      ],
+      "allergens": [
+        "Dairy"
+      ],
+      "customizations": {
+        "protein": [
+          "Grilled Chicken (included)",
+          "Salmon (+₦800)",
+          "Tofu (+₦200)",
+          "No Protein (-₦400)"
+        ],
+        "dressing": [
+          "Lemon Herb",
+          "Balsamic",
+          "Caesar",
+          "Olive Oil & Vinegar"
+        ]
+      },
+      "nutrition_info": {
+        "fat": "25g",
+        "carbs": "35g",
+        "protein": "38g",
+        "calories": 520
+      },
+      "display_order": 0,
+      "created_at": "2025-08-29T08:55:40.295226+00:00",
+      "updated_at": "2025-08-29T08:55:40.295226+00:00"
+    },
+    {
+      "id": "88f604fb-cadd-4a58-bd90-237fe4cd2bcb",
+      "restaurant_id": "550e8400-e29b-41d4-a716-446655440005",
+      "category_id": null,
+      "name": "Acai Smoothie Bowl",
+      "description": "Organic acai blend topped with granola, fresh berries, banana, coconut flakes, and honey.",
+      "base_price": 2500,
+      "image_url": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop&auto=format",
+      "is_available": true,
+      "is_popular": false,
+      "preparation_time": 8,
+      "calories": 380,
+      "tags": [
+        "Vegan",
+        "Antioxidant Rich",
+        "Breakfast"
+      ],
+      "allergens": null,
+      "customizations": {
+        "toppings": [
+          "Standard (included)",
+          "Extra Berries (+₦300)",
+          "Protein Powder (+₦400)",
+          "Chia Seeds (+₦200)"
+        ]
+      },
+      "nutrition_info": {
+        "fat": "12g",
+        "carbs": "65g",
+        "protein": "8g",
+        "calories": 380
+      },
+      "display_order": 0,
+      "created_at": "2025-08-29T08:55:40.295226+00:00",
+      "updated_at": "2025-08-29T08:55:40.295226+00:00"
+    },
+    {
+      "id": "c115d6e3-ba96-4413-86c5-9959e7082951",
+      "restaurant_id": "550e8400-e29b-41d4-a716-446655440006",
+      "category_id": null,
+      "name": "Spaghetti Carbonara",
+      "description": "Classic Roman pasta with pancetta, egg yolk, pecorino romano, and black pepper. Made with imported Italian pasta.",
+      "base_price": 4200,
+      "image_url": "https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=400&h=300&fit=crop&auto=format",
+      "is_available": true,
+      "is_popular": false,
+      "preparation_time": 18,
+      "calories": 720,
+      "tags": [
+        "Classic",
+        "Creamy",
+        "Traditional"
+      ],
+      "allergens": [
+        "Gluten",
+        "Dairy",
+        "Eggs"
+      ],
+      "customizations": {
+        "extras": [
+          "Extra Pancetta (+₦400)",
+          "Extra Cheese (+₦300)"
+        ],
+        "portion": [
+          "Regular (included)",
+          "Large (+₦600)"
+        ]
+      },
+      "nutrition_info": {
+        "fat": "38g",
+        "carbs": "65g",
+        "protein": "28g",
+        "calories": 720
+      },
+      "display_order": 0,
+      "created_at": "2025-08-29T08:55:40.295226+00:00",
+      "updated_at": "2025-08-29T08:55:40.295226+00:00"
+    },
+    {
+      "id": "de7765bd-ae08-46da-882a-ec3c3ab7ff59",
+      "restaurant_id": "550e8400-e29b-41d4-a716-446655440006",
+      "category_id": null,
+      "name": "Chicken Parmigiana",
+      "description": "Breaded chicken breast topped with marinara sauce and melted mozzarella, served with spaghetti.",
+      "base_price": 4800,
+      "image_url": "https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=400&h=300&fit=crop&auto=format",
+      "is_available": true,
+      "is_popular": false,
+      "preparation_time": 25,
+      "calories": 850,
+      "tags": [
+        "Comfort Food",
+        "Cheesy",
+        "Popular"
+      ],
+      "allergens": [
+        "Gluten",
+        "Dairy"
+      ],
+      "customizations": {
+        "size": [
+          "Regular",
+          "Large (+₦700)"
+        ],
+        "pasta": [
+          "Spaghetti (included)",
+          "Penne",
+          "Fettuccine"
+        ]
+      },
+      "nutrition_info": {
+        "fat": "42g",
+        "carbs": "58g",
+        "protein": "48g",
+        "calories": 850
+      },
+      "display_order": 0,
+      "created_at": "2025-08-29T08:55:40.295226+00:00",
+      "updated_at": "2025-08-29T08:55:40.295226+00:00"
+    },
+    {
+      "id": "1c4f029c-d454-4a7f-b6ae-c9113e6ec8d8",
+      "restaurant_id": "550e8400-e29b-41d4-a716-446655440007",
+      "category_id": null,
+      "name": "Rice & Stew Combo",
+      "description": "White rice served with rich tomato stew, fried plantain, and your choice of protein.",
+      "base_price": 1500,
+      "image_url": "https://images.unsplash.com/photo-1596797038530-2c107229654b?w=400&h=300&fit=crop&auto=format",
+      "is_available": true,
+      "is_popular": false,
+      "preparation_time": 10,
+      "calories": 650,
+      "tags": [
+        "Budget Friendly",
+        "Filling",
+        "Local"
+      ],
+      "allergens": null,
+      "customizations": {
+        "extras": [
+          "Extra Plantain (+₦150)",
+          "Coleslaw (+₦200)"
+        ],
+        "protein": [
+          "Chicken (+₦300)",
+          "Beef (+₦400)",
+          "Fish (+₦350)",
+          "Egg (+₦150)",
+          "None"
+        ],
+        "rice_portion": [
+          "Regular",
+          "Large (+₦200)"
+        ]
+      },
+      "nutrition_info": {
+        "fat": "22g",
+        "carbs": "75g",
+        "protein": "25g",
+        "calories": 650
+      },
+      "display_order": 0,
+      "created_at": "2025-08-29T08:55:40.295226+00:00",
+      "updated_at": "2025-08-29T08:55:40.295226+00:00"
+    },
+    {
+      "id": "faa6f3ea-001b-45d8-a310-4c407f8ee871",
+      "restaurant_id": "550e8400-e29b-41d4-a716-446655440007",
+      "category_id": null,
+      "name": "Beans & Plantain",
+      "description": "Well-cooked honey beans served with fried ripe plantain and palm oil sauce.",
+      "base_price": 1200,
+      "image_url": "https://images.unsplash.com/photo-1596797038530-2c107229654b?w=400&h=300&fit=crop&auto=format",
+      "is_available": true,
+      "is_popular": false,
+      "preparation_time": 15,
+      "calories": 480,
+      "tags": [
+        "Vegetarian",
+        "Traditional",
+        "Budget"
+      ],
+      "allergens": null,
+      "customizations": {
+        "sauce": [
+          "Palm Oil (included)",
+          "Tomato Stew (+₦100)"
+        ],
+        "plantain": [
+          "Regular (2 pieces)",
+          "Extra (+₦100)"
+        ]
+      },
+      "nutrition_info": {
+        "fat": "15g",
+        "carbs": "68g",
+        "protein": "18g",
+        "calories": 480
+      },
+      "display_order": 0,
+      "created_at": "2025-08-29T08:55:40.295226+00:00",
+      "updated_at": "2025-08-29T08:55:40.295226+00:00"
+    },
+    {
+      "id": "31baa52c-de5a-4af8-98a8-88238d2a306a",
+      "restaurant_id": "550e8400-e29b-41d4-a716-446655440008",
+      "category_id": null,
+      "name": "Dragon Roll",
+      "description": "Inside: tempura shrimp, avocado. Outside: eel, avocado, eel sauce. Our signature premium roll.",
+      "base_price": 6500,
+      "image_url": "https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=400&h=300&fit=crop&auto=format",
+      "is_available": true,
+      "is_popular": false,
+      "preparation_time": 20,
+      "calories": 420,
+      "tags": [
+        "Signature",
+        "Premium",
+        "Tempura"
+      ],
+      "allergens": [
+        "Shellfish",
+        "Fish"
+      ],
+      "customizations": {
+        "sides": [
+          "Wasabi & Ginger (included)",
+          "Extra Wasabi (+₦100)",
+          "Soy Sauce (+₦50)"
+        ],
+        "pieces": [
+          "8 pieces (included)",
+          "12 pieces (+₦1000)"
+        ]
+      },
+      "nutrition_info": {
+        "fat": "20g",
+        "carbs": "35g",
+        "protein": "22g",
+        "calories": 420
+      },
+      "display_order": 0,
+      "created_at": "2025-08-29T08:55:40.295226+00:00",
+      "updated_at": "2025-08-29T08:55:40.295226+00:00"
+    },
+    {
+      "id": "fc1e6a30-8100-4d67-a5b1-1e446beede63",
+      "restaurant_id": "550e8400-e29b-41d4-a716-446655440008",
+      "category_id": null,
+      "name": "Salmon Nigiri Set",
+      "description": "Fresh Norwegian salmon over seasoned sushi rice. Set of 6 pieces with wasabi and pickled ginger.",
+      "base_price": 4800,
+      "image_url": "https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=400&h=300&fit=crop&auto=format",
+      "is_available": true,
+      "is_popular": false,
+      "preparation_time": 12,
+      "calories": 280,
+      "tags": [
+        "Fresh",
+        "Premium Fish",
+        "Traditional"
+      ],
+      "allergens": [
+        "Fish"
+      ],
+      "customizations": {
+        "pieces": [
+          "6 pieces (included)",
+          "10 pieces (+₦1200)"
+        ],
+        "preparation": [
+          "Regular",
+          "Torched (+₦300)"
+        ]
+      },
+      "nutrition_info": {
+        "fat": "8g",
+        "carbs": "18g",
+        "protein": "32g",
+        "calories": 280
+      },
+      "display_order": 0,
+      "created_at": "2025-08-29T08:55:40.295226+00:00",
+      "updated_at": "2025-08-29T08:55:40.295226+00:00"
+    }
+  ],
+  "users": [],
+  "orders": [],
+  "timestamp": "2025-09-01T08:10:45.771Z",
+  "featuredRestaurants": [
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440008",
+      "name": "Sushi Tokyo",
+      "slug": "sushi-tokyo",
+      "description": "Fresh sushi and Japanese cuisine prepared by experienced Japanese chefs. Premium quality fish and authentic flavors.",
+      "image_url": "https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=800&h=600&fit=crop&auto=format",
+      "cover_image_url": "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=1200&h=600&fit=crop&auto=format",
+      "rating": 4.9,
+      "review_count": 156,
+      "price_range": "$$$$",
+      "cuisine_types": [
+        "Japanese",
+        "Sushi",
+        "Asian"
+      ],
+      "delivery_time": "35-50 min",
+      "delivery_fee": 1000,
+      "minimum_order": 4000,
+      "commission_rate": 15,
+      "is_open": true,
+      "is_featured": true,
+      "status": "approved",
+      "opening_hours": {
+        "friday": {
+          "open": "12:00",
+          "close": "23:00"
+        },
+        "monday": {
+          "open": "12:00",
+          "close": "22:00"
+        },
+        "sunday": {
+          "open": "14:00",
+          "close": "21:00"
+        },
+        "tuesday": {
+          "open": "12:00",
+          "close": "22:00"
+        },
+        "saturday": {
+          "open": "12:00",
+          "close": "23:00"
+        },
+        "thursday": {
+          "open": "12:00",
+          "close": "22:00"
+        },
+        "wednesday": {
+          "open": "12:00",
+          "close": "22:00"
+        }
+      },
+      "location": {
+        "area": "Lekki Phase 1",
+        "city": "Lagos",
+        "coordinates": {
+          "lat": 6.4474,
+          "lng": 3.4553
+        }
+      },
+      "features": [
+        "Premium Sushi",
+        "Japanese Chefs",
+        "Fresh Fish"
+      ],
+      "phone_number": "+234 809 012 3456",
+      "email": "info@sushitokyo.ng",
+      "total_orders": 967,
+      "total_revenue": 0,
+      "established_year": 2021,
+      "owner_id": null,
+      "promotions": {
+        "active": false
+      },
+      "settings": {},
+      "created_at": "2025-08-29T08:55:39.868175+00:00",
+      "updated_at": "2025-08-29T08:55:39.868175+00:00"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440001",
+      "name": "Mama Cass Kitchen",
+      "slug": "mama-cass-kitchen",
+      "description": "Authentic Nigerian cuisine with traditional recipes passed down through generations. Home of the best Jollof Rice in Lagos.",
+      "image_url": "https://images.unsplash.com/photo-1596797038530-2c107229654b?w=800&h=600&fit=crop&auto=format",
+      "cover_image_url": "https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=1200&h=600&fit=crop&auto=format",
+      "rating": 4.8,
+      "review_count": 342,
+      "price_range": "$$",
+      "cuisine_types": [
+        "Nigerian",
+        "African"
+      ],
+      "delivery_time": "25-35 min",
+      "delivery_fee": 500,
+      "minimum_order": 2000,
+      "commission_rate": 15,
+      "is_open": true,
+      "is_featured": true,
+      "status": "approved",
+      "opening_hours": {
+        "friday": {
+          "open": "08:00",
+          "close": "23:00"
+        },
+        "monday": {
+          "open": "08:00",
+          "close": "22:00"
+        },
+        "sunday": {
+          "open": "10:00",
+          "close": "21:00"
+        },
+        "tuesday": {
+          "open": "08:00",
+          "close": "22:00"
+        },
+        "saturday": {
+          "open": "09:00",
+          "close": "23:00"
+        },
+        "thursday": {
+          "open": "08:00",
+          "close": "22:00"
+        },
+        "wednesday": {
+          "open": "08:00",
+          "close": "22:00"
+        }
+      },
+      "location": {
+        "area": "Victoria Island",
+        "city": "Lagos",
+        "coordinates": {
+          "lat": 6.4281,
+          "lng": 3.4219
+        }
+      },
+      "features": [
+        "Fast Delivery",
+        "Nigerian Cuisine",
+        "Family Friendly"
+      ],
+      "phone_number": "+234 901 234 5678",
+      "email": "info@mamacasskitchen.com",
+      "total_orders": 2847,
+      "total_revenue": 0,
+      "established_year": 2015,
+      "owner_id": null,
+      "promotions": {
+        "active": true,
+        "discount": 15,
+        "description": "15% off first order"
+      },
+      "settings": {},
+      "created_at": "2025-08-29T08:55:39.868175+00:00",
+      "updated_at": "2025-08-29T08:55:39.868175+00:00"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440002",
+      "name": "Dragon Wok Chinese Kitchen",
+      "slug": "dragon-wok-chinese-kitchen",
+      "description": "Authentic Chinese cuisine with fresh ingredients and traditional cooking methods. Best dim sum and noodles in Lagos.",
+      "image_url": "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=800&h=600&fit=crop&auto=format",
+      "cover_image_url": "https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=1200&h=600&fit=crop&auto=format",
+      "rating": 4.7,
+      "review_count": 198,
+      "price_range": "$$$",
+      "cuisine_types": [
+        "Chinese",
+        "Asian"
+      ],
+      "delivery_time": "30-45 min",
+      "delivery_fee": 800,
+      "minimum_order": 3000,
+      "commission_rate": 15,
+      "is_open": true,
+      "is_featured": true,
+      "status": "approved",
+      "opening_hours": {
+        "friday": {
+          "open": "11:00",
+          "close": "23:30"
+        },
+        "monday": {
+          "open": "11:00",
+          "close": "22:30"
+        },
+        "sunday": {
+          "open": "12:00",
+          "close": "22:00"
+        },
+        "tuesday": {
+          "open": "11:00",
+          "close": "22:30"
+        },
+        "saturday": {
+          "open": "11:00",
+          "close": "23:30"
+        },
+        "thursday": {
+          "open": "11:00",
+          "close": "22:30"
+        },
+        "wednesday": {
+          "open": "11:00",
+          "close": "22:30"
+        }
+      },
+      "location": {
+        "area": "Lekki Phase 1",
+        "city": "Lagos",
+        "coordinates": {
+          "lat": 6.4474,
+          "lng": 3.4553
+        }
+      },
+      "features": [
+        "Authentic Chinese",
+        "Vegetarian Options",
+        "Fresh Ingredients"
+      ],
+      "phone_number": "+234 802 345 6789",
+      "email": "orders@dragonwok.ng",
+      "total_orders": 1654,
+      "total_revenue": 0,
+      "established_year": 2018,
+      "owner_id": null,
+      "promotions": {
+        "active": false
+      },
+      "settings": {},
+      "created_at": "2025-08-29T08:55:39.868175+00:00",
+      "updated_at": "2025-08-29T08:55:39.868175+00:00"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440006",
+      "name": "Italian Corner",
+      "slug": "italian-corner",
+      "description": "Authentic Italian pasta, risotto, and desserts. Family recipes brought from Italy to Lagos with love and tradition.",
+      "image_url": "https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=800&h=600&fit=crop&auto=format",
+      "cover_image_url": "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=1200&h=600&fit=crop&auto=format",
+      "rating": 4.7,
+      "review_count": 234,
+      "price_range": "$$$",
+      "cuisine_types": [
+        "Italian",
+        "Pasta",
+        "European"
+      ],
+      "delivery_time": "25-35 min",
+      "delivery_fee": 650,
+      "minimum_order": 2800,
+      "commission_rate": 15,
+      "is_open": true,
+      "is_featured": true,
+      "status": "approved",
+      "opening_hours": {
+        "friday": {
+          "open": "11:00",
+          "close": "23:00"
+        },
+        "monday": {
+          "open": "11:00",
+          "close": "22:00"
+        },
+        "sunday": {
+          "open": "12:00",
+          "close": "21:00"
+        },
+        "tuesday": {
+          "open": "11:00",
+          "close": "22:00"
+        },
+        "saturday": {
+          "open": "11:00",
+          "close": "23:00"
+        },
+        "thursday": {
+          "open": "11:00",
+          "close": "22:00"
+        },
+        "wednesday": {
+          "open": "11:00",
+          "close": "22:00"
+        }
+      },
+      "location": {
+        "area": "Victoria Island",
+        "city": "Lagos",
+        "coordinates": {
+          "lat": 6.4284,
+          "lng": 3.4219
+        }
+      },
+      "features": [
+        "Authentic Italian",
+        "Family Recipes",
+        "Wine Selection"
+      ],
+      "phone_number": "+234 806 789 0123",
+      "email": "ciao@italiancorner.ng",
+      "total_orders": 1987,
+      "total_revenue": 0,
+      "established_year": 2016,
+      "owner_id": null,
+      "promotions": {
+        "active": false
+      },
+      "settings": {},
+      "created_at": "2025-08-29T08:55:39.868175+00:00",
+      "updated_at": "2025-08-29T08:55:39.868175+00:00"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440003",
+      "name": "Pizza Paradise Lagos",
+      "slug": "pizza-paradise-lagos",
+      "description": "Wood-fired pizzas made with imported Italian ingredients. The finest pizza experience in Lagos with authentic flavors.",
+      "image_url": "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800&h=600&fit=crop&auto=format",
+      "cover_image_url": "https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=1200&h=600&fit=crop&auto=format",
+      "rating": 4.6,
+      "review_count": 267,
+      "price_range": "$$$",
+      "cuisine_types": [
+        "Italian",
+        "Pizza"
+      ],
+      "delivery_time": "20-30 min",
+      "delivery_fee": 600,
+      "minimum_order": 2500,
+      "commission_rate": 15,
+      "is_open": true,
+      "is_featured": true,
+      "status": "approved",
+      "opening_hours": {
+        "friday": {
+          "open": "10:00",
+          "close": "24:00"
+        },
+        "monday": {
+          "open": "10:00",
+          "close": "23:00"
+        },
+        "sunday": {
+          "open": "11:00",
+          "close": "23:00"
+        },
+        "tuesday": {
+          "open": "10:00",
+          "close": "23:00"
+        },
+        "saturday": {
+          "open": "10:00",
+          "close": "24:00"
+        },
+        "thursday": {
+          "open": "10:00",
+          "close": "23:00"
+        },
+        "wednesday": {
+          "open": "10:00",
+          "close": "23:00"
+        }
+      },
+      "location": {
+        "area": "Ikeja GRA",
+        "city": "Lagos",
+        "coordinates": {
+          "lat": 6.5966,
+          "lng": 3.3515
+        }
+      },
+      "features": [
+        "Wood-fired Pizza",
+        "Italian Cuisine",
+        "Late Night"
+      ],
+      "phone_number": "+234 703 456 7890",
+      "email": "hello@pizzaparadise.ng",
+      "total_orders": 3421,
+      "total_revenue": 0,
+      "established_year": 2017,
+      "owner_id": null,
+      "promotions": {
+        "active": true,
+        "discount": 20,
+        "description": "Buy 2 Get 1 Free on weekends"
+      },
+      "settings": {},
+      "created_at": "2025-08-29T08:55:39.868175+00:00",
+      "updated_at": "2025-08-29T08:55:39.868175+00:00"
+    }
+  ]
+}

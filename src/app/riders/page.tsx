@@ -100,7 +100,7 @@ export default function RiderPartners() {
     setTimeout(() => {
       const accessDashboard = confirm('Application submitted successfully! Would you like to access your rider dashboard?')
       if (accessDashboard) {
-        window.location.href = '/rider-dashboard'
+        window.location.href = '/dashboard'
       }
     }, 1000)
   }
@@ -149,7 +149,7 @@ export default function RiderPartners() {
                 Start Earning Today
               </button>
               <Link
-                href="/rider-dashboard"
+                href="/dashboard"
                 className="border-2 border-purple-500 text-purple-600 hover:bg-purple-500 hover:text-white font-bold text-lg py-4 px-8 rounded-full transition-all duration-300 transform hover:scale-105"
               >
                 Rider Dashboard

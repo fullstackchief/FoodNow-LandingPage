@@ -1,84 +1,39 @@
-import { createClient } from '@supabase/supabase-js'
-import { Database } from './database.types'
+/**
+ * Supabase Client Compatibility Layer
+ * ====================================
+ * Last Modified: ${new Date().toISOString()}
+ * 
+ * This file ensures backward compatibility after migration to separate
+ * client/server Supabase implementations. It provides a unified interface
+ * for components that previously imported from supabase.ts
+ * 
+ * IMPORTANT: All new code should import directly from:
+ * - @/lib/supabase-client for client-side usage
+ * - @/lib/supabase-server for server-side/API usage
+ */
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+// Import the client implementation
+import { 
+  supabase as supabaseClient,
+  typedSupabase,
+  handleSupabaseError,
+  supabaseAuth
+} from './supabase-client'
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Missing Supabase environment variables')
+// Re-export the main client as both named and default export
+export const supabase = supabaseClient
+export default supabaseClient
+
+// Re-export all utilities and helpers
+export { 
+  typedSupabase,
+  handleSupabaseError,
+  supabaseAuth
 }
 
-export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
-  auth: {
-    autoRefreshToken: true,
-    persistSession: true,
-    detectSessionInUrl: true
-  },
-  realtime: {
-    params: {
-      eventsPerSecond: 10
-    }
-  }
-})
+// Re-export types if needed
+export type { Database } from './database.types'
 
-// Helper function to handle Supabase errors
-export function handleSupabaseError(error: unknown) {
-  console.error('Supabase error:', error)
-  
-  if (error && typeof error === 'object' && 'message' in error) {
-    return (error as { message: string }).message
-  }
-  
-  if (error && typeof error === 'object' && 'error_description' in error) {
-    return (error as { error_description: string }).error_description
-  }
-  
-  return 'An unexpected error occurred'
-}
-
-// Auth helpers
-export const supabaseAuth = {
-  signUp: async (email: string, password: string, metadata?: Record<string, unknown>) => {
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: metadata
-      }
-    })
-    
-    if (error) throw new Error(handleSupabaseError(error))
-    return data
-  },
-
-  signIn: async (email: string, password: string) => {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password
-    })
-    
-    if (error) throw new Error(handleSupabaseError(error))
-    return data
-  },
-
-  signOut: async () => {
-    const { error } = await supabase.auth.signOut()
-    if (error) throw new Error(handleSupabaseError(error))
-  },
-
-  resetPassword: async (email: string) => {
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password`
-    })
-    
-    if (error) throw new Error(handleSupabaseError(error))
-  },
-
-  updatePassword: async (password: string) => {
-    const { error } = await supabase.auth.updateUser({ password })
-    if (error) throw new Error(handleSupabaseError(error))
-  },
-
-  getUser: () => supabase.auth.getUser(),
-  getSession: () => supabase.auth.getSession()
-}
+// Add a unique identifier to force Turbopack to recognize this module
+// This comment changes on each save to bust the HMR cache
+// Cache Buster: 2025-09-02T10:11:33.000Z

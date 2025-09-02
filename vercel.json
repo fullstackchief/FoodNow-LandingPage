@@ -59,11 +59,6 @@
       "source": "/app",
       "destination": "https://app.usefoodnow.com",
       "permanent": false
-    },
-    {
-      "source": "/riders",
-      "destination": "https://riders.usefoodnow.com", 
-      "permanent": false
     }
   ],
   "rewrites": [

@@ -1,0 +1,43 @@
+{
+  "timestamp": "2025-09-02T02:31:07.827Z",
+  "investigation": "table_ownership_verification",
+  "user_owned_tables": [
+    "users",
+    "restaurants",
+    "menu_items",
+    "orders",
+    "order_items",
+    "notifications",
+    "admin_users",
+    "admin_sessions",
+    "role_applications",
+    "guarantor_verifications",
+    "delivery_zones",
+    "support_tickets",
+    "payment_transactions",
+    "delivery_assignments",
+    "rider_documents",
+    "restaurant_documents",
+    "admin_permissions",
+    "system_settings",
+    "rider_guarantors",
+    "payout_history",
+    "promo_codes",
+    "promo_code_usage",
+    "push_subscriptions",
+    "rate_limits",
+    "restaurant_analytics",
+    "review_votes",
+    "reviews",
+    "riders",
+    "service_areas",
+    "system_analytics",
+    "user_order_history"
+  ],
+  "system_tables": [
+    "spatial_ref_sys"
+  ],
+  "unknown_tables": [],
+  "rls_applicable_count": 31,
+  "spatial_ref_sys_issue": "Cannot modify - PostGIS system table"
+}
