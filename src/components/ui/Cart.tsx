@@ -152,22 +152,24 @@ const Cart = () => {
                                     </div>
                                     
                                     <div className="flex flex-1 items-end justify-between text-sm">
-                                      <div className="flex items-center space-x-3">
+                                      <div className="flex items-center space-x-2">
                                         <button
                                           onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                                          className="flex items-center justify-center w-8 h-8 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors"
+                                          className="flex items-center justify-center w-8 h-8 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                           disabled={item.quantity <= 1}
+                                          title="Decrease quantity"
                                         >
                                           <Minus className="w-4 h-4" />
                                         </button>
                                         
-                                        <span className="font-semibold text-gray-900 min-w-[20px] text-center">
+                                        <span className="font-semibold text-gray-900 min-w-[32px] text-center px-2 py-1 bg-gray-50 rounded-lg">
                                           {item.quantity}
                                         </span>
                                         
                                         <button
                                           onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                          className="flex items-center justify-center w-8 h-8 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors"
+                                          className="flex items-center justify-center w-8 h-8 bg-orange-500 hover:bg-orange-600 text-white rounded-lg transition-colors"
+                                          title="Increase quantity"
                                         >
                                           <Plus className="w-4 h-4" />
                                         </button>
@@ -176,7 +178,8 @@ const Cart = () => {
                                       <button
                                         type="button"
                                         onClick={() => removeItem(item.id)}
-                                        className="text-red-600 hover:text-red-700 font-medium flex items-center space-x-1"
+                                        className="text-red-600 hover:text-red-700 font-medium flex items-center space-x-1 bg-red-50 hover:bg-red-100 px-2 py-1 rounded-lg transition-colors"
+                                        title="Remove item from cart"
                                       >
                                         <Trash2 className="w-4 h-4" />
                                         <span>Remove</span>

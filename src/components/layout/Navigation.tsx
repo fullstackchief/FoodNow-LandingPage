@@ -42,7 +42,7 @@ const Navigation = () => {
   const { isAdmin, logout } = useAdmin()
   const { toggleCart, getCartItemCount } = useCart()
   const { location, hasLocation } = useLocation()
-  const { user, isAuthenticated } = useAuth()
+  const { user, isAuthenticated, logout: authLogout } = useAuth()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -419,7 +419,7 @@ const Navigation = () => {
                             <button
                               onClick={() => {
                                 setShowUserDropdown(false)
-                                logout()
+                                authLogout()
                               }}
                               className="flex items-center space-x-3 px-4 py-3 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-xl transition-all duration-200 w-full"
                             >
@@ -500,7 +500,7 @@ const Navigation = () => {
                     </Link>
                     <button
                       onClick={() => {
-                        logout()
+                        authLogout()
                         setIsOpen(false)
                       }}
                       className="flex items-center space-x-3 text-red-600 hover:text-red-700 font-medium transition-colors duration-300"
@@ -597,7 +597,7 @@ const Navigation = () => {
 
                     <button
                       onClick={() => {
-                        logout()
+                        authLogout()
                         setIsOpen(false)
                       }}
                       className="w-full flex items-center justify-center space-x-2 border-2 border-red-300 text-red-600 font-medium py-3 px-8 rounded-full transition-all duration-300 hover:border-red-500 hover:bg-red-50"

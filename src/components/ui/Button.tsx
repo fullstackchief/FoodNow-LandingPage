@@ -6,6 +6,7 @@ import { forwardRef } from 'react'
 interface ButtonProps extends Omit<HTMLMotionProps<"button">, "children"> {
   variant?: 'primary' | 'secondary' | 'outline'
   size?: 'sm' | 'md' | 'lg'
+  theme?: 'customer' | 'restaurant' | 'rider' | 'admin' | 'default'
   children: React.ReactNode
   loading?: boolean
   icon?: React.ReactNode

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { useAuth } from '@/contexts/AuthContext'
+import Button from '@/components/ui/Button'
 import { 
   LockClosedIcon, 
   EyeIcon, 
@@ -186,23 +187,17 @@ export default function AdminSystemLogin() {
             </div>
 
             {/* Submit Button */}
-            <button
+            <Button
               type="submit"
-              className="w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 disabled:from-blue-400 disabled:to-blue-500 text-white rounded-xl font-medium transition-all duration-200 flex items-center justify-center space-x-2 shadow-lg hover:shadow-xl disabled:cursor-not-allowed"
-              disabled={isLoading || !email || !password}
+              theme="admin"
+              variant="primary"
+              fullWidth
+              loading={isLoading}
+              disabled={!email || !password}
+              icon={!isLoading ? <LockClosedIcon className="w-5 h-5" /> : undefined}
             >
-              {isLoading ? (
-                <>
-                  <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
-                  <span>Authenticating...</span>
-                </>
-              ) : (
-                <>
-                  <LockClosedIcon className="w-5 h-5" />
-                  <span>Access System</span>
-                </>
-              )}
-            </button>
+              {isLoading ? 'Authenticating...' : 'Access System'}
+            </Button>
           </form>
         </motion.div>
 

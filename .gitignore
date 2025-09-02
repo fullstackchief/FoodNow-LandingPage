@@ -28,3 +28,21 @@ yarn-error.log*
 # Local development
 .DS_Store
 *.tsbuildinfo
+
+# Test artifacts and reports
+test-results/
+playwright-report/
+*.log
+coverage/
+
+# Sensitive files and patterns
+*.key
+*.pem
+*.p12
+secrets/
+config/secrets.json
+
+# Backup and temporary files
+*.tmp
+*.bak
+*~

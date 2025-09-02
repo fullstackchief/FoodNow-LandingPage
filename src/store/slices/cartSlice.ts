@@ -81,9 +81,11 @@ const cartSlice = createSlice({
     // Update item quantity
     updateQuantity: (state, action: PayloadAction<{ itemId: string; quantity: number; customizations?: string[] }>) => {
       const { itemId, quantity, customizations } = action.payload
+      console.log('Redux updateQuantity action:', { itemId, quantity, customizations, currentItems: state.items.length })
 
       if (quantity <= 0) {
         // Remove item if quantity is 0
+        console.log('Removing item due to zero quantity')
         state.items = state.items.filter(
           (item) =>
             !(item.id === itemId && 
@@ -97,8 +99,12 @@ const cartSlice = createSlice({
             JSON.stringify(item.customizations) === JSON.stringify(customizations || [])
         )
         
+        console.log('Found item at index:', itemIndex)
         if (itemIndex >= 0) {
+          console.log('Updating quantity from', state.items[itemIndex].quantity, 'to', quantity)
           state.items[itemIndex].quantity = quantity
+        } else {
+          console.log('Item not found for update')
         }
       }
 
@@ -111,12 +117,16 @@ const cartSlice = createSlice({
     // Remove item from cart
     removeItem: (state, action: PayloadAction<{ itemId: string; customizations?: string[] }>) => {
       const { itemId, customizations } = action.payload
+      console.log('Redux removeItem action:', { itemId, customizations, currentItems: state.items.length })
       
+      const beforeCount = state.items.length
       state.items = state.items.filter(
         (item) =>
           !(item.id === itemId && 
             JSON.stringify(item.customizations) === JSON.stringify(customizations || []))
       )
+      const afterCount = state.items.length
+      console.log('Items removed:', beforeCount - afterCount)
 
       // Clear restaurant if no items
       if (state.items.length === 0) {

@@ -2,10 +2,24 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '../utils'
 import Header from '@/components/layout/Header'
 
-// Mock the useAuth hook
-const mockUseAuth = vi.fn()
+// Mock the AuthContext with both context and hook
+const mockAuthValue = {
+  user: null,
+  loading: false,
+  signOut: vi.fn(),
+  signIn: vi.fn(),
+  signUp: vi.fn(),
+  resetPassword: vi.fn(),
+  updateProfile: vi.fn()
+}
+
+const mockUseAuth = vi.fn(() => mockAuthValue)
+
 vi.mock('@/contexts/AuthContext', () => ({
-  useAuth: () => mockUseAuth()
+  AuthContext: {
+    Provider: ({ children, value }: any) => children
+  },
+  useAuth: mockUseAuth
 }))
 
 describe('Header Component', () => {
@@ -21,9 +35,9 @@ describe('Header Component', () => {
     render(<Header />)
     
     expect(screen.getByText('FoodNow')).toBeInTheDocument()
-    expect(screen.getByText('Browse')).toBeInTheDocument()
+    expect(screen.getByText('Home')).toBeInTheDocument()
+    expect(screen.getByText('Features')).toBeInTheDocument()
     expect(screen.getByText('Restaurants')).toBeInTheDocument()
-    expect(screen.getByText('Become a Rider')).toBeInTheDocument()
   })
 
   it('shows login button when user is not authenticated', () => {

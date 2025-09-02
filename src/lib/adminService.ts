@@ -5,7 +5,7 @@
  * Provides admin authentication and permission management
  */
 
-import { supabase } from '@/lib/supabase-client'
+import { supabaseServerClient } from '@/lib/supabase-server'
 import { devLog, prodLog } from '@/lib/logger'
 import { sendApplicationStatusNotification, sendWelcomeNotification } from '@/lib/notificationService'
 import { logApplicationActivity } from '@/lib/adminActivityLogger'
@@ -167,26 +167,40 @@ export async function hasPermission(
 }
 
 /**
- * Validate admin session (used by AuthContext)
+ * Validate admin session (used by API routes - direct DB access)
  */
 export async function validateAdminSession(adminId: string): Promise<AdminUser | null> {
   try {
-    // Use getAdminById which already uses API route
-    const admin = await getAdminById(adminId)
-    
-    if (!admin) {
+    // Direct database call to avoid circular dependency
+    const { data: admin, error } = await supabaseServerClient
+      .from('admin_users')
+      .select('*')
+      .eq('id', adminId)
+      .eq('is_active', true)
+      .single()
+
+    if (error || !admin) {
       return null
     }
 
-    // Update last login through API
+    // Check if account is locked
+    if (admin.locked_until && new Date(admin.locked_until) > new Date()) {
+      return null
+    }
+
+    // Update last activity
     try {
-      await fetch(`/api/admin/users/${adminId}/update-login`, {
-        method: 'PATCH'
-      })
+      await supabaseServerClient
+        .from('admin_users')
+        .update({ 
+          last_login: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', adminId)
     } catch (error) {
-      // Don't fail validation if login update fails
+      // Don't fail validation if update fails
       const errorMessage = error instanceof Error ? error.message : String(error)
-      prodLog.warn('Failed to update admin last login', { error: errorMessage, adminId, action: 'update_last_login' })
+      prodLog.warn('Failed to update admin last activity', { error: errorMessage, adminId, action: 'update_last_activity' })
     }
 
     return admin
@@ -203,18 +217,50 @@ export async function validateAdminSession(adminId: string): Promise<AdminUser |
  * Functions for managing rider and restaurant applications
  */
 
-// Application interfaces
+// Application interfaces (matching actual database schema)
 export interface ApplicationData {
   id: string
   user_id: string
-  requested_role: 'restaurant_owner' | 'rider'
-  application_data: any
+  application_type: 'restaurant_owner' | 'rider'
   status: 'pending' | 'approved' | 'rejected' | 'under_review'
-  admin_notes?: string
+  
+  // Restaurant fields
+  restaurant_name?: string
+  restaurant_description?: string
+  restaurant_address?: string
+  restaurant_phone?: string
+  restaurant_email?: string
+  cuisine_types?: string[]
+  business_license_url?: string
+  cac_certificate_url?: string
+  
+  // Rider fields
+  vehicle_type?: string
+  vehicle_make?: string
+  vehicle_model?: string
+  vehicle_year?: number
+  vehicle_plate_number?: string
+  nin_number?: string
+  drivers_license_url?: string
+  vehicle_registration_url?: string
+  rider_photo_url?: string
+  emergency_contact_name?: string
+  emergency_contact_phone?: string
+  
+  // Review fields
+  review_notes?: string
   reviewed_by?: string
   reviewed_at?: string
+  approved_by?: string
+  approved_at?: string
+  
+  // Additional data
+  additional_documents?: any
+  metadata?: any
+  submitted_at: string
   created_at: string
   updated_at: string
+  
   user?: {
     first_name: string
     last_name: string
@@ -225,7 +271,7 @@ export interface ApplicationData {
 
 export interface ApplicationUpdateData {
   status: 'pending' | 'approved' | 'rejected' | 'under_review'
-  admin_notes?: string
+  review_notes?: string
   reviewed_by?: string
 }
 
@@ -238,17 +284,34 @@ export async function getAllApplications(): Promise<{
   error?: string
 }> {
   try {
-    const { data: applications, error } = await (supabase as any)
+    const { data: applications, error } = await supabaseServerClient
       .from('role_applications')
       .select(`
         id,
         user_id,
-        requested_role,
-        application_data,
+        application_type,
         status,
-        admin_notes,
+        restaurant_name,
+        restaurant_description,
+        restaurant_address,
+        restaurant_phone,
+        restaurant_email,
+        cuisine_types,
+        vehicle_type,
+        vehicle_make,
+        vehicle_model,
+        vehicle_year,
+        vehicle_plate_number,
+        emergency_contact_name,
+        emergency_contact_phone,
+        review_notes,
         reviewed_by,
         reviewed_at,
+        approved_by,
+        approved_at,
+        additional_documents,
+        metadata,
+        submitted_at,
         created_at,
         updated_at,
         user:users!role_applications_user_id_fkey(
@@ -258,7 +321,7 @@ export async function getAllApplications(): Promise<{
           phone
         )
       `)
-      .order('created_at', { ascending: false })
+      .order('submitted_at', { ascending: false })
 
     if (error) {
       throw error
@@ -283,15 +346,14 @@ export async function getApplicationById(applicationId: string): Promise<{
   error?: string
 }> {
   try {
-    const { data: application, error } = await (supabase as any)
+    const { data: application, error } = await supabaseServerClient
       .from('role_applications')
       .select(`
         id,
         user_id,
-        requested_role,
-        application_data,
+        application_type,
         status,
-        admin_notes,
+        review_notes,
         reviewed_by,
         reviewed_at,
         created_at,
@@ -340,25 +402,41 @@ export async function updateApplicationStatus(
     // Prepare update data
     const updatePayload = {
       status: updateData.status,
-      admin_notes: updateData.admin_notes,
+      review_notes: updateData.review_notes,
       reviewed_by: adminId,
       reviewed_at: new Date().toISOString(),
       updated_at: new Date().toISOString()
     }
+    
+    // If approving, also set approved_by and approved_at
+    if (updateData.status === 'approved') {
+      updatePayload.approved_by = adminId
+      updatePayload.approved_at = new Date().toISOString()
+    }
 
-    const { data: updatedApplication, error } = await (supabase as any)
+    const { data: updatedApplication, error } = await supabaseServerClient
       .from('role_applications')
       .update(updatePayload)
       .eq('id', applicationId)
       .select(`
         id,
         user_id,
-        requested_role,
-        application_data,
+        application_type,
         status,
-        admin_notes,
+        restaurant_name,
+        restaurant_description,
+        restaurant_address,
+        vehicle_type,
+        vehicle_make,
+        vehicle_model,
+        emergency_contact_name,
+        review_notes,
         reviewed_by,
         reviewed_at,
+        approved_by,
+        approved_at,
+        additional_documents,
+        submitted_at,
         created_at,
         updated_at,
         user:users!role_applications_user_id_fkey(
@@ -376,17 +454,17 @@ export async function updateApplicationStatus(
 
     // If approved, update user role and send welcome notification
     if (updateData.status === 'approved') {
-      const roleUpdateSuccess = await updateUserRole(updatedApplication.user_id, updatedApplication.requested_role)
+      const roleUpdateSuccess = await updateUserRole(updatedApplication.user_id, updatedApplication.application_type)
       
       if (roleUpdateSuccess) {
         // Send welcome notification after successful role update
         await sendWelcomeNotification(
           updatedApplication.user_id,
-          updatedApplication.requested_role,
+          updatedApplication.application_type,
           {
             applicant_name: `${updatedApplication.user?.first_name || ''} ${updatedApplication.user?.last_name || ''}`.trim(),
-            business_name: updatedApplication.application_data?.business_name,
-            vehicle_type: updatedApplication.application_data?.vehicle_type
+            business_name: updatedApplication.restaurant_name,
+            vehicle_type: updatedApplication.vehicle_type
           }
         )
       }
@@ -445,7 +523,7 @@ export async function updateApplicationStatus(
  */
 async function updateUserRole(userId: string, role: 'restaurant_owner' | 'rider'): Promise<boolean> {
   try {
-    const { error } = await (supabase as any)
+    const { error } = await supabaseServerClient
       .from('users')
       .update({
         user_role: role,
@@ -476,15 +554,14 @@ export async function getApplicationsByStatus(status: string): Promise<{
   error?: string
 }> {
   try {
-    let query = (supabase as any)
+    let query = supabaseServerClient
       .from('role_applications')
       .select(`
         id,
         user_id,
-        requested_role,
-        application_data,
+        application_type,
         status,
-        admin_notes,
+        review_notes,
         reviewed_by,
         reviewed_at,
         created_at,
@@ -527,15 +604,14 @@ export async function getApplicationsByRole(role: string): Promise<{
   error?: string
 }> {
   try {
-    let query = (supabase as any)
+    let query = supabaseServerClient
       .from('role_applications')
       .select(`
         id,
         user_id,
-        requested_role,
-        application_data,
+        application_type,
         status,
-        admin_notes,
+        review_notes,
         reviewed_by,
         reviewed_at,
         created_at,
@@ -550,7 +626,7 @@ export async function getApplicationsByRole(role: string): Promise<{
       .order('created_at', { ascending: false })
 
     if (role !== 'all') {
-      query = query.eq('requested_role', role)
+      query = query.eq('application_type', role)
     }
 
     const { data: applications, error } = await query

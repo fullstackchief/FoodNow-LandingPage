@@ -59,7 +59,8 @@ describe('SearchBar Component', () => {
     const input = screen.getByPlaceholderText(/search restaurants/i) as HTMLInputElement
     fireEvent.change(input, { target: { value: 'test search' } })
     
-    const clearButton = screen.getByRole('button', { name: /clear/i })
+    // Find the clear button (X icon)
+    const clearButton = screen.getByRole('button')
     fireEvent.click(clearButton)
     
     expect(input.value).toBe('')

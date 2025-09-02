@@ -18,19 +18,43 @@ import {
 import Navigation from '@/components/layout/Navigation'
 import { devLog, prodLog } from '@/lib/logger'
 
-// Application interface matching database structure
+// Application interface matching actual database structure
 interface ApplicationData {
   id: string
   user_id: string
-  requested_role: 'restaurant_owner' | 'rider'
-  application_data: any
+  application_type: 'restaurant_owner' | 'rider'
   status: 'pending' | 'approved' | 'rejected' | 'under_review'
-  admin_notes?: string
+  
+  // Restaurant fields
+  restaurant_name?: string
+  restaurant_description?: string
+  restaurant_address?: string
+  restaurant_phone?: string
+  restaurant_email?: string
+  cuisine_types?: string[]
+  
+  // Rider fields
+  vehicle_type?: string
+  vehicle_make?: string
+  vehicle_model?: string
+  vehicle_year?: number
+  vehicle_plate_number?: string
+  emergency_contact_name?: string
+  emergency_contact_phone?: string
+  
+  // Review fields
+  review_notes?: string
   reviewed_by?: string
   reviewed_at?: string
+  approved_by?: string
+  approved_at?: string
+  
+  // Additional data
+  additional_documents?: any
+  submitted_at: string
   created_at: string
   updated_at: string
-  // User information joined from users table
+  
   user?: {
     first_name: string
     last_name: string
@@ -91,7 +115,7 @@ const ApplicationsManagement = () => {
   const updateApplicationStatus = async (
     applicationId: string, 
     status: 'pending' | 'approved' | 'rejected' | 'under_review',
-    adminNotes?: string
+    reviewNotes?: string
   ) => {
     try {
       const response = await fetch(`/api/admin/applications/${applicationId}`, {
@@ -102,7 +126,7 @@ const ApplicationsManagement = () => {
         credentials: 'include',
         body: JSON.stringify({
           status,
-          admin_notes: adminNotes
+          review_notes: reviewNotes
         })
       })
 
@@ -116,7 +140,7 @@ const ApplicationsManagement = () => {
       setApplications(prev => 
         prev.map(app => 
           app.id === applicationId 
-            ? { ...app, status, admin_notes: adminNotes, reviewed_at: new Date().toISOString() }
+            ? { ...app, status, review_notes: reviewNotes, reviewed_at: new Date().toISOString() }
             : app
         )
       )
@@ -124,7 +148,7 @@ const ApplicationsManagement = () => {
       // Update selected application if it's the one being updated
       if (selectedApplication?.id === applicationId) {
         setSelectedApplication(prev => 
-          prev ? { ...prev, status, admin_notes: adminNotes, reviewed_at: new Date().toISOString() } : null
+          prev ? { ...prev, status, review_notes: reviewNotes, reviewed_at: new Date().toISOString() } : null
         )
       }
 
@@ -147,13 +171,14 @@ const ApplicationsManagement = () => {
       app.user?.last_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       app.user?.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       app.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (app.requested_role === 'restaurant_owner' && app.application_data?.business_name?.toLowerCase().includes(searchTerm.toLowerCase()))
+      (app.application_type === 'restaurant_owner' && app.restaurant_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (app.application_type === 'rider' && app.vehicle_make?.toLowerCase().includes(searchTerm.toLowerCase()))
 
     // Status filter
     const statusMatch = statusFilter === 'all' || app.status === statusFilter
 
     // Role filter
-    const roleMatch = roleFilter === 'all' || app.requested_role === roleFilter
+    const roleMatch = roleFilter === 'all' || app.application_type === roleFilter
 
     return searchMatch && statusMatch && roleMatch
   })
@@ -342,12 +367,12 @@ const ApplicationsManagement = () => {
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
                         <div className="flex items-center space-x-3 mb-3">
-                          {getRoleIcon(application.requested_role)}
+                          {getRoleIcon(application.application_type)}
                           <div>
                             <h3 className="text-lg font-bold text-gray-900">
                               {application.user?.first_name} {application.user?.last_name}
                             </h3>
-                            <p className="text-sm text-gray-600">{formatRoleName(application.requested_role)} Application</p>
+                            <p className="text-sm text-gray-600">{formatRoleName(application.application_type)} Application</p>
                           </div>
                           <div className={`flex items-center space-x-2 px-3 py-1 rounded-full border text-sm font-medium ${getStatusColor(application.status)}`}>
                             {getStatusIcon(application.status)}
@@ -373,24 +398,38 @@ const ApplicationsManagement = () => {
                           <div>
                             <span className="text-gray-500">Submitted:</span>
                             <p className="font-medium text-gray-900">
-                              {new Date(application.created_at).toLocaleDateString()}
+                              {new Date(application.submitted_at || application.created_at).toLocaleDateString()}
                             </p>
                           </div>
                         </div>
 
                         {/* Restaurant-specific info */}
-                        {application.requested_role === 'restaurant_owner' && application.application_data?.business_name && (
+                        {application.application_type === 'restaurant_owner' && application.restaurant_name && (
                           <div className="mt-3 p-3 bg-green-50 rounded-lg">
                             <p className="text-sm text-gray-600">Business Name:</p>
-                            <p className="font-medium text-green-900">{application.application_data.business_name}</p>
+                            <p className="font-medium text-green-900">{application.restaurant_name}</p>
+                            {application.restaurant_address && (
+                              <div className="mt-1">
+                                <p className="text-sm text-gray-600">Address:</p>
+                                <p className="text-sm text-gray-800">{application.restaurant_address}</p>
+                              </div>
+                            )}
                           </div>
                         )}
 
                         {/* Rider-specific info */}
-                        {application.requested_role === 'rider' && application.application_data?.vehicle_type && (
+                        {application.application_type === 'rider' && application.vehicle_type && (
                           <div className="mt-3 p-3 bg-blue-50 rounded-lg">
-                            <p className="text-sm text-gray-600">Vehicle Type:</p>
-                            <p className="font-medium text-blue-900">{application.application_data.vehicle_type}</p>
+                            <p className="text-sm text-gray-600">Vehicle:</p>
+                            <p className="font-medium text-blue-900">
+                              {application.vehicle_make} {application.vehicle_model} ({application.vehicle_type})
+                            </p>
+                            {application.emergency_contact_name && (
+                              <div className="mt-1">
+                                <p className="text-sm text-gray-600">Emergency Contact:</p>
+                                <p className="text-sm text-gray-800">{application.emergency_contact_name}</p>
+                              </div>
+                            )}
                           </div>
                         )}
                       </div>

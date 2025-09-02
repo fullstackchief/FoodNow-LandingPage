@@ -28,10 +28,12 @@ export function useCartRedux() {
   }, [dispatch])
 
   const removeItem = useCallback((itemId: string, customizations?: string[]) => {
+    console.log('useCartRedux removeItem called:', { itemId, customizations })
     dispatch(removeItemAction({ itemId, customizations }))
   }, [dispatch])
 
   const updateQuantity = useCallback((itemId: string, quantity: number, customizations?: string[]) => {
+    console.log('useCartRedux updateQuantity called:', { itemId, quantity, customizations })
     dispatch(updateQuantityAction({ itemId, quantity, customizations }))
   }, [dispatch])
 

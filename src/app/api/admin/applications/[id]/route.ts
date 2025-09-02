@@ -123,7 +123,7 @@ export async function PATCH(
 
     // Parse request body
     const body = await request.json()
-    const { status, admin_notes } = body
+    const { status, review_notes } = body
 
     // Validate required fields
     if (!status) {
@@ -156,7 +156,7 @@ export async function PATCH(
       applicationId,
       {
         status: status as 'pending' | 'approved' | 'rejected' | 'under_review',
-        admin_notes
+        review_notes
       },
       adminId
     )
@@ -174,7 +174,7 @@ export async function PATCH(
         applicationId,
         updateResult.data.user_id,
         status,
-        admin_notes
+        review_notes
       )
     }
 
@@ -183,7 +183,7 @@ export async function PATCH(
       applicationId,
       previousStatus: currentApp.data.status,
       newStatus: status,
-      hasNotes: !!admin_notes,
+      hasNotes: !!review_notes,
       action: 'update_application_status'
     })
 
