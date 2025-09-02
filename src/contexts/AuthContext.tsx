@@ -29,6 +29,7 @@ interface SignupData {
   firstName: string
   lastName: string
   phone?: string
+  userRole?: UserRole
 }
 
 interface AuthContextType {
@@ -271,6 +272,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                       (fullName ? fullName.split(' ').slice(1).join(' ') : '') ||
                       null
 
+      // Get user role from metadata or default to customer
+      const userRole = authUser.user_metadata?.user_role || 'customer'
+
       const { data, error } = await (supabase as any)
         .from('users')
         .insert({
@@ -280,7 +284,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           last_name: lastName,
           phone: authUser.phone || null,
           avatar_url: authUser.user_metadata?.avatar_url || '',
-          user_role: 'customer',
+          user_role: userRole,
           is_verified: !!authUser.email_confirmed_at,
           is_active: true,
           onboarding_completed: false,
@@ -342,7 +346,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'x-internal-auth': process.env.NEXT_PUBLIC_INTERNAL_AUTH_SECRET || 'dev-secret-change-in-prod'
+              'x-internal-auth': process.env.INTERNAL_AUTH_SECRET || ''
             },
             credentials: 'include',
             body: JSON.stringify({
@@ -400,6 +404,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             first_name: data.firstName,
             last_name: data.lastName,
             phone: data.phone,
+            user_role: data.userRole || 'customer'
           }
         }
       })

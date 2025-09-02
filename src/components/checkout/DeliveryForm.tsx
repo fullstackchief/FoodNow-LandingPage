@@ -3,6 +3,7 @@ interface DeliveryInfo {
   apartment: string
   phone: string
   instructions: string
+  zone?: string
 }
 
 interface DeliveryFormProps {
@@ -59,6 +60,24 @@ const DeliveryForm = ({ deliveryInfo, onDeliveryInfoChange }: DeliveryFormProps)
             className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500"
             placeholder="+234 XXX XXX XXXX"
           />
+        </div>
+        
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Delivery Zone *
+          </label>
+          <select
+            value={deliveryInfo.zone || ''}
+            onChange={(e) => handleInputChange('zone' as keyof DeliveryInfo, e.target.value)}
+            className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500"
+          >
+            <option value="">Select your area</option>
+            <option value="isolo">Isolo</option>
+            <option value="ikeja">Ikeja</option>
+            <option value="vi">Victoria Island</option>
+            <option value="lekki">Lekki</option>
+            <option value="mainland">Lagos Mainland</option>
+          </select>
         </div>
         
         <div>

@@ -39,10 +39,50 @@ coverage/
 *.key
 *.pem
 *.p12
+*.pfx
+*.crt
+*.cer
 secrets/
 config/secrets.json
+credentials/
+auth/
+private/
+
+# Environment and configuration files
+.env*
+!.env.local.example
+.envrc
+.config
+config.json
+settings.json
+
+# API Keys and tokens (additional protection)
+**/api-keys/
+**/tokens/
+**/*secret*
+**/*private*
+**/*credential*
+
+# Database dumps and backups
+*.dump
+*.backup
+database/
+backups/
+
+# Allow migration files but exclude dumps
+!supabase/migrations/*.sql
+!supabase/seed.sql
 
 # Backup and temporary files
 *.tmp
 *.bak
 *~
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Security and audit files
+security-report.*
+audit-log.*
+penetration-test.*

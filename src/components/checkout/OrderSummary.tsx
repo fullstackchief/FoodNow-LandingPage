@@ -19,6 +19,8 @@ interface OrderSummaryProps {
   onQuantityUpdate: (itemId: string, change: number) => void
   onRemoveItem: (itemId: string, customizations?: string[]) => void
   onEditItem?: (itemId: string, customizations?: string[]) => void
+  dynamicPricing?: any
+  isLoadingPricing?: boolean
 }
 
 const OrderSummary = ({ 
@@ -30,7 +32,9 @@ const OrderSummary = ({
   deliveryType,
   onQuantityUpdate,
   onRemoveItem,
-  onEditItem 
+  onEditItem,
+  dynamicPricing,
+  isLoadingPricing 
 }: OrderSummaryProps) => {
   const [showRemoveConfirm, setShowRemoveConfirm] = useState(false)
   const [itemToRemove, setItemToRemove] = useState<{id: string, name: string, customizations?: string[]}>()
@@ -50,7 +54,14 @@ const OrderSummary = ({
   }
   
   // Debug cart state
-  console.log('OrderSummary cart state:', cartState.items)
+  console.log('OrderSummary detailed cart state:', cartState.items.map(item => ({
+    id: item.id,
+    name: item.name,
+    quantity: item.quantity,
+    customizations: item.customizations,
+    customizationsType: typeof item.customizations,
+    customizationsStringified: JSON.stringify(item.customizations || [])
+  })))
   
   return (
     <div className="bg-white rounded-3xl shadow-premium p-4 md:p-6 sticky top-24 border border-gray-100">
@@ -130,9 +141,34 @@ const OrderSummary = ({
         ))}
       </div>
 
+      {/* Surge Pricing Notification */}
+      {dynamicPricing?.surgeInfo?.isActive && (
+        <div className="bg-orange-50 border border-orange-200 rounded-2xl p-4 mb-4">
+          <div className="flex items-center space-x-2">
+            <div className="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center">
+              <span className="text-white text-xs font-bold">!</span>
+            </div>
+            <div>
+              <p className="text-sm font-medium text-orange-800">
+                {dynamicPricing.surgeInfo.displayMessage}
+              </p>
+              <p className="text-xs text-orange-600">
+                Estimated normal pricing: {dynamicPricing.surgeInfo.estimatedNormalTime}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Price Breakdown */}
       <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-6 border border-gray-200">
         <h4 className="font-semibold text-gray-900 mb-4">Order Total</h4>
+        {isLoadingPricing && (
+          <div className="flex items-center justify-center py-4">
+            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-orange-500"></div>
+            <span className="ml-2 text-sm text-gray-600">Calculating pricing...</span>
+          </div>
+        )}
         <div className="space-y-3">
           <div className="flex justify-between items-center">
             <span className="text-gray-600 font-medium">Subtotal</span>
@@ -140,7 +176,14 @@ const OrderSummary = ({
           </div>
           <div className="flex justify-between items-center">
             <span className="text-gray-600 font-medium">Service fee</span>
-            <span className="text-gray-900 font-semibold">₦{serviceFee.toLocaleString()}</span>
+            <span className="text-gray-900 font-semibold">
+              ₦{serviceFee.toLocaleString()}
+              {dynamicPricing?.surgeInfo?.isActive && dynamicPricing.originalPrice.serviceFee !== serviceFee && (
+                <span className="text-xs text-orange-600 ml-1">
+                  (was ₦{dynamicPricing.originalPrice.serviceFee.toLocaleString()})
+                </span>
+              )}
+            </span>
           </div>
           <div className="flex justify-between items-center">
             <span className="text-gray-600 font-medium">{deliveryType === 'delivery' ? 'Delivery fee' : 'Pickup'}</span>
@@ -148,10 +191,23 @@ const OrderSummary = ({
               {deliveryFee === 0 ? (
                 <span className="text-green-600 font-bold">Free</span>
               ) : (
-                `₦${deliveryFee.toLocaleString()}`
+                <>
+                  ₦{deliveryFee.toLocaleString()}
+                  {dynamicPricing?.surgeInfo?.isActive && dynamicPricing.originalPrice.deliveryFee !== deliveryFee && (
+                    <span className="text-xs text-orange-600 ml-1">
+                      (was ₦{dynamicPricing.originalPrice.deliveryFee.toLocaleString()})
+                    </span>
+                  )}
+                </>
               )}
             </span>
           </div>
+          {dynamicPricing?.adjustedPrice?.surgeAmount > 0 && (
+            <div className="flex justify-between items-center text-orange-600">
+              <span className="text-sm font-medium">Surge pricing</span>
+              <span className="text-sm font-semibold">+₦{dynamicPricing.adjustedPrice.surgeAmount.toLocaleString()}</span>
+            </div>
+          )}
           <div className="flex justify-between items-center pt-3 border-t border-gray-300">
             <span className="text-xl font-bold text-gray-900">Total</span>
             <span className="text-2xl font-bold text-orange-600">₦{total.toLocaleString()}</span>

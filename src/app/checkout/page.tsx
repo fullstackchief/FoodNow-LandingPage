@@ -10,6 +10,7 @@ import { useOrderSubmission } from '@/hooks/useOrderSubmission'
 import { useCheckoutAuth } from '@/hooks/useCheckoutAuth'
 import { ArrowLeftIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 import Navigation from '@/components/layout/Navigation'
+import Button from '@/components/ui/Button'
 import CheckoutProgressSteps from '@/components/checkout/CheckoutProgressSteps'
 import OrderSummary from '@/components/checkout/OrderSummary'
 import DeliveryOptions from '@/components/checkout/DeliveryOptions'
@@ -62,11 +63,58 @@ const CheckoutPage = () => {
     }
   }, [orderStep, createdOrderId, clearCart])
 
-  // Calculate totals early to avoid hoisting issues
+  // Calculate totals with dynamic pricing
   const subtotal = getCartTotal()
-  const deliveryFee = deliveryType === 'delivery' ? (cartState.restaurant?.deliveryFee || 0) : 0
-  const serviceFee = Math.round(subtotal * 0.10) // 10% service fee per CLAUDE.local.md
-  const total = subtotal + deliveryFee + serviceFee
+  const [dynamicPricing, setDynamicPricing] = useState<any>(null)
+  const [isLoadingPricing, setIsLoadingPricing] = useState(false)
+  
+  // Fetch dynamic pricing when order details change
+  useEffect(() => {
+    const fetchDynamicPricing = async () => {
+      if (!cartState.restaurant?.id || !cartState.items.length) return
+      
+      setIsLoadingPricing(true)
+      try {
+        const response = await fetch('/api/pricing/calculate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            restaurantId: cartState.restaurant.id,
+            zoneId: deliveryInfo.zone || 'isolo',
+            orderValue: subtotal,
+            deliveryType
+          })
+        })
+        
+        if (response.ok) {
+          const pricing = await response.json()
+          setDynamicPricing(pricing)
+        } else {
+          throw new Error('Pricing calculation failed')
+        }
+      } catch (error) {
+        setDynamicPricing({
+          adjustedPrice: {
+            subtotal,
+            deliveryFee: deliveryType === 'delivery' ? (cartState.restaurant?.deliveryFee || 0) : 0,
+            serviceFee: Math.round(subtotal * 0.10),
+            total: subtotal + (deliveryType === 'delivery' ? (cartState.restaurant?.deliveryFee || 0) : 0) + Math.round(subtotal * 0.10),
+            surgeAmount: 0
+          },
+          surgeInfo: { isActive: false, displayMessage: 'Standard pricing' }
+        })
+      } finally {
+        setIsLoadingPricing(false)
+      }
+    }
+    
+    fetchDynamicPricing()
+  }, [cartState.restaurant?.id, subtotal, deliveryType, deliveryInfo.zone])
+  
+  // Use dynamic pricing or fallback to static
+  const deliveryFee = dynamicPricing?.adjustedPrice?.deliveryFee || (deliveryType === 'delivery' ? (cartState.restaurant?.deliveryFee || 0) : 0)
+  const serviceFee = dynamicPricing?.adjustedPrice?.serviceFee || Math.round(subtotal * 0.10)
+  const total = dynamicPricing?.adjustedPrice?.total || (subtotal + deliveryFee + serviceFee)
 
   // Show order confirmation if on step 3 (takes priority over empty cart check)
   if (orderStep === 3) {
@@ -89,7 +137,6 @@ const CheckoutPage = () => {
   const handleQuantityUpdate = (itemId: string, change: number) => {
     const currentItem = cartState.items.find(item => item.id === itemId)
     if (currentItem) {
-      console.log('Updating quantity:', { itemId, currentQuantity: currentItem.quantity, change, newQuantity: currentItem.quantity + change, customizations: currentItem.customizations })
       updateQuantity(itemId, currentItem.quantity + change, currentItem.customizations)
     }
   }
@@ -138,7 +185,7 @@ const CheckoutPage = () => {
       <div className="pt-20 pb-4 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Link 
-            href="/restaurant/1"
+            href={cartState.restaurant?.id ? `/restaurant/${cartState.restaurant.id}` : '/explore'}
             className="inline-flex items-center space-x-2 text-gray-600 hover:text-orange-600 transition-colors"
           >
             <ArrowLeftIcon className="w-5 h-5" />
@@ -151,9 +198,9 @@ const CheckoutPage = () => {
       <CheckoutProgressSteps currentStep={orderStep} />
 
       {/* Main Content */}
-      <section className="py-8 bg-gray-50">
+      <section className="py-4 md:py-8 bg-gray-50 pb-24 md:pb-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8">
             
             {/* Left Column - Forms */}
             <div className="lg:col-span-2 space-y-6">
@@ -205,13 +252,33 @@ const CheckoutPage = () => {
                     </div>
                   )}
 
-                  <button
-                    onClick={handleContinueToPayment}
-                    disabled={!deliveryInfo.phone || (deliveryType === 'delivery' && !deliveryInfo.address)}
-                    className="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    Continue to Payment
-                  </button>
+                  {/* Mobile Sticky Button */}
+                  <div className="md:hidden mobile-sticky-bottom">
+                    <Button
+                      onClick={handleContinueToPayment}
+                      disabled={!deliveryInfo.phone || (deliveryType === 'delivery' && (!deliveryInfo.address || !deliveryInfo.zone))}
+                      theme="customer"
+                      variant="primary"
+                      fullWidth
+                      size="lg"
+                      className="touch-optimized"
+                    >
+                      Continue to Payment
+                    </Button>
+                  </div>
+
+                  {/* Desktop Button */}
+                  <div className="hidden md:block">
+                    <Button
+                      onClick={handleContinueToPayment}
+                      disabled={!deliveryInfo.phone || (deliveryType === 'delivery' && (!deliveryInfo.address || !deliveryInfo.zone))}
+                      theme="customer"
+                      variant="primary"
+                      fullWidth
+                    >
+                      Continue to Payment
+                    </Button>
+                  </div>
                 </motion.div>
               )}
 
@@ -238,45 +305,73 @@ const CheckoutPage = () => {
                     </div>
                   )}
 
-                  {/* Action Buttons */}
-                  <div className="flex space-x-4">
-                    <button
+                  {/* Mobile Sticky Action Buttons */}
+                  <div className="md:hidden mobile-sticky-bottom">
+                    <div className="flex space-x-3">
+                      <Button
+                        onClick={() => setOrderStep(1)}
+                        theme="customer"
+                        variant="outline"
+                        size="lg"
+                        className="w-20 touch-optimized"
+                      >
+                        Back
+                      </Button>
+                      <Button
+                        onClick={handleSubmitOrder}
+                        disabled={isProcessing || (paymentMethod === 'card' && (!paymentInfo.cardNumber || !paymentInfo.expiryDate || !paymentInfo.cvv || !paymentInfo.cardName))}
+                        theme="customer"
+                        variant="primary"
+                        size="lg"
+                        loading={isProcessing}
+                        className="flex-1 touch-optimized"
+                      >
+                        {isProcessing ? 'Processing...' : `Place Order • ₦${total.toLocaleString()}`}
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* Desktop Action Buttons */}
+                  <div className="hidden md:flex space-x-4">
+                    <Button
                       onClick={() => setOrderStep(1)}
-                      className="flex-1 btn-outline"
+                      theme="customer"
+                      variant="outline"
+                      className="flex-1"
                     >
                       Back to Details
-                    </button>
-                    <button
+                    </Button>
+                    <Button
                       onClick={handleSubmitOrder}
                       disabled={isProcessing || (paymentMethod === 'card' && (!paymentInfo.cardNumber || !paymentInfo.expiryDate || !paymentInfo.cvv || !paymentInfo.cardName))}
-                      className="flex-2 btn-primary disabled:opacity-50 disabled:cursor-not-allowed min-w-[200px]"
+                      theme="customer"
+                      variant="primary"
+                      loading={isProcessing}
+                      className="flex-2 min-w-[200px]"
                     >
-                      {isProcessing ? (
-                        <div className="flex items-center space-x-2">
-                          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                          <span>Processing...</span>
-                        </div>
-                      ) : (
-                        `Place Order • ₦${total.toLocaleString()}`
-                      )}
-                    </button>
+                      {isProcessing ? 'Processing...' : `Place Order • ₦${total.toLocaleString()}`}
+                    </Button>
                   </div>
                 </motion.div>
               )}
             </div>
 
-            {/* Right Column - Order Summary */}
-            <div className="lg:col-span-1">
-              <OrderSummary 
-                cartState={cartState}
+            {/* Right Column - Order Summary (Mobile: Top, Desktop: Right) */}
+            <div className="lg:col-span-1 order-first lg:order-last">
+              <div className="lg:sticky lg:top-24">
+                <OrderSummary 
+                  cartState={cartState}
                 subtotal={subtotal}
                 deliveryFee={deliveryFee}
                 serviceFee={serviceFee}
-                total={total}
-                deliveryType={deliveryType}
-                onQuantityUpdate={handleQuantityUpdate}
-                onRemoveItem={removeItem}
-              />
+                  total={total}
+                  deliveryType={deliveryType}
+                  onQuantityUpdate={handleQuantityUpdate}
+                  onRemoveItem={removeItem}
+                  dynamicPricing={dynamicPricing}
+                  isLoadingPricing={isLoadingPricing}
+                />
+              </div>
             </div>
           </div>
         </div>

@@ -5,6 +5,7 @@ interface DeliveryInfo {
   apartment: string
   phone: string
   instructions: string
+  zone?: string
 }
 
 interface PaymentInfo {

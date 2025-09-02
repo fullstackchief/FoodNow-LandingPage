@@ -24,9 +24,9 @@ export const COOKIE_NAMES = {
   CSRF_TOKEN: 'foodnow_csrf',
 } as const
 
-// JWT secret - should be in environment variable
+// JWT secret - must be in environment variable
 const JWT_SECRET = new TextEncoder().encode(
-  process.env.SESSION_SECRET || 'your-secret-key-change-this-in-production'
+  process.env.JWT_SECRET || process.env.SESSION_SECRET
 )
 
 // Session durations
