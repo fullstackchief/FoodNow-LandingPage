@@ -35,8 +35,8 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    const { error: updateError } = await supabaseServerClient
-      .from('rider_profiles')
+    const { error: updateError } = await (supabaseServerClient
+      .from('rider_profiles') as any)
       .update(updateData)
       .eq('user_id', riderId)
 
@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
         devLog.warn('Rider going offline with active orders', { 
           riderId, 
           activeOrderCount: activeOrders.length,
-          orderIds: activeOrders.map(o => o.id)
+          orderIds: activeOrders.map((o: any) => o.id)
         })
         
         return NextResponse.json({ 

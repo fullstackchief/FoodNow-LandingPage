@@ -33,8 +33,8 @@ export async function GET(request: NextRequest) {
     }
 
     // Use provided location or rider's stored location
-    let riderLat = latitude ? parseFloat(latitude) : riderProfile.current_location?.latitude
-    let riderLng = longitude ? parseFloat(longitude) : riderProfile.current_location?.longitude
+    let riderLat = latitude ? parseFloat(latitude) : (riderProfile as any)?.current_location?.latitude
+    let riderLng = longitude ? parseFloat(longitude) : (riderProfile as any)?.current_location?.longitude
     
     // If no location available, use default Lagos coordinates
     if (!riderLat || !riderLng) {
@@ -58,39 +58,39 @@ export async function GET(request: NextRequest) {
     const maxDistanceKm = 15 // Maximum delivery distance
 
     for (const order of orders || []) {
-      if (!order.restaurant_location) continue
+      if (!(order as any).restaurant_location) continue
 
       // Calculate distance from rider to restaurant
       const distance = calculateDistance(
         riderLat,
         riderLng,
-        order.restaurant_location.latitude || order.restaurant_location.lat,
-        order.restaurant_location.longitude || order.restaurant_location.lng
+        (order as any).restaurant_location.latitude || (order as any).restaurant_location.lat,
+        (order as any).restaurant_location.longitude || (order as any).restaurant_location.lng
       )
 
       // Only include orders within reasonable distance
       if (distance <= maxDistanceKm) {
-        const estimatedEarnings = Math.round(order.total * 0.15) // 15% of order value
+        const estimatedEarnings = Math.round((order as any).total * 0.15) // 15% of order value
         const estimatedTime = Math.max(25, Math.round(distance * 3 + 15)) // 3 min per km + 15 min prep
         
         availableOrders.push({
-          id: order.id,
-          orderNumber: order.order_number,
+          id: (order as any).id,
+          orderNumber: (order as any).order_number,
           restaurant: {
-            id: order.restaurant_id,
-            name: order.restaurant_name,
-            address: order.restaurant_location.address || 'Lagos, Nigeria'
+            id: (order as any).restaurant_id,
+            name: (order as any).restaurant_name,
+            address: (order as any).restaurant_location.address || 'Lagos, Nigeria'
           },
-          deliveryArea: order.delivery_info?.area || 'Lagos',
-          itemCount: order.item_count || 1,
-          items: order.item_count || 1, // For backward compatibility
-          totalValue: order.total,
+          deliveryArea: (order as any).delivery_info?.area || 'Lagos',
+          itemCount: (order as any).item_count || 1,
+          items: (order as any).item_count || 1, // For backward compatibility
+          totalValue: (order as any).total,
           estimatedEarnings,
           earnings: estimatedEarnings, // For backward compatibility
           distance: `${distance.toFixed(1)} km`,
           time: `${estimatedTime} min`, // For backward compatibility
           estimatedTime: `${estimatedTime} min`,
-          createdAt: order.created_at,
+          createdAt: (order as any).created_at,
           priority: distance <= 5 ? 'high' : distance <= 10 ? 'medium' : 'low'
         })
       }
