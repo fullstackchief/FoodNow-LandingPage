@@ -25,8 +25,8 @@ const testData = {
   }
 }
 
-// Mock environment for testing
-const JWT_SECRET = process.env.JWT_SECRET || 'test-secret-key-change-in-production'
+// Environment-based JWT secret (no fallback for security)
+const JWT_SECRET = process.env.JWT_SECRET
 const SESSION_DURATION = 60 * 60 * 1000 // 1 hour
 
 console.log('\n🔐 FoodNow Session Security Analysis')
