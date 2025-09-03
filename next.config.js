@@ -1,4 +1,10 @@
 /** @type {import('next').NextConfig} */
+
+// Bundle analyzer configuration
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+})
+
 const nextConfig = {
   // Explicitly expose server-side environment variables
   env: {
@@ -9,6 +15,25 @@ const nextConfig = {
   experimental: {
     optimizeCss: true,
     scrollRestoration: true,
+    optimizePackageImports: ['@heroicons/react', 'lucide-react', 'framer-motion'],
+    turbo: {
+      loaders: {
+        '.svg': ['@svgr/webpack'],
+      },
+    },
+  },
+
+  // Mobile-first optimizations
+  modularizeImports: {
+    '@heroicons/react/24/outline': {
+      transform: '@heroicons/react/24/outline/{{member}}',
+    },
+    '@heroicons/react/24/solid': {
+      transform: '@heroicons/react/24/solid/{{member}}',
+    },
+    'lucide-react': {
+      transform: 'lucide-react/dist/esm/icons/{{kebabCase member}}',
+    },
   },
   
   // Turbopack configuration
@@ -107,6 +132,16 @@ const nextConfig = {
         permanent: false,
         basePath: false
       },
+      {
+        source: '/browse',
+        destination: '/explore',
+        permanent: true
+      },
+      {
+        source: '/orders',
+        destination: '/dashboard',
+        permanent: false
+      }
     ]
   },
 
@@ -116,4 +151,4 @@ const nextConfig = {
   trailingSlash: false,
 }
 
-module.exports = nextConfig
+module.exports = withBundleAnalyzer(nextConfig)

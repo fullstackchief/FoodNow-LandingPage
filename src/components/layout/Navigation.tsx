@@ -45,39 +45,24 @@ const Navigation = () => {
   const { user, isAuthenticated, logout: authLogout } = useAuth()
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (typeof window !== 'undefined') {
-        setScrolled(window.scrollY > 20)
-      }
-    }
-    
-    if (typeof window !== 'undefined') {
-      window.addEventListener('scroll', handleScroll)
-      return () => window.removeEventListener('scroll', handleScroll)
-    }
+    const handleScroll = () => setScrolled(window.scrollY > 20)
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Close dropdowns when clicking outside
+  // Consolidated dropdown close handler
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Element
-      
-      // Close More dropdown if clicking outside
-      if (showMoreDropdown && !target.closest('[data-dropdown="more"]')) {
+      if (!target.closest('[data-dropdown]')) {
         setShowMoreDropdown(false)
-      }
-      
-      // Close User dropdown if clicking outside
-      if (showUserDropdown && !target.closest('[data-dropdown="user"]')) {
         setShowUserDropdown(false)
       }
     }
 
-    if (typeof document !== 'undefined') {
-      document.addEventListener('mousedown', handleClickOutside)
-      return () => document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [showMoreDropdown, showUserDropdown])
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
   const navItems = [
     { name: 'About', href: '/about' },
@@ -441,7 +426,9 @@ const Navigation = () => {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5, duration: 0.6 }}
               onClick={() => setIsOpen(!isOpen)}
-              className="lg:hidden relative w-10 h-10 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center group"
+              className="lg:hidden mobile-touch-optimized rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center group"
+              aria-label={isOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={isOpen}
             >
               <div className="relative w-6 h-6">
                 <span className={`absolute w-6 h-0.5 bg-gray-700 transform transition-all duration-300 ${isOpen ? 'rotate-45 top-3' : 'top-1'}`}></span>

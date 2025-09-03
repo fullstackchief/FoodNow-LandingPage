@@ -27,7 +27,11 @@ describe('Header Component', () => {
     mockUseAuth.mockReturnValue({
       user: null,
       loading: false,
-      signOut: vi.fn()
+      signOut: vi.fn(),
+      signIn: vi.fn(),
+      signUp: vi.fn(),
+      resetPassword: vi.fn(),
+      updateProfile: vi.fn()
     })
   })
 
@@ -48,9 +52,13 @@ describe('Header Component', () => {
 
   it('shows user menu when user is authenticated', () => {
     mockUseAuth.mockReturnValue({
-      user: { id: '1', email: 'test@example.com', first_name: 'John' },
+      user: { id: '1', email: 'test@example.com', first_name: 'John' } as any,
       loading: false,
-      signOut: vi.fn()
+      signOut: vi.fn(),
+      signIn: vi.fn(),
+      signUp: vi.fn(),
+      resetPassword: vi.fn(),
+      updateProfile: vi.fn()
     })
 
     render(<Header />)

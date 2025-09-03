@@ -65,8 +65,8 @@ export default function AdminManagement() {
     }
 
     // Check if user has permission to view admins
-    if (!isSuperAdminRole && !adminUser?.permissions?.admins?.view) {
-      router.push('/admin')
+    if (!isSuperAdminRole && !adminUser?.permissions?.system?.includes('create_admins')) {
+      router.push('/admin-system/dashboard')
       return
     }
 
@@ -155,7 +155,7 @@ export default function AdminManagement() {
                 </div>
               </div>
               
-              {(isSuperAdminRole || adminUser?.permissions?.admins?.create) && (
+              {(isSuperAdminRole || adminUser?.permissions?.system?.includes('create_admins')) && (
                 <div className="mt-4 flex md:mt-0 md:ml-4">
                   <button
                     onClick={() => setShowCreateForm(true)}
@@ -323,7 +323,7 @@ export default function AdminManagement() {
                       <EyeIcon className="h-4 w-4" />
                     </button>
                     
-                    {(isSuperAdminRole || adminUser?.permissions?.admins?.create) && (
+                    {(isSuperAdminRole || adminUser?.permissions?.system?.includes('create_admins')) && (
                       <button
                         className="inline-flex items-center p-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                       >

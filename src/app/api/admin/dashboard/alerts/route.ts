@@ -82,8 +82,8 @@ export async function GET(request: NextRequest) {
       .eq('is_open', true)
 
     if (allRestaurants && restaurantsWithOrders) {
-      const restaurantIdsWithOrders = new Set(restaurantsWithOrders.map(o => o.restaurant_id))
-      const restaurantsWithoutOrders = allRestaurants.filter(r => !restaurantIdsWithOrders.has(r.id))
+      const restaurantIdsWithOrders = new Set(restaurantsWithOrders.map((o: any) => o.restaurant_id))
+      const restaurantsWithoutOrders = allRestaurants.filter((r: any) => !restaurantIdsWithOrders.has(r.id))
       
       if (restaurantsWithoutOrders.length > 0) {
         alerts.push({

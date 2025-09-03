@@ -1,9 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { useAuth } from '@/contexts/AuthContext'
+import Button from '@/components/ui/Button'
 import {
   TruckIcon,
   BanknotesIcon,
@@ -18,73 +19,93 @@ import {
 export default function RiderDashboard() {
   const { user } = useAuth()
   const [isOnline, setIsOnline] = useState(true)
+  const [availableOrders, setAvailableOrders] = useState<any[]>([])
+  const [isLoading, setIsLoading] = useState(true)
 
-  const riderStats = [
+  useEffect(() => {
+    if (user && user.user_role === 'rider') {
+      fetchAvailableOrders()
+      fetchRiderStats()
+      fetchRecentDeliveries()
+    }
+  }, [user])
+
+  const fetchAvailableOrders = async () => {
+    try {
+      const response = await fetch(`/api/riders/orders/available?riderId=${user?.id}`)
+      if (response.ok) {
+        const data = await response.json()
+        setAvailableOrders(data.orders || [])
+      }
+    } catch (error) {
+      console.error('Failed to fetch available orders:', error)
+    }
+  }
+
+  const fetchRiderStats = async () => {
+    // TODO: implement real API
+    setIsLoading(false)
+  }
+
+  const fetchRecentDeliveries = async () => {
+    // TODO: implement real API
+  }
+
+  const handleAcceptOrder = async (orderId: string) => {
+    try {
+      const response = await fetch('/api/riders/orders/accept', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId, riderId: user?.id })
+      })
+
+      if (response.ok) {
+        const result = await response.json()
+        setAvailableOrders(prev => prev.filter(order => order.id !== orderId))
+        fetchAvailableOrders()
+        alert(`Order ${result.order.order_number} accepted successfully!`)
+      } else {
+        const error = await response.json()
+        alert(`Failed to accept order: ${error.error}`)
+      }
+    } catch (error) {
+      console.error('Error accepting order:', error)
+      alert('Failed to accept order. Please try again.')
+    }
+  }
+
+  const [riderStats, setRiderStats] = useState([
     {
       title: 'Today\'s Deliveries',
-      value: '12',
+      value: '0',
       icon: TruckIcon,
       color: 'bg-blue-500',
-      change: '+3 from yesterday'
+      change: 'Start accepting orders'
     },
     {
       title: 'Today\'s Earnings',
-      value: '₦18,500',
+      value: '₦0',
       icon: BanknotesIcon,
       color: 'bg-green-500',
-      change: '+₦2,500'
+      change: 'Complete deliveries to earn'
     },
     {
       title: 'Average Rating',
-      value: '4.9',
+      value: 'New',
       icon: StarIcon,
       color: 'bg-yellow-500',
-      change: '125 ratings'
+      change: 'Complete deliveries for ratings'
     },
     {
       title: 'This Week',
-      value: '₦125,000',
+      value: '₦0',
       icon: ArrowTrendingUpIcon,
       color: 'bg-purple-500',
       change: 'Weekly earnings'
     }
-  ]
+  ])
 
-  const availableOrders = [
-    {
-      id: 'ORD101',
-      restaurant: 'Mama Cass Kitchen',
-      distance: '1.2 km',
-      earnings: 650,
-      items: 2,
-      time: '25 min'
-    },
-    {
-      id: 'ORD102',
-      restaurant: 'Dragon Wok',
-      distance: '2.8 km',
-      earnings: 850,
-      items: 3,
-      time: '30 min'
-    }
-  ]
-
-  const recentDeliveries = [
-    {
-      id: 'ORD098',
-      restaurant: 'Pizza Paradise',
-      earnings: 750,
-      rating: 5,
-      time: '2 hours ago'
-    },
-    {
-      id: 'ORD097',
-      restaurant: 'Healthy Kitchen',
-      earnings: 600,
-      rating: 5,
-      time: '4 hours ago'
-    }
-  ]
+  const [recentDeliveries, setRecentDeliveries] = useState<any[]>([])
 
   return (
     <div className="space-y-8">
@@ -108,16 +129,20 @@ export default function RiderDashboard() {
               <span className="font-medium">{isOnline ? 'Online' : 'Offline'}</span>
             </div>
             
-            <button
+            <Button
               onClick={() => setIsOnline(!isOnline)}
-              className={`p-3 rounded-2xl transition-colors ${
+              theme="rider"
+              variant={isOnline ? "outline" : "primary"}
+              size="sm"
+              className={`p-3 rounded-xl ${
                 isOnline 
-                  ? 'bg-red-500 hover:bg-red-600' 
-                  : 'bg-green-500 hover:bg-green-600'
+                  ? 'bg-red-500 hover:bg-red-600 text-white border-red-500' 
+                  : ''
               }`}
+              icon={<PowerIcon className="w-6 h-6" />}
             >
-              <PowerIcon className="w-6 h-6" />
-            </button>
+              {isOnline ? 'Go Offline' : 'Go Online'}
+            </Button>
           </div>
         </div>
       </motion.div>
@@ -166,7 +191,7 @@ export default function RiderDashboard() {
                 <div className="flex items-center justify-between mb-3">
                   <div>
                     <p className="font-semibold text-gray-900">#{order.id}</p>
-                    <p className="text-sm text-gray-600">{order.restaurant}</p>
+                    <p className="text-sm text-gray-600">{order.restaurant.name}</p>
                   </div>
                   <div className="text-right">
                     <p className="font-bold text-green-600">₦{order.earnings}</p>
@@ -175,10 +200,15 @@ export default function RiderDashboard() {
                 </div>
                 
                 <div className="flex items-center justify-between">
-                  <p className="text-sm text-gray-600">{order.items} items</p>
-                  <button className="bg-blue-500 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-blue-600 transition-colors">
+                  <p className="text-sm text-gray-600">{order.itemCount || order.items} items</p>
+                  <Button 
+                    theme="rider" 
+                    variant="primary" 
+                    size="sm"
+                    onClick={() => handleAcceptOrder(order.id)}
+                  >
                     Accept Order
-                  </button>
+                  </Button>
                 </div>
               </div>
             ))}

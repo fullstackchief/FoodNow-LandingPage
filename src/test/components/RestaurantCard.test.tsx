@@ -6,13 +6,34 @@ const mockRestaurant = {
   id: '1',
   name: 'Test Restaurant',
   description: 'Delicious Nigerian cuisine',
-  cuisine_types: ['Nigerian', 'Continental'],
+  image_url: 'test-restaurant.jpg',
+  cover_image_url: null,
   rating: 4.5,
+  review_count: 120,
+  price_range: '$$' as const,
+  cuisine_types: ['Nigerian', 'Continental'],
   delivery_time: '25-35 min',
   delivery_fee: 500,
-  image_url: 'test-restaurant.jpg',
+  minimum_order: 1000,
   is_open: true,
-  total_ratings: 120
+  is_featured: false,
+  status: 'active',
+  opening_hours: {},
+  location: {},
+  features: [],
+  phone_number: '+2348012345678',
+  email: 'test@restaurant.com',
+  total_orders: 50,
+  established_year: 2020,
+  created_at: '2024-01-01T00:00:00Z',
+  updated_at: '2024-01-01T00:00:00Z',
+  promotions: null,
+  // Computed aliases
+  reviewCount: 120,
+  deliveryTime: '25-35 min',
+  deliveryFee: 500,
+  cuisineTypes: ['Nigerian', 'Continental'],
+  priceRange: '$$' as const
 }
 
 describe('RestaurantCard Component', () => {
@@ -34,12 +55,11 @@ describe('RestaurantCard Component', () => {
     expect(screen.getByText(/closed/i)).toBeInTheDocument()
   })
 
-  it('handles click to view restaurant', () => {
-    const mockOnClick = vi.fn()
-    render(<RestaurantCard restaurant={mockRestaurant} onClick={mockOnClick} />)
+  it('renders restaurant link correctly', () => {
+    render(<RestaurantCard restaurant={mockRestaurant} />)
     
-    fireEvent.click(screen.getByText('Test Restaurant'))
-    expect(mockOnClick).toHaveBeenCalledWith(mockRestaurant)
+    const restaurantLink = screen.getByRole('link')
+    expect(restaurantLink).toHaveAttribute('href', '/restaurant/1')
   })
 
   it('shows rating and review count', () => {

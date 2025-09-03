@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Button from '@/components/ui/Button'
 
 const EmptyCart = () => {
   return (
@@ -10,9 +11,9 @@ const EmptyCart = () => {
         <h2 className="text-2xl font-bold text-gray-900 mb-4">Your cart is empty</h2>
         <p className="text-gray-600 mb-8">Add some delicious items to proceed to checkout</p>
         <Link href="/explore">
-          <button className="btn-primary">
+          <Button theme="customer" variant="primary">
             Browse Restaurants
-          </button>
+          </Button>
         </Link>
       </div>
     </div>

@@ -1,9 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { useAuth } from '@/contexts/AuthContext'
+import Button from '@/components/ui/Button'
+import AddMenuItemModal from '@/components/restaurant/AddMenuItemModal'
 import {
   ClipboardDocumentListIcon,
   CurrencyDollarIcon,
@@ -19,6 +21,29 @@ import {
 export default function RestaurantDashboard() {
   const { user } = useAuth()
   const [activeOrders, setActiveOrders] = useState(3)
+  const [isAddMenuModalOpen, setIsAddMenuModalOpen] = useState(false)
+  const [menuItems, setMenuItems] = useState<any[]>([])
+
+  useEffect(() => {
+    if (user && user.user_role === 'restaurant_owner') {
+      fetchMenuItems()
+    }
+  }, [user])
+
+  const fetchMenuItems = async () => {
+    try {
+      const response = await fetch(`/api/restaurants/menu?restaurantId=${user?.id}`)
+      if (response.ok) {
+        const data = await response.json()
+        setMenuItems(data.menuItems || [])
+      }
+    } catch (error) {
+    }
+  }
+
+  const handleMenuItemAdded = () => {
+    fetchMenuItems()
+  }
 
   const restaurantStats = [
     {
@@ -69,11 +94,6 @@ export default function RestaurantDashboard() {
     }
   ]
 
-  const menuItems = [
-    { name: 'Jollof Rice Special', available: true, orders: 12 },
-    { name: 'Pepper Soup', available: true, orders: 8 },
-    { name: 'Grilled Chicken', available: false, orders: 0 }
-  ]
 
   return (
     <div className="space-y-8">
@@ -87,15 +107,19 @@ export default function RestaurantDashboard() {
         <p className="text-green-100">Manage your orders, menu, and restaurant performance</p>
         
         <div className="flex space-x-4 mt-6">
-          <Link
-            href="/dashboard/orders"
-            className="bg-white text-green-600 px-6 py-3 rounded-2xl font-semibold hover:bg-green-50 transition-colors"
-          >
-            View All Orders
+          <Link href="/dashboard/orders">
+            <Button theme="restaurant" variant="secondary" size="md">
+              View All Orders
+            </Button>
           </Link>
-          <button className="bg-green-600 text-white px-6 py-3 rounded-2xl font-semibold hover:bg-green-700 transition-colors">
+          <Button 
+            theme="restaurant" 
+            variant="primary" 
+            size="md"
+            onClick={() => setIsAddMenuModalOpen(true)}
+          >
             Add Menu Item
-          </button>
+          </Button>
         </div>
       </motion.div>
 
@@ -178,29 +202,52 @@ export default function RestaurantDashboard() {
               <ChartBarIcon className="w-6 h-6 text-green-600" />
               <span>Menu Items</span>
             </h3>
-            <button className="flex items-center space-x-2 bg-green-500 text-white px-4 py-2 rounded-xl hover:bg-green-600 transition-colors">
-              <PlusIcon className="w-4 h-4" />
-              <span>Add Item</span>
-            </button>
+            <Button 
+              theme="restaurant" 
+              variant="primary" 
+              size="sm"
+              icon={<PlusIcon className="w-4 h-4" />}
+              onClick={() => setIsAddMenuModalOpen(true)}
+            >
+              Add Item
+            </Button>
           </div>
 
           <div className="space-y-3">
-            {menuItems.map((item, index) => (
-              <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
-                <div>
-                  <p className="font-medium text-gray-900">{item.name}</p>
-                  <p className="text-sm text-gray-600">{item.orders} orders today</p>
+            {menuItems.length > 0 ? (
+              menuItems.map((item, index) => (
+                <div key={item.id || index} className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                  <div>
+                    <p className="font-medium text-gray-900">{item.name}</p>
+                    <p className="text-sm text-gray-600">₦{item.price?.toLocaleString()} • {item.category}</p>
+                    <p className="text-xs text-gray-500">
+                      {item.admin_approved ? 'Approved' : 'Pending approval'}
+                    </p>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <span className={`w-3 h-3 rounded-full ${
+                      item.is_available ? 'bg-green-500' : 'bg-red-500'
+                    }`}></span>
+                    <button className="text-gray-400 hover:text-gray-600">
+                      {item.is_available ? <EyeIcon className="w-4 h-4" /> : <EyeSlashIcon className="w-4 h-4" />}
+                    </button>
+                  </div>
                 </div>
-                <div className="flex items-center space-x-3">
-                  <span className={`w-3 h-3 rounded-full ${
-                    item.available ? 'bg-green-500' : 'bg-red-500'
-                  }`}></span>
-                  <button className="text-gray-400 hover:text-gray-600">
-                    {item.available ? <EyeIcon className="w-4 h-4" /> : <EyeSlashIcon className="w-4 h-4" />}
-                  </button>
-                </div>
+              ))
+            ) : (
+              <div className="text-center py-8">
+                <ChartBarIcon className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                <p className="text-gray-600 mb-4">No menu items yet</p>
+                <Button 
+                  theme="restaurant" 
+                  variant="primary" 
+                  size="sm"
+                  onClick={() => setIsAddMenuModalOpen(true)}
+                >
+                  Add Your First Item
+                </Button>
               </div>
-            ))}
+            )}
           </div>
         </motion.div>
       </div>
@@ -242,6 +289,14 @@ export default function RestaurantDashboard() {
           </div>
         </div>
       </motion.div>
+
+      {/* Add Menu Item Modal */}
+      <AddMenuItemModal
+        isOpen={isAddMenuModalOpen}
+        onClose={() => setIsAddMenuModalOpen(false)}
+        restaurantId={user?.id || ''}
+        onSuccess={handleMenuItemAdded}
+      />
     </div>
   )
 }

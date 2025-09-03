@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { Eye, EyeOff, Mail, Lock, User, Phone, AlertCircle, Loader2, ArrowLeft, Check } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
+import Button from '@/components/ui/Button'
 
 interface SignupData {
   email: string
@@ -118,13 +119,15 @@ export default function SignupPage() {
     <div className="min-h-screen bg-gradient-to-br from-orange-50 to-green-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="flex justify-between items-center mb-8">
-          <button
+          <Button
             onClick={() => router.back()}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-800 transition-colors"
+            variant="ghost"
+            size="sm"
+            icon={<ArrowLeft className="w-5 h-5" />}
+            className="text-gray-600 hover:text-gray-800"
           >
-            <ArrowLeft className="w-5 h-5" />
             Back
-          </button>
+          </Button>
           <Link href="/" className="text-2xl font-bold text-orange-600">
             FoodNow
           </Link>
@@ -351,17 +354,16 @@ export default function SignupPage() {
             </div>
 
             <div>
-              <button
+              <Button
                 type="submit"
                 disabled={isLoading || !passwordValidation.isValid || !formData.agreeToTerms}
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                theme="customer"
+                variant="primary"
+                fullWidth
+                loading={isLoading}
               >
-                {isLoading ? (
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                ) : (
-                  'Create account'
-                )}
-              </button>
+                Create account
+              </Button>
             </div>
 
             <div className="mt-6">
@@ -375,25 +377,29 @@ export default function SignupPage() {
               </div>
 
               <div className="mt-6 grid grid-cols-2 gap-3">
-                <button
+                <Button
                   type="button"
                   onClick={() => handleOAuthSignup('google')}
                   disabled={isLoading}
-                  className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
+                  variant="outline"
+                  theme="customer"
+                  fullWidth
+                  icon={<span className="text-lg">🔍</span>}
                 >
-                  <span className="text-lg">🔍</span>
-                  <span className="ml-2">Google</span>
-                </button>
+                  Google
+                </Button>
 
-                <button
+                <Button
                   type="button"
                   onClick={() => handleOAuthSignup('facebook')}
                   disabled={isLoading}
-                  className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
+                  variant="outline"
+                  theme="customer"
+                  fullWidth
+                  icon={<span className="text-lg">📘</span>}
                 >
-                  <span className="text-lg">📘</span>
-                  <span className="ml-2">Facebook</span>
-                </button>
+                  Facebook
+                </Button>
               </div>
             </div>
           </form>

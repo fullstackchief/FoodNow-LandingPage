@@ -33,12 +33,12 @@ export async function getFeaturedRestaurants(): Promise<{ data: Restaurant[] | n
   try {
     const { data, error } = await supabase
       .from('restaurants')
-      .select('id, name, description, image_url, cover_image_url, rating, review_count, price_range, cuisine_types, delivery_time, delivery_fee, minimum_order, is_open, opening_hours, location, features, phone_number, email, total_orders, established_year, created_at, updated_at, promotions, is_featured')
+      .select('id, name, description, image_url, rating, review_count, price_range, cuisine_types, delivery_time, delivery_fee, is_open, location')
       .eq('is_open', true)
       .eq('is_featured', true)
-      .gte('rating', 4.0) // Featured restaurants should have good ratings
+      .gte('rating', 4.0)
       .order('rating', { ascending: false })
-      .limit(8)
+      .limit(6)
 
     return { data, error: error?.message || null }
   } catch (error) {
@@ -59,12 +59,13 @@ export async function getRestaurantsNearby(
     // Get admin-configurable delivery radius if not provided
     const deliveryRadius = radiusKm || await systemSettings.getDeliveryRadius()
     
-    // Get all active restaurants
+    // Get all active restaurants with essential fields only
     const { data: restaurants, error } = await supabase
       .from('restaurants')
-      .select('id, name, description, image_url, cover_image_url, rating, review_count, price_range, cuisine_types, delivery_time, delivery_fee, minimum_order, is_open, opening_hours, location, features, phone_number, email, total_orders, established_year, created_at, updated_at, promotions, is_featured')
+      .select('id, name, description, image_url, rating, review_count, price_range, cuisine_types, delivery_time, delivery_fee, is_open, location')
       .eq('is_open', true)
       .order('rating', { ascending: false })
+      .limit(20)
 
     if (error) {
       return { data: null, error: error.message }
@@ -79,7 +80,6 @@ export async function getRestaurantsNearby(
       // Skip restaurants without coordinates
       const location = restaurant.location as any
       if (!location?.coordinates?.lat || !location?.coordinates?.lng) {
-        console.warn(`⚠️ Restaurant ${restaurant.name} has no coordinates, excluding from results`)
         return false
       }
 

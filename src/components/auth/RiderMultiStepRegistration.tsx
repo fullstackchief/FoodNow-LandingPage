@@ -5,46 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronLeft, ChevronRight, Upload, Check, AlertCircle, User, Calendar, MapPin, FileText, CreditCard, Shield, Users, Briefcase, Phone } from 'lucide-react'
 import { devLog, prodLog } from '@/lib/logger'
 import { sendOTP } from '@/lib/otpService'
-
-// Nigerian states list
-const NIGERIAN_STATES = [
-  'Abia', 'Adamawa', 'Akwa Ibom', 'Anambra', 'Bauchi', 'Bayelsa', 'Benue', 'Borno',
-  'Cross River', 'Delta', 'Ebonyi', 'Edo', 'Ekiti', 'Enugu', 'FCT', 'Gombe',
-  'Imo', 'Jigawa', 'Kaduna', 'Kano', 'Katsina', 'Kebbi', 'Kogi', 'Kwara',
-  'Lagos', 'Nasarawa', 'Niger', 'Ogun', 'Ondo', 'Osun', 'Oyo', 'Plateau',
-  'Rivers', 'Sokoto', 'Taraba', 'Yobe', 'Zamfara'
-]
-
-// Nigerian banks list
-const NIGERIAN_BANKS = [
-  'Access Bank', 'Ecobank', 'Fidelity Bank', 'First Bank of Nigeria', 'First City Monument Bank',
-  'Guaranty Trust Bank', 'Heritage Bank', 'Keystone Bank', 'Polaris Bank', 'Stanbic IBTC Bank',
-  'Standard Chartered Bank', 'Sterling Bank', 'Union Bank', 'United Bank for Africa', 'Unity Bank',
-  'Wema Bank', 'Zenith Bank', 'Jaiz Bank', 'SunTrust Bank', 'Titan Trust Bank'
-]
-
-// Delivery zones for Lagos
-const DELIVERY_ZONES = [
-  'Victoria Island', 'Ikoyi', 'Lekki Phase 1', 'Lekki Phase 2', 'Ajah', 'Sangotedo',
-  'Ikeja', 'Maryland', 'Ikosi-Ketu', 'Gbagada', 'Yaba', 'Surulere', 'Mushin',
-  'Alaba', 'Festac', 'Satellite Town', 'Amuwo-Odofin', 'Isolo', 'Egbeda', 'Idimu'
-]
-
-// Guarantor eligible occupations
-const GUARANTOR_OCCUPATIONS = [
-  'Bank Employee (Full-time)',
-  'Government Worker (Federal)',
-  'Government Worker (State)', 
-  'Government Worker (Local)',
-  'Police Officer',
-  'Pastor/Clergy',
-  'Imam/Clergy',
-  'Licensed Doctor',
-  'Licensed Lawyer', 
-  'Licensed Engineer',
-  'Reputable Business Owner',
-  'Other Licensed Professional'
-]
+import { NIGERIAN_STATES, NIGERIAN_BANKS, DELIVERY_ZONES, GUARANTOR_OCCUPATIONS } from '@/constants'
 
 // Registration step types
 interface BaseRegistrationStep {
@@ -80,7 +41,7 @@ interface RiderRegistrationData {
   bankName: string
   accountNumber: string
   accountName: string
-  bvn: string
+  bvn?: string
   
   // Step 4: NIN Information
   ninNumber: string
@@ -90,7 +51,7 @@ interface RiderRegistrationData {
   // Step 5: Document Uploads
   documents: {
     ninCardFront?: File | string
-    ninCardBack?: File | string
+    // ninCardBack removed - no longer required
     utilityBill?: File | string
     riderPhoto1?: File | string
     riderPhoto2?: File | string
@@ -365,11 +326,7 @@ export default function RiderMultiStepRegistration({
           stepErrors.accountNumber = 'Account number must be 10 digits'
         }
         if (!registrationData.accountName.trim()) stepErrors.accountName = 'Account name is required'
-        if (!registrationData.bvn.trim()) {
-          stepErrors.bvn = 'BVN is required'
-        } else if (!validateBVN(registrationData.bvn)) {
-          stepErrors.bvn = 'BVN must be 11 digits'
-        }
+        // BVN no longer required per business decision
         break
 
       case 'nin_info':
@@ -384,7 +341,7 @@ export default function RiderMultiStepRegistration({
 
       case 'document_upload':
         if (!registrationData.documents.ninCardFront) stepErrors.ninCardFront = 'NIN card front is required'
-        if (!registrationData.documents.ninCardBack) stepErrors.ninCardBack = 'NIN card back is required'
+        // NIN card back no longer required per business decision
         if (!registrationData.documents.utilityBill) stepErrors.utilityBill = 'Utility bill is required'
         if (!registrationData.documents.riderPhoto1) stepErrors.riderPhoto1 = 'Rider photo 1 is required'
         if (!registrationData.documents.riderPhoto2) stepErrors.riderPhoto2 = 'Rider photo 2 is required'
@@ -975,22 +932,6 @@ export default function RiderMultiStepRegistration({
                 </div>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  BVN (Bank Verification Number) *
-                </label>
-                <input
-                  type="text"
-                  value={registrationData.bvn}
-                  onChange={(e) => updateRegistrationData({ bvn: e.target.value })}
-                  className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent ${
-                    errors.bvn ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                  placeholder="11-digit BVN"
-                  maxLength={11}
-                />
-                {errors.bvn && <p className="text-red-500 text-sm mt-1">{errors.bvn}</p>}
-              </div>
 
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                 <div className="flex">
@@ -1135,33 +1076,6 @@ export default function RiderMultiStepRegistration({
                   {errors.ninCardFront && <p className="text-red-500 text-sm mt-1">{errors.ninCardFront}</p>}
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    NIN Card Back *
-                  </label>
-                  <div className={`border-2 border-dashed rounded-lg p-4 text-center ${
-                    errors.ninCardBack ? 'border-red-300' : 'border-gray-300'
-                  }`}>
-                    <input
-                      type="file"
-                      accept="image/jpeg,image/png,image/jpg"
-                      onChange={(e) => {
-                        const file = e.target.files?.[0]
-                        if (file) handleDocumentUpload('ninCardBack', file)
-                      }}
-                      className="hidden"
-                      id="ninCardBack"
-                    />
-                    <label htmlFor="ninCardBack" className="cursor-pointer">
-                      <Upload className="mx-auto h-8 w-8 text-gray-400" />
-                      <p className="mt-2 text-sm text-gray-600">
-                        {registrationData.documents.ninCardBack ? 'Document uploaded' : 'Click to upload NIN back'}
-                      </p>
-                      <p className="text-xs text-gray-500">JPG, PNG up to 5MB</p>
-                    </label>
-                  </div>
-                  {errors.ninCardBack && <p className="text-red-500 text-sm mt-1">{errors.ninCardBack}</p>}
-                </div>
               </div>
             </div>
 

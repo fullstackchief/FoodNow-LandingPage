@@ -625,9 +625,9 @@ export class RestaurantCapacityService {
         return {
           id: restaurant.id,
           name: restaurant.name,
-          status: capacity?.status || 'Available',
-          estimatedPrepTime: capacity?.average_prep_time || 25,
-          activeOrders: capacity?.active_orders || 0,
+          status: (capacity as any)?.status || 'Available',
+          estimatedPrepTime: (capacity as any)?.average_prep_time || 25,
+          activeOrders: (capacity as any)?.active_orders || 0,
           canAcceptOrders: canAccept
         }
       }).sort((a, b) => {

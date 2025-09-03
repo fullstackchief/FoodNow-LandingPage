@@ -43,7 +43,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Only super_admin can view all admins
-    if (requestor.role !== 'super_admin' && !requestor.permissions?.admins?.view) {
+    if (requestor.role !== 'super_admin' && !requestor.permissions?.system?.includes('create_admins')) {
       return NextResponse.json(
         { success: false, error: 'Insufficient permissions' },
         { status: 403 }
@@ -116,7 +116,7 @@ export async function POST(request: NextRequest) {
     // Check permissions based on role hierarchy
     if (creator.role === 'super_admin') {
       // Super admin can create anyone
-    } else if (creator.role === 'admin' && creator.permissions?.admins?.create) {
+    } else if (creator.role === 'admin' && creator.permissions?.system?.includes('create_admins')) {
       // Regular admin can only create lower level roles
       if (!['moderator', 'staff'].includes(role)) {
         return NextResponse.json(

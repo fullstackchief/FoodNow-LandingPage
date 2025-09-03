@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { CheckCircleIcon } from '@heroicons/react/24/outline'
 import Navigation from '@/components/layout/Navigation'
+import Button from '@/components/ui/Button'
 import { CartState } from '@/store/slices/cartSlice'
 
 interface OrderConfirmationProps {
@@ -74,41 +75,50 @@ const OrderConfirmation = ({
                 
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Link href={`/auth/signup?prefill=checkout&orderId=${createdOrderId}`} className="flex-1">
-                    <button className="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+                    <Button 
+                      theme="customer" 
+                      variant="primary" 
+                      fullWidth
+                    >
                       Create Account
-                    </button>
+                    </Button>
                   </Link>
-                  <button 
+                  <Button 
                     onClick={() => localStorage.setItem('skipAccountCreation', 'true')}
-                    className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg font-medium transition-colors"
+                    theme="customer"
+                    variant="secondary"
+                    fullWidth
+                    className="bg-gray-200 hover:bg-gray-300 text-gray-700"
                   >
                     Maybe Later
-                  </button>
+                  </Button>
                 </div>
               </div>
             )}
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <button 
-                className="flex-1 btn-outline"
+              <Button 
+                theme="customer"
+                variant="outline"
+                fullWidth
                 onClick={() => {
                   onClearCart()
                   window.location.href = '/explore'
                 }}
               >
                 Order Again
-              </button>
+              </Button>
               {createdOrderId ? (
                 <Link href={`/orders/${createdOrderId}`} className="flex-1">
-                  <button className="w-full btn-primary">
+                  <Button theme="customer" variant="primary" fullWidth>
                     Track Order
-                  </button>
+                  </Button>
                 </Link>
               ) : (
                 <Link href="/dashboard/orders" className="flex-1">
-                  <button className="w-full btn-primary">
+                  <Button theme="customer" variant="primary" fullWidth>
                     View Orders
-                  </button>
+                  </Button>
                 </Link>
               )}
             </div>

@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { ArrowLeft } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
+import Button from '@/components/ui/Button'
 import RestaurantMultiStepRegistration from '@/components/auth/RestaurantMultiStepRegistration'
 import { prodLog } from '@/lib/logger'
 import { submitRestaurantOwnerApplication } from '@/lib/authService'
@@ -35,8 +36,9 @@ export default function RestaurantSignupPage() {
         password: data.password,
         firstName,
         lastName,
-        phone: data.ownerPhone
-      } as any)
+        phone: data.ownerPhone,
+        userRole: 'restaurant_owner'
+      })
       
       if (result.success) {
         // Get the user ID from Supabase auth directly
@@ -54,8 +56,6 @@ export default function RestaurantSignupPage() {
               URL.createObjectURL(data.documents.cacCertificate) : data.documents.cacCertificate,
             ownerNinFront: data.documents.ownerNinFront instanceof File ? 
               URL.createObjectURL(data.documents.ownerNinFront) : data.documents.ownerNinFront,
-            ownerNinBack: data.documents.ownerNinBack instanceof File ? 
-              URL.createObjectURL(data.documents.ownerNinBack) : data.documents.ownerNinBack,
             restaurantPhoto1: data.documents.restaurantPhoto1 instanceof File ? 
               URL.createObjectURL(data.documents.restaurantPhoto1) : data.documents.restaurantPhoto1,
             restaurantPhoto2: data.documents.restaurantPhoto2 instanceof File ? 
@@ -108,13 +108,15 @@ export default function RestaurantSignupPage() {
     <div className="min-h-screen bg-gradient-to-br from-orange-50 to-green-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="flex justify-between items-center mb-8">
-          <button
+          <Button
             onClick={() => router.back()}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-800 transition-colors"
+            variant="ghost"
+            size="sm"
+            icon={<ArrowLeft className="w-5 h-5" />}
+            className="text-gray-600 hover:text-gray-800"
           >
-            <ArrowLeft className="w-5 h-5" />
             Back
-          </button>
+          </Button>
           <Link href="/" className="text-2xl font-bold text-orange-600">
             FoodNow
           </Link>

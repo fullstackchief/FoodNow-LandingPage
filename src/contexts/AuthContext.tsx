@@ -556,16 +556,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const loginAsAdmin = useCallback(async (email: string, password: string) => {
     setIsAdminLoading(true)
     try {
-      // Use new admin OTP endpoint for enhanced security
-      const response = await fetch('/api/auth/admin-otp', {
+      // Use direct admin authentication endpoint (no OTP)
+      const response = await fetch('/api/admin/auth', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           email,
-          password,
-          action: 'verify_credentials'
+          password
         })
       })
 
@@ -575,8 +574,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return { success: false, error: result.error }
       }
 
-      // Return success - OTP modal will handle the rest
-      return { success: true, data: result.data }
+      // Set admin user state directly from successful authentication
+      const adminData = result.data
+      setAdminUser(adminData)
+      setAdminRole(adminData.role)
+      setAdminPermissions(adminData.permissions)
+      
+      // Store admin session
+      localStorage.setItem('admin_session', JSON.stringify({
+        id: adminData.id,
+        email: adminData.email,
+        role: adminData.role,
+        verified: true
+      }))
+
+      return { success: true, data: adminData }
 
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error)

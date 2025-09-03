@@ -1,18 +1,38 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { Settings, MapPin, Save, RefreshCw } from 'lucide-react'
+import { useAuth } from '@/contexts/AuthContext'
 import { systemSettings } from '@/lib/systemSettings'
 
 export default function DeliverySettingsPage() {
+  const { isAdminAuthenticated, adminUser } = useAuth()
+  const router = useRouter()
   const [deliveryRadius, setDeliveryRadius] = useState(20)
   const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
   const [message, setMessage] = useState('')
 
+  // Authentication check
   useEffect(() => {
-    loadSettings()
-  }, [])
+    if (!isAdminAuthenticated || !adminUser) {
+      router.push('/admin-system')
+      return
+    }
+    
+    // Check super admin permission for system settings
+    if (adminUser.role !== 'super_admin' && !adminUser.permissions?.system?.includes('system_settings')) {
+      router.push('/admin-system/dashboard')
+      return
+    }
+  }, [isAdminAuthenticated, adminUser, router])
+
+  useEffect(() => {
+    if (isAdminAuthenticated && adminUser) {
+      loadSettings()
+    }
+  }, [isAdminAuthenticated, adminUser])
 
   const loadSettings = async () => {
     try {
@@ -50,6 +70,18 @@ export default function DeliverySettingsPage() {
     } finally {
       setIsSaving(false)
     }
+  }
+
+  // Show loading while checking authentication
+  if (!isAdminAuthenticated || !adminUser) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-blue-500/30 border-t-blue-500 rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600">Checking admin access...</p>
+        </div>
+      </div>
+    )
   }
 
   return (

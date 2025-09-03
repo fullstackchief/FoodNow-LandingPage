@@ -18,8 +18,8 @@ test.describe('Content and Page Rendering', () => {
       await expect(page.getByRole('heading', { name: pageData.heading })).toBeVisible()
       
       // Check no JavaScript errors
-      const errors = []
-      page.on('pageerror', error => errors.push(error))
+      const errors: any[] = []
+      page.on('pageerror', (error: any) => errors.push(error))
       await page.waitForTimeout(1000)
       expect(errors).toHaveLength(0)
     }
@@ -40,7 +40,7 @@ test.describe('Content and Page Rendering', () => {
       await expect(img).toHaveAttribute('alt')
       
       // Should have loaded (not broken)
-      const naturalWidth = await img.evaluate(img => img.naturalWidth)
+      const naturalWidth = await img.evaluate((img: any) => img.naturalWidth)
       expect(naturalWidth).toBeGreaterThan(0)
     }
   })

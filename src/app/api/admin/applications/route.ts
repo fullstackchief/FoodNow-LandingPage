@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getAllApplications } from '@/lib/adminService'
-import { validateAdminSession } from '@/lib/adminService'
-import { cookies } from 'next/headers'
+import { validateAdminSession } from '@/lib/cookies'
 import { prodLog } from '@/lib/logger'
 
 /**
@@ -10,30 +9,22 @@ import { prodLog } from '@/lib/logger'
  */
 export async function GET(request: NextRequest) {
   try {
-    // Validate admin session
-    const cookieStore = await cookies()
-    const adminId = cookieStore.get('admin_id')?.value
-
-    if (!adminId) {
+    // Validate admin session from cookie
+    const adminSession = await validateAdminSession(request)
+    
+    if (!adminSession) {
       return NextResponse.json(
         { success: false, error: 'Admin authentication required' },
         { status: 401 }
       )
     }
 
-    // Validate admin exists and is active
-    const admin = await validateAdminSession(adminId)
-    if (!admin) {
+    // Check admin permissions (super admin has all access)
+    if (adminSession.role !== 'super_admin' && 
+        !adminSession.permissions?.restaurants?.includes('view_all') && 
+        !adminSession.permissions?.riders?.includes('view_all')) {
       return NextResponse.json(
-        { success: false, error: 'Invalid admin session' },
-        { status: 401 }
-      )
-    }
-
-    // Check admin permissions
-    if (!admin.permissions?.users?.view && admin.role !== 'super_admin') {
-      return NextResponse.json(
-        { success: false, error: 'Insufficient permissions' },
+        { success: false, error: 'Insufficient permissions to view applications' },
         { status: 403 }
       )
     }
@@ -62,7 +53,11 @@ export async function GET(request: NextRequest) {
     }
 
     if (role !== 'all') {
-      applications = applications.filter(app => app.requested_role === role)
+      applications = applications.filter(app => 
+        app.application_type === role || 
+        (app.application_type === 'restaurant' && role === 'restaurant_owner') ||
+        (app.application_type === 'rider' && role === 'rider')
+      )
     }
 
     if (search) {
@@ -72,13 +67,13 @@ export async function GET(request: NextRequest) {
         app.user?.last_name?.toLowerCase().includes(searchLower) ||
         app.user?.email?.toLowerCase().includes(searchLower) ||
         app.id.toLowerCase().includes(searchLower) ||
-        (app.requested_role === 'restaurant_owner' && 
-         app.application_data?.business_name?.toLowerCase().includes(searchLower))
+        (app.application_type === 'restaurant' && 
+         app.restaurant_name?.toLowerCase().includes(searchLower))
       )
     }
 
     prodLog.info('Applications retrieved by admin', {
-      adminId,
+      adminId: adminSession.adminId,
       count: applications.length,
       filters: { status, role, search },
       action: 'get_applications'

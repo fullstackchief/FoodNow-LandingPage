@@ -10,6 +10,7 @@ import {
   CheckIcon,
   EnvelopeIcon
 } from '@heroicons/react/24/outline'
+import Button from '@/components/ui/Button'
 
 const MobileAppSection = () => {
   const [email, setEmail] = useState('')
@@ -364,27 +365,29 @@ const MobileAppSection = () => {
           {/* Download Buttons (Coming Soon) */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <div className="flex gap-4">
-              <button 
+              <Button 
                 disabled
+                variant="outline"
                 className="flex items-center space-x-3 bg-gray-100 text-gray-400 font-semibold py-3 px-6 rounded-2xl cursor-not-allowed opacity-60"
+                icon={<span className="text-2xl">📱</span>}
               >
-                <span className="text-2xl">📱</span>
                 <div className="text-left">
                   <div className="text-xs">Download on the</div>
                   <div className="text-sm font-bold">App Store</div>
                 </div>
-              </button>
+              </Button>
               
-              <button 
+              <Button 
                 disabled
+                variant="outline"
                 className="flex items-center space-x-3 bg-gray-100 text-gray-400 font-semibold py-3 px-6 rounded-2xl cursor-not-allowed opacity-60"
+                icon={<span className="text-2xl">🤖</span>}
               >
-                <span className="text-2xl">🤖</span>
                 <div className="text-left">
                   <div className="text-xs">Get it on</div>
                   <div className="text-sm font-bold">Google Play</div>
                 </div>
-              </button>
+              </Button>
             </div>
             
             {/* QR Code */}

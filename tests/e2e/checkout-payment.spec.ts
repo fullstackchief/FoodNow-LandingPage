@@ -22,7 +22,7 @@ test.describe('Checkout and Payment Flow', () => {
     await expect(page.getByRole('heading', { name: /order summary/i })).toBeVisible()
     
     // Check item details
-    await expect(page.locator('[data-testid="order-item"]')).toHaveCountGreaterThan(0)
+    await expect(page.locator('[data-testid="order-item"]')).toHaveCount(1)
     
     // Check pricing breakdown
     await expect(page.getByText(/subtotal/i)).toBeVisible()

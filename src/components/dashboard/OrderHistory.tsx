@@ -183,8 +183,72 @@ const OrderHistory = ({ className = '' }: OrderHistoryProps) => {
   })
 
   const handleReorder = async (orderId: string) => {
-    // TODO: Implement reorder functionality
-    console.log('Reorder:', orderId)
+    try {
+      // Find the order to reorder
+      const orderToReorder = orders.find(order => order.id === orderId)
+      if (!orderToReorder) {
+        console.error('Order not found for reorder')
+        return
+      }
+
+      // Fetch complete order details including menu items
+      const { data, error } = await supabase
+        .from('orders')
+        .select(`
+          *,
+          restaurants!inner(id, name),
+          order_items(
+            quantity,
+            price,
+            customizations,
+            menu_items!inner(
+              id,
+              name,
+              price,
+              description,
+              image_url,
+              customization_options
+            )
+          )
+        `)
+        .eq('id', orderId)
+        .single()
+
+      if (error || !data) {
+        console.error('Failed to fetch order details for reorder:', error)
+        return
+      }
+
+      // Transform order items back to cart format
+      const cartItems = (data as any).order_items.map((item: any) => ({
+        id: item.menu_items.id,
+        name: item.menu_items.name,
+        price: item.menu_items.price,
+        description: item.menu_items.description,
+        image_url: item.menu_items.image_url,
+        quantity: item.quantity,
+        customizations: item.customizations || {},
+        customization_options: item.menu_items.customization_options
+      }))
+
+      // Store in localStorage for cart restoration
+      const reorderData = {
+        restaurant: {
+          id: (data as any).restaurants.id,
+          name: (data as any).restaurants.name
+        },
+        items: cartItems,
+        timestamp: Date.now()
+      }
+
+      localStorage.setItem('reorder_data', JSON.stringify(reorderData))
+
+      // Navigate to restaurant page to restore cart
+      window.location.href = `/restaurant/${(data as any).restaurants.id}?reorder=true`
+
+    } catch (error) {
+      console.error('Error during reorder process:', error)
+    }
   }
 
   const formatDate = (dateString: string) => {

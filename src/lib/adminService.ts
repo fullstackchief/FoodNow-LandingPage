@@ -9,6 +9,7 @@ import { supabaseServerClient } from '@/lib/supabase-server'
 import { devLog, prodLog } from '@/lib/logger'
 import { sendApplicationStatusNotification, sendWelcomeNotification } from '@/lib/notificationService'
 import { logApplicationActivity } from '@/lib/adminActivityLogger'
+import { UserApplication, ApplicationUpdateData } from '@/types'
 
 // Admin role types (based on existing data)
 export type AdminRole = 'super_admin' | 'admin' | 'moderator' | 'staff'
@@ -184,18 +185,18 @@ export async function validateAdminSession(adminId: string): Promise<AdminUser |
     }
 
     // Check if account is locked
-    if (admin.locked_until && new Date(admin.locked_until) > new Date()) {
+    if ((admin as any).locked_until && new Date((admin as any).locked_until) > new Date()) {
       return null
     }
 
     // Update last activity
     try {
-      await supabaseServerClient
-        .from('admin_users')
+      await (supabaseServerClient
+        .from('admin_users') as any)
         .update({ 
           last_login: new Date().toISOString(),
           updated_at: new Date().toISOString()
-        })
+        } as any)
         .eq('id', adminId)
     } catch (error) {
       // Don't fail validation if update fails
@@ -269,10 +270,13 @@ export interface ApplicationData {
   }
 }
 
-export interface ApplicationUpdateData {
+export interface AdminApplicationUpdate {
   status: 'pending' | 'approved' | 'rejected' | 'under_review'
   review_notes?: string
   reviewed_by?: string
+  admin_notes?: string
+  approved_by?: string
+  approved_at?: string
 }
 
 /**
@@ -280,7 +284,7 @@ export interface ApplicationUpdateData {
  */
 export async function getAllApplications(): Promise<{
   success: boolean
-  data?: ApplicationData[]
+  data?: UserApplication[]
   error?: string
 }> {
   try {
@@ -391,7 +395,7 @@ export async function getApplicationById(applicationId: string): Promise<{
  */
 export async function updateApplicationStatus(
   applicationId: string,
-  updateData: ApplicationUpdateData,
+  updateData: AdminApplicationUpdate,
   adminId: string
 ): Promise<{
   success: boolean
@@ -400,7 +404,7 @@ export async function updateApplicationStatus(
 }> {
   try {
     // Prepare update data
-    const updatePayload = {
+    const updatePayload: any = {
       status: updateData.status,
       review_notes: updateData.review_notes,
       reviewed_by: adminId,
@@ -414,9 +418,9 @@ export async function updateApplicationStatus(
       updatePayload.approved_at = new Date().toISOString()
     }
 
-    const { data: updatedApplication, error } = await supabaseServerClient
-      .from('role_applications')
-      .update(updatePayload)
+    const { data: updatedApplication, error } = await (supabaseServerClient
+      .from('role_applications') as any)
+      .update(updatePayload as any)
       .eq('id', applicationId)
       .select(`
         id,
@@ -454,17 +458,17 @@ export async function updateApplicationStatus(
 
     // If approved, update user role and send welcome notification
     if (updateData.status === 'approved') {
-      const roleUpdateSuccess = await updateUserRole(updatedApplication.user_id, updatedApplication.application_type)
+      const roleUpdateSuccess = await updateUserRole((updatedApplication as any).user_id, (updatedApplication as any).application_type)
       
       if (roleUpdateSuccess) {
         // Send welcome notification after successful role update
         await sendWelcomeNotification(
-          updatedApplication.user_id,
-          updatedApplication.application_type,
+          (updatedApplication as any).user_id,
+          (updatedApplication as any).application_type,
           {
-            applicant_name: `${updatedApplication.user?.first_name || ''} ${updatedApplication.user?.last_name || ''}`.trim(),
-            business_name: updatedApplication.restaurant_name,
-            vehicle_type: updatedApplication.vehicle_type
+            applicant_name: `${(updatedApplication as any).user?.first_name || ''} ${(updatedApplication as any).user?.last_name || ''}`.trim(),
+            business_name: (updatedApplication as any).restaurant_name,
+            vehicle_type: (updatedApplication as any).vehicle_type
           }
         )
       }
@@ -473,7 +477,7 @@ export async function updateApplicationStatus(
     // Send application status notification
     await sendApplicationStatusNotification(
       applicationId,
-      updatedApplication.user_id,
+      (updatedApplication as any).user_id,
       updateData.status,
       updateData.admin_notes
     )
@@ -485,14 +489,14 @@ export async function updateApplicationStatus(
       updateData.status === 'rejected' ? 'reject' : 'under_review',
       applicationId,
       {
-        applicant_name: `${updatedApplication.user?.first_name || ''} ${updatedApplication.user?.last_name || ''}`.trim(),
-        applicant_email: updatedApplication.user?.email,
-        requested_role: updatedApplication.requested_role,
+        applicant_name: `${(updatedApplication as any).user?.first_name || ''} ${(updatedApplication as any).user?.last_name || ''}`.trim(),
+        applicant_email: (updatedApplication as any).user?.email,
+        requested_role: (updatedApplication as any).application_type,
         previous_status: 'unknown', // Could fetch this if needed
         new_status: updateData.status,
         admin_notes: updateData.admin_notes,
-        business_name: updatedApplication.application_data?.business_name,
-        vehicle_type: updatedApplication.application_data?.vehicle_type
+        business_name: (updatedApplication as any).application_data?.business_name,
+        vehicle_type: (updatedApplication as any).application_data?.vehicle_type
       }
     )
 
@@ -521,14 +525,14 @@ export async function updateApplicationStatus(
 /**
  * Update user role after application approval
  */
-async function updateUserRole(userId: string, role: 'restaurant_owner' | 'rider'): Promise<boolean> {
+async function updateUserRole(userId: string, role: 'restaurant' | 'rider'): Promise<boolean> {
   try {
-    const { error } = await supabaseServerClient
-      .from('users')
+    const { error } = await (supabaseServerClient
+      .from('users') as any)
       .update({
         user_role: role,
         updated_at: new Date().toISOString()
-      })
+      } as any)
       .eq('id', userId)
 
     if (error) {

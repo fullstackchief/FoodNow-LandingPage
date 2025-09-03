@@ -4,30 +4,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronLeft, ChevronRight, Upload, Check, AlertCircle, Building2, FileText, CreditCard, Clock, Camera, User } from 'lucide-react'
 import { prodLog } from '@/lib/logger'
-
-// Nigerian states list
-const NIGERIAN_STATES = [
-  'Abia', 'Adamawa', 'Akwa Ibom', 'Anambra', 'Bauchi', 'Bayelsa', 'Benue', 'Borno',
-  'Cross River', 'Delta', 'Ebonyi', 'Edo', 'Ekiti', 'Enugu', 'FCT', 'Gombe',
-  'Imo', 'Jigawa', 'Kaduna', 'Kano', 'Katsina', 'Kebbi', 'Kogi', 'Kwara',
-  'Lagos', 'Nasarawa', 'Niger', 'Ogun', 'Ondo', 'Osun', 'Oyo', 'Plateau',
-  'Rivers', 'Sokoto', 'Taraba', 'Yobe', 'Zamfara'
-]
-
-// Nigerian banks list
-const NIGERIAN_BANKS = [
-  'Access Bank', 'Ecobank', 'Fidelity Bank', 'First Bank of Nigeria', 'First City Monument Bank',
-  'Guaranty Trust Bank', 'Heritage Bank', 'Keystone Bank', 'Polaris Bank', 'Stanbic IBTC Bank',
-  'Standard Chartered Bank', 'Sterling Bank', 'Union Bank', 'United Bank for Africa', 'Unity Bank',
-  'Wema Bank', 'Zenith Bank', 'Jaiz Bank', 'SunTrust Bank', 'Titan Trust Bank'
-]
-
-// Cuisine types for restaurants
-const CUISINE_TYPES = [
-  'Nigerian', 'Chinese', 'Italian', 'Indian', 'Continental', 'Lebanese', 'Japanese',
-  'Mexican', 'Turkish', 'Ethiopian', 'Korean', 'Thai', 'American', 'French', 
-  'Mediterranean', 'Vegetarian/Vegan', 'Fast Food', 'BBQ/Grill', 'Seafood', 'Other'
-]
+import { NIGERIAN_STATES, NIGERIAN_BANKS, CUISINE_TYPES } from '@/constants'
 
 // Operating hours template
 const OPERATING_HOURS_TEMPLATE = {
@@ -70,7 +47,7 @@ interface RestaurantRegistrationData {
   documents: {
     cacCertificate?: File | string
     ownerNinFront?: File | string
-    ownerNinBack?: File | string
+    // ownerNinBack removed - no longer required
     restaurantPhoto1?: File | string
     restaurantPhoto2?: File | string
     restaurantPhoto3?: File | string
@@ -81,7 +58,7 @@ interface RestaurantRegistrationData {
   businessBankName: string
   businessAccountNumber: string
   businessAccountName: string
-  businessBVN: string
+  businessBVN?: string
   
   // Step 5: Restaurant Details
   cuisineTypes: string[]
@@ -284,7 +261,7 @@ export default function RestaurantMultiStepRegistration({
       case 'document_upload':
         if (!registrationData.documents.cacCertificate) stepErrors.cacCertificate = 'CAC certificate is required'
         if (!registrationData.documents.ownerNinFront) stepErrors.ownerNinFront = 'Owner NIN front is required'
-        if (!registrationData.documents.ownerNinBack) stepErrors.ownerNinBack = 'Owner NIN back is required'
+        // Owner NIN back no longer required per business decision
         if (!registrationData.documents.restaurantPhoto1) stepErrors.restaurantPhoto1 = 'Restaurant photo 1 is required'
         if (!registrationData.documents.restaurantPhoto2) stepErrors.restaurantPhoto2 = 'Restaurant photo 2 is required'
         if (!registrationData.documents.restaurantPhoto3) stepErrors.restaurantPhoto3 = 'Restaurant photo 3 is required'
@@ -299,11 +276,7 @@ export default function RestaurantMultiStepRegistration({
           stepErrors.businessAccountNumber = 'Account number must be 10 digits'
         }
         if (!registrationData.businessAccountName.trim()) stepErrors.businessAccountName = 'Business account name is required'
-        if (!registrationData.businessBVN.trim()) {
-          stepErrors.businessBVN = 'Business BVN is required'
-        } else if (!validateBVN(registrationData.businessBVN)) {
-          stepErrors.businessBVN = 'BVN must be 11 digits'
-        }
+        // Business BVN no longer required per business decision
         // Validate account name matches restaurant name
         if (registrationData.businessAccountName && registrationData.restaurantName) {
           const accountNameLower = registrationData.businessAccountName.toLowerCase()
@@ -752,33 +725,6 @@ export default function RestaurantMultiStepRegistration({
                   {errors.ownerNinFront && <p className="text-red-500 text-sm mt-1">{errors.ownerNinFront}</p>}
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Owner NIN Back *
-                  </label>
-                  <div className={`border-2 border-dashed rounded-lg p-4 text-center ${
-                    errors.ownerNinBack ? 'border-red-300' : 'border-gray-300'
-                  }`}>
-                    <input
-                      type="file"
-                      accept="image/jpeg,image/png,image/jpg"
-                      onChange={(e) => {
-                        const file = e.target.files?.[0]
-                        if (file) handleDocumentUpload('ownerNinBack', file)
-                      }}
-                      className="hidden"
-                      id="ownerNinBack"
-                    />
-                    <label htmlFor="ownerNinBack" className="cursor-pointer">
-                      <Upload className="mx-auto h-8 w-8 text-gray-400" />
-                      <p className="mt-2 text-sm text-gray-600">
-                        {registrationData.documents.ownerNinBack ? 'Document uploaded' : 'Click to upload NIN back'}
-                      </p>
-                      <p className="text-xs text-gray-500">JPG, PNG up to 5MB</p>
-                    </label>
-                  </div>
-                  {errors.ownerNinBack && <p className="text-red-500 text-sm mt-1">{errors.ownerNinBack}</p>}
-                </div>
               </div>
             </div>
 
@@ -988,22 +934,6 @@ export default function RestaurantMultiStepRegistration({
                 </div>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Business BVN *
-                </label>
-                <input
-                  type="text"
-                  value={registrationData.businessBVN}
-                  onChange={(e) => updateRegistrationData({ businessBVN: e.target.value })}
-                  className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent ${
-                    errors.businessBVN ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                  placeholder="11-digit BVN"
-                  maxLength={11}
-                />
-                {errors.businessBVN && <p className="text-red-500 text-sm mt-1">{errors.businessBVN}</p>}
-              </div>
 
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                 <div className="flex">

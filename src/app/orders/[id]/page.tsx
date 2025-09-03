@@ -385,10 +385,10 @@ export default function OrderDetailsPage({ params }: PageProps) {
                   <h4 className="font-medium text-gray-900">Delivery Address</h4>
                   {order.delivery_address && (
                     <div className="text-sm text-gray-600">
-                      <p>{order.delivery_address}</p>
-                      {(order as any).delivery_instructions && (
+                      <p>{order.delivery_address.street_address || order.delivery_address.area || 'Delivery address'}</p>
+                      {order.delivery_address.delivery_instructions && (
                         <p className="mt-2 text-xs bg-gray-50 p-2 rounded">
-                          <strong>Instructions:</strong> {(order as any).delivery_instructions}
+                          <strong>Instructions:</strong> {order.delivery_address.delivery_instructions}
                         </p>
                       )}
                     </div>

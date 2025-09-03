@@ -36,9 +36,9 @@ export async function GET(request: NextRequest) {
 
     // Parallel queries for better performance
     const [
-      ordersData,
+      todayOrdersData,
+      allOrdersData,
       restaurantsData,
-      ridersData,
       customersData,
       applicationsData
     ] = await Promise.all([
@@ -71,55 +71,56 @@ export async function GET(request: NextRequest) {
         .select('id, application_type, status, created_at')
     ])
 
-    // Process order metrics
-    const todayOrders = ordersData.data || []
-    const allOrders = restaurantsData.data || []
+    // Process order metrics  
+    const todayOrders = todayOrdersData.data || []
+    const allOrders = allOrdersData.data || []
+    const restaurantsList = restaurantsData.data || []
+    const customersList = customersData.data || []
+    const applicationsList = applicationsData.data || []
     
     const orderMetrics = {
       total: allOrders.length,
       today: todayOrders.length,
-      pending: todayOrders.filter(o => ['pending', 'confirmed', 'preparing', 'ready'].includes(o.status)).length,
-      completed: todayOrders.filter(o => o.status === 'delivered').length,
-      cancelled: todayOrders.filter(o => o.status === 'cancelled').length,
+      pending: todayOrders.filter((o: any) => ['pending', 'confirmed', 'preparing', 'ready'].includes(o.status)).length,
+      completed: todayOrders.filter((o: any) => o.status === 'delivered').length,
+      cancelled: todayOrders.filter((o: any) => o.status === 'cancelled').length,
       revenue_today: todayOrders
-        .filter(o => o.status === 'delivered')
-        .reduce((sum, o) => sum + (parseFloat(o.total_amount) || 0), 0),
+        .filter((o: any) => o.status === 'delivered')
+        .reduce((sum: number, o: any) => sum + (parseFloat(o.total_amount) || 0), 0),
       average_order_value: todayOrders.length > 0 
-        ? todayOrders.reduce((sum, o) => sum + (parseFloat(o.total_amount) || 0), 0) / todayOrders.length 
+        ? todayOrders.reduce((sum: number, o: any) => sum + (parseFloat(o.total_amount) || 0), 0) / todayOrders.length 
         : 0
     }
 
     // Process restaurant metrics
-    const restaurants = restaurantsData.data || []
     const restaurantMetrics = {
-      total: restaurants.length,
-      active: restaurants.filter(r => r.is_open && r.status === 'approved').length,
-      pending_approval: (applicationsData.data || [])
-        .filter(app => app.application_type === 'restaurant_owner' && app.status === 'pending').length,
-      revenue_today: restaurants.reduce((sum, r) => sum + (parseFloat(r.total_revenue) || 0), 0)
+      total: restaurantsList.length,
+      active: restaurantsList.filter((r: any) => r.is_open && r.status === 'approved').length,
+      pending_approval: applicationsList
+        .filter((app: any) => app.application_type === 'restaurant' && app.status === 'pending').length,
+      revenue_today: restaurantsList.reduce((sum: number, r: any) => sum + (parseFloat(r.total_revenue) || 0), 0)
     }
 
     // Process rider metrics
-    const riderApplications = (applicationsData.data || [])
-      .filter(app => app.application_type === 'rider')
+    const riderApplications = applicationsList
+      .filter((app: any) => app.application_type === 'rider')
     
     const riderMetrics = {
-      total: riderApplications.filter(app => app.status === 'approved').length,
+      total: riderApplications.filter((app: any) => app.status === 'approved').length,
       online: Math.floor(Math.random() * 15) + 5, // Simulated - would come from real-time tracking
       busy: Math.floor(Math.random() * 8) + 2, // Simulated - riders currently on delivery
-      applications_pending: riderApplications.filter(app => app.status === 'pending').length
+      applications_pending: riderApplications.filter((app: any) => app.status === 'pending').length
     }
 
     // Process customer metrics
-    const customers = customersData.data || []
-    const todayCustomers = customers.filter(c => {
+    const todayCustomers = customersList.filter((c: any) => {
       const createdAt = new Date(c.created_at)
       return createdAt >= todayStart && createdAt < todayEnd
     })
     
     const customerMetrics = {
-      total: customers.length,
-      active_today: Math.floor(customers.length * 0.15), // Simulated active users
+      total: customersList.length,
+      active_today: Math.floor(customersList.length * 0.15), // Simulated active users
       new_today: todayCustomers.length
     }
 

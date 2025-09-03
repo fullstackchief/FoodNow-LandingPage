@@ -6,8 +6,6 @@ import { configureStore } from '@reduxjs/toolkit'
 import cartSlice from '@/store/slices/cartSlice'
 import uiSlice from '@/store/slices/uiSlice'
 import restaurantSlice from '@/store/slices/restaurantSlice'
-// Import React for context creation
-import React from 'react'
 
 // Mock contexts for testing
 const AuthContext = React.createContext<any>(null)

@@ -1,5 +1,5 @@
 # VERIFIED SUPABASE DATABASE STATUS
-**Generated:** 9/2/2025, 2:58:32 PM
+**Generated:** 9/2/2025, 9:14:03 PM
 **Verified By:** Live database query script
 
 ## 🔗 VERIFIED CONNECTION DETAILS
@@ -11,7 +11,7 @@
 
 ### ✅ `users`
 - **Status:** EXISTS
-- **Row Count:** 18
+- **Row Count:** 20
 - **Verified:** YES
 
 ### ✅ `restaurants`
@@ -26,12 +26,12 @@
 
 ### ✅ `orders`
 - **Status:** EXISTS
-- **Row Count:** 25
+- **Row Count:** 29
 - **Verified:** YES
 
 ### ✅ `order_items`
 - **Status:** EXISTS
-- **Row Count:** 26
+- **Row Count:** 37
 - **Verified:** YES
 
 ## 🔒 ROW LEVEL SECURITY (RLS) STATUS
@@ -135,85 +135,6 @@ No RLS policies found or query failed
 ```json
 [
   {
-    "id": "550e8400-e29b-41d4-a716-446655440001",
-    "name": "Mama Cass Kitchen",
-    "slug": "mama-cass-kitchen",
-    "description": "Authentic Nigerian cuisine with traditional recipes passed down through generations. Home of the best Jollof Rice in Lagos.",
-    "image_url": "https://images.unsplash.com/photo-1596797038530-2c107229654b?w=800&h=600&fit=crop&auto=format",
-    "cover_image_url": "https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=1200&h=600&fit=crop&auto=format",
-    "rating": 4.8,
-    "review_count": 342,
-    "price_range": "$$",
-    "cuisine_types": [
-      "Nigerian",
-      "African"
-    ],
-    "delivery_time": "25-35 min",
-    "delivery_fee": 500,
-    "minimum_order": 2000,
-    "commission_rate": 15,
-    "is_open": true,
-    "is_featured": true,
-    "status": "approved",
-    "opening_hours": {
-      "friday": {
-        "open": "08:00",
-        "close": "23:00"
-      },
-      "monday": {
-        "open": "08:00",
-        "close": "22:00"
-      },
-      "sunday": {
-        "open": "10:00",
-        "close": "21:00"
-      },
-      "tuesday": {
-        "open": "08:00",
-        "close": "22:00"
-      },
-      "saturday": {
-        "open": "09:00",
-        "close": "23:00"
-      },
-      "thursday": {
-        "open": "08:00",
-        "close": "22:00"
-      },
-      "wednesday": {
-        "open": "08:00",
-        "close": "22:00"
-      }
-    },
-    "location": {
-      "area": "Victoria Island",
-      "city": "Lagos",
-      "coordinates": {
-        "lat": 6.4281,
-        "lng": 3.4219
-      }
-    },
-    "features": [
-      "Fast Delivery",
-      "Nigerian Cuisine",
-      "Family Friendly"
-    ],
-    "phone_number": "+234 901 234 5678",
-    "email": "info@mamacasskitchen.com",
-    "total_orders": 2847,
-    "total_revenue": 0,
-    "established_year": 2015,
-    "owner_id": null,
-    "promotions": {
-      "active": true,
-      "discount": 15,
-      "description": "15% off first order"
-    },
-    "settings": {},
-    "created_at": "2025-08-29T08:55:39.868175+00:00",
-    "updated_at": "2025-08-29T08:55:39.868175+00:00"
-  },
-  {
     "id": "550e8400-e29b-41d4-a716-446655440002",
     "name": "Dragon Wok Chinese Kitchen",
     "slug": "dragon-wok-chinese-kitchen",
@@ -285,6 +206,85 @@ No RLS policies found or query failed
     "owner_id": null,
     "promotions": {
       "active": false
+    },
+    "settings": {},
+    "created_at": "2025-08-29T08:55:39.868175+00:00",
+    "updated_at": "2025-08-29T08:55:39.868175+00:00"
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440003",
+    "name": "Pizza Paradise Lagos",
+    "slug": "pizza-paradise-lagos",
+    "description": "Wood-fired pizzas made with imported Italian ingredients. The finest pizza experience in Lagos with authentic flavors.",
+    "image_url": "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800&h=600&fit=crop&auto=format",
+    "cover_image_url": "https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=1200&h=600&fit=crop&auto=format",
+    "rating": 4.6,
+    "review_count": 267,
+    "price_range": "$$$",
+    "cuisine_types": [
+      "Italian",
+      "Pizza"
+    ],
+    "delivery_time": "20-30 min",
+    "delivery_fee": 600,
+    "minimum_order": 2500,
+    "commission_rate": 15,
+    "is_open": true,
+    "is_featured": true,
+    "status": "approved",
+    "opening_hours": {
+      "friday": {
+        "open": "10:00",
+        "close": "24:00"
+      },
+      "monday": {
+        "open": "10:00",
+        "close": "23:00"
+      },
+      "sunday": {
+        "open": "11:00",
+        "close": "23:00"
+      },
+      "tuesday": {
+        "open": "10:00",
+        "close": "23:00"
+      },
+      "saturday": {
+        "open": "10:00",
+        "close": "24:00"
+      },
+      "thursday": {
+        "open": "10:00",
+        "close": "23:00"
+      },
+      "wednesday": {
+        "open": "10:00",
+        "close": "23:00"
+      }
+    },
+    "location": {
+      "area": "Ikeja GRA",
+      "city": "Lagos",
+      "coordinates": {
+        "lat": 6.5966,
+        "lng": 3.3515
+      }
+    },
+    "features": [
+      "Wood-fired Pizza",
+      "Italian Cuisine",
+      "Late Night"
+    ],
+    "phone_number": "+234 703 456 7890",
+    "email": "hello@pizzaparadise.ng",
+    "total_orders": 3421,
+    "total_revenue": 0,
+    "established_year": 2017,
+    "owner_id": null,
+    "promotions": {
+      "active": true,
+      "discount": 20,
+      "description": "Buy 2 Get 1 Free on weekends"
     },
     "settings": {},
     "created_at": "2025-08-29T08:55:39.868175+00:00",

@@ -86,7 +86,7 @@ export default function AdminSystemDashboard() {
       href: '/admin-system/users',
       icon: UserGroupIcon,
       color: 'bg-blue-500',
-      available: adminUser?.role === 'super_admin' || adminUser?.permissions?.admins?.view
+      available: adminUser?.role === 'super_admin' || adminUser?.permissions?.system?.includes('create_admins')
     },
     {
       title: 'Restaurant Applications',
@@ -94,23 +94,23 @@ export default function AdminSystemDashboard() {
       href: '/admin-system/applications',
       icon: BuildingStorefrontIcon,
       color: 'bg-green-500',
-      available: adminUser?.permissions?.restaurants?.view !== false
+      available: adminUser?.permissions?.restaurants?.includes('view_all')
     },
     {
       title: 'System Analytics',
       description: 'View platform statistics and insights',
-      href: '/admin/analytics',
+      href: '/admin-system/dashboard/live',
       icon: ChartBarIcon,
       color: 'bg-purple-500',
-      available: adminUser?.permissions?.analytics?.view !== false
+      available: adminUser?.permissions?.system?.includes('financial_reports')
     },
     {
       title: 'Order Management',
       description: 'Monitor and manage platform orders',
-      href: '/admin/orders',
+      href: '/admin-system/orders',
       icon: ClockIcon,
       color: 'bg-orange-500',
-      available: adminUser?.permissions?.orders?.view !== false
+      available: adminUser?.permissions?.orders?.includes('view_all')
     }
   ].filter(action => action.available)
 

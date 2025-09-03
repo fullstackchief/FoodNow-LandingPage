@@ -26,8 +26,8 @@ interface ApplicationReviewProps {
   application: {
     id: string
     user_id: string
-    requested_role: 'restaurant_owner' | 'rider'
-    application_data: any
+    application_type: 'restaurant' | 'rider'
+    application_data?: any
     status: 'pending' | 'approved' | 'rejected' | 'under_review'
     admin_notes?: string
     reviewed_by?: string
@@ -38,7 +38,7 @@ interface ApplicationReviewProps {
       first_name: string
       last_name: string
       email: string
-      phone?: string
+      phone_number?: string
     }
   }
   isOpen: boolean
@@ -102,11 +102,11 @@ const ApplicationReview: React.FC<ApplicationReviewProps> = ({
   }
 
   const formatRoleName = (role: string) => {
-    return role === 'restaurant_owner' ? 'Restaurant Owner' : 'Rider'
+    return role === 'restaurant' ? 'Restaurant Owner' : 'Rider'
   }
 
   const getRoleIcon = (role: string) => {
-    return role === 'restaurant_owner' 
+    return role === 'restaurant' 
       ? <BuildingStorefrontIcon className="w-6 h-6 text-green-600" />
       : <TruckIcon className="w-6 h-6 text-blue-600" />
   }
@@ -200,7 +200,7 @@ const ApplicationReview: React.FC<ApplicationReviewProps> = ({
   }
 
   const renderRestaurantDetails = () => {
-    const data = application.application_data
+    const data = application.application_data || {}
     
     return (
       <div className="space-y-6">
@@ -292,7 +292,7 @@ const ApplicationReview: React.FC<ApplicationReviewProps> = ({
   }
 
   const renderRiderDetails = () => {
-    const data = application.application_data
+    const data = application.application_data || {}
     
     return (
       <div className="space-y-6">
@@ -383,9 +383,9 @@ const ApplicationReview: React.FC<ApplicationReviewProps> = ({
   }
 
   const renderDocuments = () => {
-    const data = application.application_data
+    const data = application.application_data || {}
     
-    if (application.requested_role === 'restaurant_owner') {
+    if (application.application_type === 'restaurant') {
       return (
         <div className="space-y-6">
           <div className="bg-gray-50 rounded-xl p-4">
@@ -437,10 +437,10 @@ const ApplicationReview: React.FC<ApplicationReviewProps> = ({
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-gray-200 bg-gray-50">
             <div className="flex items-center space-x-4">
-              {getRoleIcon(application.requested_role)}
+              {getRoleIcon(application.application_type)}
               <div>
                 <h2 className="text-2xl font-bold text-gray-900">
-                  {formatRoleName(application.requested_role)} Application Review
+                  {formatRoleName(application.application_type)} Application Review
                 </h2>
                 <div className="flex items-center space-x-4 mt-1">
                   <p className="text-gray-600">{application.user?.first_name} {application.user?.last_name}</p>
@@ -506,13 +506,13 @@ const ApplicationReview: React.FC<ApplicationReviewProps> = ({
                       </div>
                     </div>
                     
-                    {application.user?.phone && (
+                    {application.user?.phone_number && (
                       <div className="bg-purple-50 rounded-xl p-4">
                         <div className="flex items-center space-x-3">
                           <PhoneIcon className="w-6 h-6 text-purple-600" />
                           <div>
                             <p className="text-sm text-purple-600">Phone</p>
-                            <p className="font-medium text-purple-900">{application.user.phone}</p>
+                            <p className="font-medium text-purple-900">{application.user.phone_number}</p>
                           </div>
                         </div>
                       </div>
@@ -555,7 +555,7 @@ const ApplicationReview: React.FC<ApplicationReviewProps> = ({
               )}
 
               {activeTab === 'details' && (
-                application.requested_role === 'restaurant_owner' 
+                application.application_type === 'restaurant' 
                   ? renderRestaurantDetails()
                   : renderRiderDetails()
               )}

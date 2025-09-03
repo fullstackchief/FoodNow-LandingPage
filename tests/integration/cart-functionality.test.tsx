@@ -5,14 +5,14 @@ import { createMockStore } from '../../src/test/utils'
 
 // Mock cart functionality
 const CartTestComponent = () => {
-  const [cartItems, setCartItems] = React.useState([])
+  const [cartItems, setCartItems] = React.useState<any[]>([])
   
   const addToCart = (item: any) => {
     setCartItems(prev => [...prev, item])
   }
 
   const removeFromCart = (itemId: string) => {
-    setCartItems(prev => prev.filter(item => item.id !== itemId))
+    setCartItems(prev => prev.filter((item: any) => item.id !== itemId))
   }
 
   return (
@@ -31,7 +31,7 @@ const CartTestComponent = () => {
         Remove Item
       </button>
       <div data-testid="cart-items">
-        {cartItems.map(item => (
+        {cartItems.map((item: any) => (
           <div key={item.id} data-testid={`cart-item-${item.id}`}>
             {item.name} - ₦{item.price}
           </div>

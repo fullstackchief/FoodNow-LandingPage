@@ -1,11 +1,11 @@
 {
-  "timestamp": "2025-09-02T13:58:28.125Z",
+  "timestamp": "2025-09-02T20:13:59.115Z",
   "supabase_url": "https://fkcxijuikfsvxgojjbgp.supabase.co",
   "connection_status": "connected",
   "tables": {
     "users": {
       "exists": true,
-      "row_count": 18,
+      "row_count": 20,
       "verified": true
     },
     "restaurants": {
@@ -20,12 +20,12 @@
     },
     "orders": {
       "exists": true,
-      "row_count": 25,
+      "row_count": 29,
       "verified": true
     },
     "order_items": {
       "exists": true,
-      "row_count": 26,
+      "row_count": 37,
       "verified": true
     }
   },
@@ -164,85 +164,6 @@
       }
     ],
     "restaurants": [
-      {
-        "id": "550e8400-e29b-41d4-a716-446655440001",
-        "name": "Mama Cass Kitchen",
-        "slug": "mama-cass-kitchen",
-        "description": "Authentic Nigerian cuisine with traditional recipes passed down through generations. Home of the best Jollof Rice in Lagos.",
-        "image_url": "https://images.unsplash.com/photo-1596797038530-2c107229654b?w=800&h=600&fit=crop&auto=format",
-        "cover_image_url": "https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=1200&h=600&fit=crop&auto=format",
-        "rating": 4.8,
-        "review_count": 342,
-        "price_range": "$$",
-        "cuisine_types": [
-          "Nigerian",
-          "African"
-        ],
-        "delivery_time": "25-35 min",
-        "delivery_fee": 500,
-        "minimum_order": 2000,
-        "commission_rate": 15,
-        "is_open": true,
-        "is_featured": true,
-        "status": "approved",
-        "opening_hours": {
-          "friday": {
-            "open": "08:00",
-            "close": "23:00"
-          },
-          "monday": {
-            "open": "08:00",
-            "close": "22:00"
-          },
-          "sunday": {
-            "open": "10:00",
-            "close": "21:00"
-          },
-          "tuesday": {
-            "open": "08:00",
-            "close": "22:00"
-          },
-          "saturday": {
-            "open": "09:00",
-            "close": "23:00"
-          },
-          "thursday": {
-            "open": "08:00",
-            "close": "22:00"
-          },
-          "wednesday": {
-            "open": "08:00",
-            "close": "22:00"
-          }
-        },
-        "location": {
-          "area": "Victoria Island",
-          "city": "Lagos",
-          "coordinates": {
-            "lat": 6.4281,
-            "lng": 3.4219
-          }
-        },
-        "features": [
-          "Fast Delivery",
-          "Nigerian Cuisine",
-          "Family Friendly"
-        ],
-        "phone_number": "+234 901 234 5678",
-        "email": "info@mamacasskitchen.com",
-        "total_orders": 2847,
-        "total_revenue": 0,
-        "established_year": 2015,
-        "owner_id": null,
-        "promotions": {
-          "active": true,
-          "discount": 15,
-          "description": "15% off first order"
-        },
-        "settings": {},
-        "created_at": "2025-08-29T08:55:39.868175+00:00",
-        "updated_at": "2025-08-29T08:55:39.868175+00:00"
-      },
       {
         "id": "550e8400-e29b-41d4-a716-446655440002",
         "name": "Dragon Wok Chinese Kitchen",
@@ -394,6 +315,84 @@
           "active": true,
           "discount": 20,
           "description": "Buy 2 Get 1 Free on weekends"
+        },
+        "settings": {},
+        "created_at": "2025-08-29T08:55:39.868175+00:00",
+        "updated_at": "2025-08-29T08:55:39.868175+00:00"
+      },
+      {
+        "id": "550e8400-e29b-41d4-a716-446655440004",
+        "name": "Burger Express",
+        "slug": "burger-express",
+        "description": "Premium burgers made with 100% beef patties and fresh ingredients. Fast, fresh, and delicious American-style burgers.",
+        "image_url": "https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=800&h=600&fit=crop&auto=format",
+        "cover_image_url": "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=1200&h=600&fit=crop&auto=format",
+        "rating": 4.4,
+        "review_count": 156,
+        "price_range": "$$",
+        "cuisine_types": [
+          "American",
+          "Fast Food",
+          "Burgers"
+        ],
+        "delivery_time": "15-25 min",
+        "delivery_fee": 400,
+        "minimum_order": 1500,
+        "commission_rate": 15,
+        "is_open": true,
+        "is_featured": false,
+        "status": "approved",
+        "opening_hours": {
+          "friday": {
+            "open": "07:00",
+            "close": "24:00"
+          },
+          "monday": {
+            "open": "07:00",
+            "close": "23:00"
+          },
+          "sunday": {
+            "open": "09:00",
+            "close": "22:00"
+          },
+          "tuesday": {
+            "open": "07:00",
+            "close": "23:00"
+          },
+          "saturday": {
+            "open": "08:00",
+            "close": "24:00"
+          },
+          "thursday": {
+            "open": "07:00",
+            "close": "23:00"
+          },
+          "wednesday": {
+            "open": "07:00",
+            "close": "23:00"
+          }
+        },
+        "location": {
+          "area": "Surulere",
+          "city": "Lagos",
+          "coordinates": {
+            "lat": 6.4969,
+            "lng": 3.3841
+          }
+        },
+        "features": [
+          "Fast Delivery",
+          "100% Beef",
+          "American Style"
+        ],
+        "phone_number": "+234 805 678 9012",
+        "email": "orders@burgerexpress.ng",
+        "total_orders": 2156,
+        "total_revenue": 0,
+        "established_year": 2019,
+        "owner_id": null,
+        "promotions": {
+          "active": false
         },
         "settings": {},
         "created_at": "2025-08-29T08:55:39.868175+00:00",

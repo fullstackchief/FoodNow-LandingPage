@@ -97,7 +97,8 @@ module.exports = {
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
-        heading: ['Poppins', 'system-ui', 'sans-serif'],
+        heading: ['Nunito', 'Poppins', 'system-ui', 'sans-serif'],
+        display: ['Nunito', 'system-ui', 'sans-serif'],
       },
       borderRadius: {
         'xl': '1rem',

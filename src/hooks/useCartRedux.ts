@@ -28,13 +28,15 @@ export function useCartRedux() {
   }, [dispatch])
 
   const removeItem = useCallback((itemId: string, customizations?: string[]) => {
-    console.log('useCartRedux removeItem called:', { itemId, customizations })
-    dispatch(removeItemAction({ itemId, customizations }))
+    const normalizedCustomizations = customizations || []
+    console.log('useCartRedux removeItem called:', { itemId, customizations: normalizedCustomizations })
+    dispatch(removeItemAction({ itemId, customizations: normalizedCustomizations }))
   }, [dispatch])
 
   const updateQuantity = useCallback((itemId: string, quantity: number, customizations?: string[]) => {
-    console.log('useCartRedux updateQuantity called:', { itemId, quantity, customizations })
-    dispatch(updateQuantityAction({ itemId, quantity, customizations }))
+    const normalizedCustomizations = customizations || []
+    console.log('useCartRedux updateQuantity called:', { itemId, quantity, customizations: normalizedCustomizations })
+    dispatch(updateQuantityAction({ itemId, quantity, customizations: normalizedCustomizations }))
   }, [dispatch])
 
   const clearCart = useCallback(() => {

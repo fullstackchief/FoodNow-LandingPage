@@ -31,7 +31,7 @@ export async function GET(_request: NextRequest) {
     }
 
     // Check admin permissions
-    if (!admin.permissions?.analytics?.view && admin.role !== 'super_admin') {
+    if (!admin.permissions?.system?.includes('financial_reports') && admin.role !== 'super_admin') {
       return NextResponse.json(
         { success: false, error: 'Insufficient permissions to view statistics' },
         { status: 403 }
@@ -60,8 +60,8 @@ export async function GET(_request: NextRequest) {
         rejected: applications.filter(app => app.status === 'rejected').length
       },
       byRole: {
-        restaurant_owner: applications.filter(app => app.requested_role === 'restaurant_owner').length,
-        rider: applications.filter(app => app.requested_role === 'rider').length
+        restaurant_owner: applications.filter(app => app.application_type === 'restaurant').length,
+        rider: applications.filter(app => app.application_type === 'rider').length
       },
       recent: {
         today: applications.filter(app => {
@@ -84,13 +84,13 @@ export async function GET(_request: NextRequest) {
       },
       approval_rate: {
         restaurant_owner: (() => {
-          const restaurantApps = applications.filter(app => app.requested_role === 'restaurant_owner')
+          const restaurantApps = applications.filter(app => app.application_type === 'restaurant')
           const approved = restaurantApps.filter(app => app.status === 'approved').length
           const total = restaurantApps.filter(app => ['approved', 'rejected'].includes(app.status)).length
           return total > 0 ? Math.round((approved / total) * 100) : 0
         })(),
         rider: (() => {
-          const riderApps = applications.filter(app => app.requested_role === 'rider')
+          const riderApps = applications.filter(app => app.application_type === 'rider')
           const approved = riderApps.filter(app => app.status === 'approved').length
           const total = riderApps.filter(app => ['approved', 'rejected'].includes(app.status)).length
           return total > 0 ? Math.round((approved / total) * 100) : 0

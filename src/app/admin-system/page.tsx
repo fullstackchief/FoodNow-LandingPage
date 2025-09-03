@@ -22,6 +22,7 @@ export default function AdminSystemLogin() {
   const { loginAsAdmin, isAdminAuthenticated, adminUser } = useAuth()
   const router = useRouter()
 
+
   // Redirect if already authenticated
   useEffect(() => {
     if (isAdminAuthenticated && adminUser) {
@@ -37,7 +38,7 @@ export default function AdminSystemLogin() {
     try {
       const result = await loginAsAdmin(email, password)
       if (result.success) {
-        // Successful login - will trigger redirect via useEffect
+        // Direct admin authentication successful - redirect handled by useEffect
         setEmail('')
         setPassword('')
         setError('')
@@ -216,6 +217,7 @@ export default function AdminSystemLogin() {
           </p>
         </motion.div>
       </motion.div>
+
     </div>
   )
 }

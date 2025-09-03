@@ -265,6 +265,81 @@ export interface AdminUser {
   createdAt: string
 }
 
+// Admin Application types
+export interface ApplicationData {
+  business_name?: string
+  business_address?: string
+  business_phone?: string
+  owner_name?: string
+  owner_nin?: string
+  cac_certificate?: string
+  vehicle_type?: string
+  vehicle_details?: string
+  guarantor_name?: string
+  guarantor_phone?: string
+  guarantor_occupation?: string
+  emergency_contact?: string
+  zone_preference?: string[]
+  experience_years?: number
+  previous_employer?: string
+  document_urls?: string[]
+  additional_info?: string
+}
+
+export interface ApplicationUpdateData {
+  status?: 'pending' | 'approved' | 'rejected' | 'under_review'
+  admin_notes?: string
+  review_notes?: string
+  rejection_reason?: string
+  approved_by?: string
+  approved_at?: string
+  reviewed_by?: string
+  reviewed_at?: string
+  assigned_zone?: string
+  assigned_equipment?: string
+  updated_at?: string
+}
+
+export interface UserApplication {
+  id: string
+  user_id: string
+  application_type: 'restaurant' | 'rider'
+  status: 'pending' | 'approved' | 'rejected' | 'under_review'
+  restaurant_name?: string
+  restaurant_description?: string
+  restaurant_address?: string
+  restaurant_phone?: string
+  restaurant_email?: string
+  cuisine_types?: string[]
+  vehicle_type?: string
+  vehicle_make?: string
+  vehicle_model?: string
+  vehicle_year?: number
+  vehicle_plate_number?: string
+  emergency_contact_name?: string
+  emergency_contact_phone?: string
+  review_notes?: string
+  reviewed_by?: string
+  reviewed_at?: string
+  approved_by?: string
+  approved_at?: string
+  additional_documents?: any
+  metadata?: any
+  submitted_at: string
+  created_at: string
+  updated_at: string
+  user?: {
+    id: string
+    email: string
+    first_name: string
+    last_name: string
+    phone_number?: string
+  }
+  // Legacy alias for backward compatibility
+  requested_role?: 'restaurant_owner' | 'rider'
+  application_data?: ApplicationData
+}
+
 // API Response types
 export interface ApiResponse<T> {
   data?: T

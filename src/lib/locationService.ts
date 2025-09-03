@@ -157,23 +157,6 @@ class LocationService {
     }
   }
 
-  /**
-   * @deprecated - Now using real Google reverse geocoding from googleMaps.ts
-   * Kept for reference only - the real reverseGeocode is imported from '@/lib/googleMaps'
-   */
-  private async DEPRECATED_reverseGeocode(lat: number, lng: number): Promise<{
-    formatted_address: string
-    city?: string
-    state?: string
-    country?: string
-  }> {
-    // This method is no longer used - we now use the real Google API
-    // from googleMaps.ts which provides accurate street-level addresses
-    return {
-      formatted_address: `${lat.toFixed(4)}, ${lng.toFixed(4)}`,
-      country: 'Nigeria'
-    }
-  }
 
   /**
    * Store location in localStorage with timestamp

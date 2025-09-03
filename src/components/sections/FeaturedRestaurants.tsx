@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { StarIcon, ClockIcon, MapPinIcon } from '@heroicons/react/24/solid'
 import { useState } from 'react'
 import { FEATURED_RESTAURANTS_DATA } from '@/constants/featured-restaurants-data'
+import Button from '@/components/ui/Button'
 
 const FeaturedRestaurants = () => {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null)
@@ -131,13 +132,16 @@ const FeaturedRestaurants = () => {
           viewport={{ once: true }}
           className="text-center mt-16"
         >
-          <button 
+          <Button 
             onClick={() => window.location.href = '/explore'}
-            className="group bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold text-lg py-4 px-12 rounded-full transition-all duration-300 transform hover:scale-105 shadow-xl shadow-orange-500/30 hover:shadow-2xl hover:shadow-orange-500/40"
+            theme="customer"
+            variant="primary"
+            size="lg"
+            className="rounded-full shadow-xl shadow-orange-500/30 hover:shadow-2xl hover:shadow-orange-500/40 group"
           >
             <span className="mr-2">View All Restaurants</span>
             <span className="inline-block group-hover:translate-x-1 transition-transform">→</span>
-          </button>
+          </Button>
         </motion.div>
       </div>
     </section>

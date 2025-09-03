@@ -112,7 +112,7 @@ export default function DocumentUpload({
       })
 
       const { data, error } = await supabase.storage
-        .from('user-documents')
+        .from('users')
         .upload(filePath, file, {
           cacheControl: '3600',
           upsert: false
@@ -124,7 +124,7 @@ export default function DocumentUpload({
 
       // Get public URL
       const { data: urlData } = supabase.storage
-        .from('user-documents')
+        .from('users')
         .getPublicUrl(filePath)
 
       const updatedDocument: UploadedDocument = {

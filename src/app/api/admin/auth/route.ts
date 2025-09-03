@@ -6,6 +6,7 @@ import { applyRateLimit, rateLimiters } from '@/lib/rateLimiter'
 import { checkBruteForce, recordFailedAttempt, recordSuccessfulAttempt } from '@/lib/bruteForceProtection'
 import { logSecurityEvent } from '@/lib/security'
 import { supabaseServerClient } from '@/lib/supabase-server'
+import { setAdminSessionCookie } from '@/lib/cookies'
 
 export async function POST(request: NextRequest) {
   try {
@@ -146,10 +147,26 @@ export async function POST(request: NextRequest) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password_hash, ...adminData } = admin as any
 
-    return NextResponse.json({
+    // Create response
+    const response = NextResponse.json({
       success: true,
       data: adminData
     })
+
+    // Set admin session cookie
+    const clientIP = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || '127.0.0.1'
+    const userAgent = request.headers.get('user-agent') || 'unknown'
+    
+    await setAdminSessionCookie(response, {
+      adminId: (admin as any).id,
+      email: (admin as any).email,
+      role: (admin as any).role,
+      permissions: (admin as any).permissions,
+      ipAddress: clientIP,
+      userAgent: userAgent
+    })
+
+    return response
 
   } catch (error) {
     prodLog.error('Admin authentication error', error, {

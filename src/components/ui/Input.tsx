@@ -11,6 +11,7 @@ interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, '
   iconPosition?: 'left' | 'right'
   size?: 'sm' | 'md' | 'lg'
   variant?: 'default' | 'filled'
+  theme?: 'customer' | 'restaurant' | 'rider' | 'admin' | 'default'
   fullWidth?: boolean
   showPasswordToggle?: boolean
 }
@@ -24,6 +25,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     iconPosition = 'left',
     size = 'md',
     variant = 'default',
+    theme = 'default',
     fullWidth = true,
     showPasswordToggle = false,
     type = 'text',
@@ -40,13 +42,42 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
     const baseClasses = 'w-full transition-all duration-300 focus:outline-none focus:ring-4'
     
+    const getThemeColors = (theme: string) => {
+      const themeConfigs = {
+        customer: {
+          focus: 'border-orange-500 focus:border-orange-600 focus:ring-orange-100',
+          normal: 'border-gray-200 hover:border-gray-300 focus:border-orange-500 focus:ring-orange-100'
+        },
+        restaurant: {
+          focus: 'border-green-500 focus:border-green-600 focus:ring-green-100',
+          normal: 'border-gray-200 hover:border-gray-300 focus:border-green-500 focus:ring-green-100'
+        },
+        rider: {
+          focus: 'border-purple-500 focus:border-purple-600 focus:ring-purple-100',
+          normal: 'border-gray-200 hover:border-gray-300 focus:border-purple-500 focus:ring-purple-100'
+        },
+        admin: {
+          focus: 'border-blue-500 focus:border-blue-600 focus:ring-blue-100',
+          normal: 'border-gray-200 hover:border-gray-300 focus:border-blue-500 focus:ring-blue-100'
+        },
+        default: {
+          focus: 'border-orange-500 focus:border-orange-600 focus:ring-orange-100',
+          normal: 'border-gray-200 hover:border-gray-300 focus:border-orange-500 focus:ring-orange-100'
+        }
+      }
+      
+      return themeConfigs[theme as keyof typeof themeConfigs] || themeConfigs.default
+    }
+    
+    const themeColors = getThemeColors(theme)
+    
     const variants = {
       default: `border-2 bg-white ${
         error 
           ? 'border-red-300 focus:border-red-500 focus:ring-red-100' 
           : isFocused
-          ? 'border-orange-500 focus:border-orange-600 focus:ring-orange-100'
-          : 'border-gray-200 hover:border-gray-300 focus:border-orange-500 focus:ring-orange-100'
+          ? themeColors.focus
+          : themeColors.normal
       }`,
       filled: `border-0 ${
         error
@@ -56,9 +87,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     }
 
     const sizes = {
-      sm: 'py-2 px-3 text-sm rounded-xl',
-      md: 'py-3 px-4 text-base rounded-xl',
-      lg: 'py-4 px-5 text-lg rounded-2xl'
+      sm: 'py-2 px-3 text-sm rounded-lg mobile-input',
+      md: 'py-3 px-4 text-base rounded-lg mobile-input',
+      lg: 'py-4 px-5 text-lg rounded-lg mobile-input'
     }
 
     const iconSizes = {
@@ -83,7 +114,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         <div className="relative">
           {/* Left Icon */}
           {icon && iconPosition === 'left' && (
-            <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+            <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">
               <div className={iconSizes[size]}>{icon}</div>
             </div>
           )}
@@ -105,6 +136,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             disabled={disabled}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
+            aria-invalid={error ? 'true' : 'false'}
+            aria-describedby={error ? `${props.id}-error` : helperText ? `${props.id}-helper` : undefined}
             {...props}
           />
 
@@ -119,7 +152,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="text-gray-400 hover:text-gray-600 transition-colors"
+                  className="text-gray-500 hover:text-gray-700 transition-colors mobile-touch-optimized"
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
                 >
                   {showPassword ? (
                     <EyeSlashIcon className={iconSizes[size]} />
@@ -130,7 +164,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               )}
               
               {icon && iconPosition === 'right' && !error && (
-                <div className={`${iconSizes[size]} text-gray-400`}>{icon}</div>
+                <div className={`${iconSizes[size]} text-gray-500`}>{icon}</div>
               )}
             </div>
           )}
@@ -138,7 +172,10 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
         {/* Helper Text / Error */}
         {(helperText || error) && (
-          <p className={`mt-2 text-sm ${error ? 'text-red-600' : 'text-gray-500'}`}>
+          <p 
+            id={error ? `${props.id}-error` : `${props.id}-helper`}
+            className={`mt-2 text-sm ${error ? 'text-red-600' : 'text-gray-600'}`}
+          >
             {error || helperText}
           </p>
         )}

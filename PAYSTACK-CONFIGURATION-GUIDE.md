@@ -49,8 +49,8 @@
 **Add these to `.env.local`:**
 ```bash
 # If keys need to be regenerated
-NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY=pk_test_[new_generated_key]
-PAYSTACK_SECRET_KEY=sk_test_[new_generated_key]
+NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY=pk_test_YOUR_NEW_GENERATED_KEY
+PAYSTACK_SECRET_KEY=sk_test_YOUR_NEW_GENERATED_KEY
 
 # Required for webhooks
 WEBHOOK_SECRET_PAYSTACK=[webhook_secret_from_dashboard]

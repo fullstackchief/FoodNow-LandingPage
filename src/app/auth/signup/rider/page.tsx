@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { ArrowLeft } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
+import Button from '@/components/ui/Button'
 import RiderMultiStepRegistration from '@/components/auth/RiderMultiStepRegistration'
 import { prodLog } from '@/lib/logger'
 
@@ -34,8 +35,9 @@ export default function RiderSignupPage() {
         password: data.password,
         firstName,
         lastName,
-        phone: data.phoneNumber
-      } as any)
+        phone: data.phoneNumber,
+        userRole: 'rider'
+      })
       
       if (result.success) {
         // TODO: Save additional rider data to database
@@ -73,13 +75,15 @@ export default function RiderSignupPage() {
     <div className="min-h-screen bg-gradient-to-br from-orange-50 to-green-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="flex justify-between items-center mb-8">
-          <button
+          <Button
             onClick={() => router.back()}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-800 transition-colors"
+            variant="ghost"
+            size="sm"
+            icon={<ArrowLeft className="w-5 h-5" />}
+            className="text-gray-600 hover:text-gray-800"
           >
-            <ArrowLeft className="w-5 h-5" />
             Back
-          </button>
+          </Button>
           <Link href="/" className="text-2xl font-bold text-orange-600">
             FoodNow
           </Link>

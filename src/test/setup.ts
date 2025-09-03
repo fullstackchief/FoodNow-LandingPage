@@ -21,6 +21,7 @@ vi.mock('next/navigation', () => ({
 
 vi.mock('next/image', () => ({
   default: ({ src, alt, ...props }: any) => {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const React = require('react')
     return React.createElement('img', { src, alt, ...props })
   }
@@ -28,6 +29,7 @@ vi.mock('next/image', () => ({
 
 vi.mock('next/link', () => ({
   default: ({ href, children, ...props }: any) => {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const React = require('react')
     return React.createElement('a', { href, ...props }, children)
   }

@@ -16,6 +16,7 @@ import {
 } from '@heroicons/react/24/outline'
 import Navigation from '@/components/layout/Navigation'
 import RiderOnboardingModal from '@/components/ui/RiderOnboardingModal'
+import Button from '@/components/ui/Button'
 
 export default function RiderPartners() {
   const [showOnboardingModal, setShowOnboardingModal] = useState(false)
@@ -142,17 +143,24 @@ export default function RiderPartners() {
               transition={{ delay: 0.2 }}
               className="flex flex-col sm:flex-row gap-4 justify-center"
             >
-              <button
+              <Button
                 onClick={() => setShowOnboardingModal(true)}
-                className="bg-gradient-to-r from-purple-500 to-purple-600 text-white font-bold text-lg py-4 px-8 rounded-full transition-all duration-300 transform hover:scale-105 shadow-xl shadow-purple-500/30 hover:shadow-2xl hover:shadow-purple-500/40"
+                theme="rider"
+                variant="primary"
+                size="lg"
+                className="rounded-full shadow-xl shadow-purple-500/30"
               >
                 Start Earning Today
-              </button>
-              <Link
-                href="/dashboard"
-                className="border-2 border-purple-500 text-purple-600 hover:bg-purple-500 hover:text-white font-bold text-lg py-4 px-8 rounded-full transition-all duration-300 transform hover:scale-105"
-              >
-                Rider Dashboard
+              </Button>
+              <Link href="/dashboard">
+                <Button
+                  theme="rider"
+                  variant="outline"
+                  size="lg"
+                  className="rounded-full"
+                >
+                  Rider Dashboard
+                </Button>
               </Link>
             </motion.div>
           </div>
@@ -309,15 +317,22 @@ export default function RiderPartners() {
                 ))}
               </div>
 
-              <motion.button
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6 }}
-                onClick={() => setShowOnboardingModal(true)}
-                className="mt-8 bg-gradient-to-r from-purple-500 to-purple-600 text-white font-bold text-lg py-4 px-8 rounded-full transition-all duration-300 transform hover:scale-105 shadow-xl shadow-purple-500/30"
+                className="mt-8"
               >
-                Apply Now
-              </motion.button>
+                <Button
+                  onClick={() => setShowOnboardingModal(true)}
+                  theme="rider"
+                  variant="primary"
+                  size="lg"
+                  className="rounded-full shadow-xl shadow-purple-500/30"
+                >
+                  Apply Now
+                </Button>
+              </motion.div>
             </div>
 
             <motion.div
@@ -411,12 +426,15 @@ export default function RiderPartners() {
           <p className="text-xl text-purple-100 mb-8">
             Join thousands of riders earning great money with flexible hours
           </p>
-          <button
+          <Button
             onClick={() => setShowOnboardingModal(true)}
-            className="bg-white text-purple-600 hover:bg-gray-100 font-bold text-lg py-4 px-8 rounded-full transition-all duration-300 transform hover:scale-105 shadow-xl"
+            theme="rider"
+            variant="secondary"
+            size="lg"
+            className="rounded-full shadow-xl"
           >
             Become a FoodNow Rider
-          </button>
+          </Button>
           
           <div className="mt-8 flex items-center justify-center space-x-8 text-white">
             <div className="flex items-center space-x-2">

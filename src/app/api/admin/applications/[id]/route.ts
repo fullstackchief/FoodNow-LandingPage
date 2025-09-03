@@ -36,7 +36,7 @@ export async function GET(
     }
 
     // Check admin permissions
-    if (!admin.permissions?.users?.view && admin.role !== 'super_admin') {
+    if (!admin.permissions?.restaurants?.includes('view_all') && !admin.permissions?.riders?.includes('view_all') && admin.role !== 'super_admin') {
       return NextResponse.json(
         { success: false, error: 'Insufficient permissions' },
         { status: 403 }
@@ -112,7 +112,7 @@ export async function PATCH(
     }
 
     // Check admin permissions
-    if (!admin.permissions?.restaurants?.approve && admin.role !== 'super_admin') {
+    if (!admin.permissions?.restaurants?.includes('approve_applications') && !admin.permissions?.riders?.includes('approve_applications') && admin.role !== 'super_admin') {
       return NextResponse.json(
         { success: false, error: 'Insufficient permissions to update applications' },
         { status: 403 }

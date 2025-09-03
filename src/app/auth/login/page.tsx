@@ -10,6 +10,7 @@ import { supabase } from '@/lib/supabase-client'
 import { devLog, prodLog } from '@/lib/logger'
 import { userLoginSchema } from '@/lib/validations/auth'
 import { validateData } from '@/lib/validations/utils'
+import Button from '@/components/ui/Button'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -304,17 +305,16 @@ export default function LoginPage() {
             </div>
 
             <div>
-              <button
+              <Button
                 type="submit"
                 disabled={isLoading || authLoading}
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                theme="customer"
+                variant="primary"
+                fullWidth
+                loading={isLoading || authLoading}
               >
-                {(isLoading || authLoading) ? (
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                ) : (
-                  'Sign in'
-                )}
-              </button>
+                Sign in
+              </Button>
             </div>
 
             <div className="mt-6">
@@ -328,25 +328,29 @@ export default function LoginPage() {
               </div>
 
               <div className="mt-6 grid grid-cols-2 gap-3">
-                <button
+                <Button
                   type="button"
                   onClick={() => handleOAuthLogin('google')}
                   disabled={isLoading || authLoading}
-                  className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
+                  variant="outline"
+                  theme="customer"
+                  fullWidth
+                  icon={<span className="text-lg">🔍</span>}
                 >
-                  <span className="text-lg">🔍</span>
-                  <span className="ml-2">Google</span>
-                </button>
+                  Google
+                </Button>
 
-                <button
+                <Button
                   type="button"
                   onClick={() => handleOAuthLogin('facebook')}
                   disabled={isLoading || authLoading}
-                  className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
+                  variant="outline"
+                  theme="customer"
+                  fullWidth
+                  icon={<span className="text-lg">📘</span>}
                 >
-                  <span className="text-lg">📘</span>
-                  <span className="ml-2">Facebook</span>
-                </button>
+                  Facebook
+                </Button>
               </div>
             </div>
           </form>

@@ -56,9 +56,24 @@ export async function POST(request: NextRequest) {
       // Sign out temporarily - user will authenticate via OTP
       await supabaseServerClient.auth.signOut()
 
+      // Send OTP email for admin verification
+      const { error: otpError } = await supabaseServerClient.auth.signInWithOtp({
+        email: email,
+        options: {
+          shouldCreateUser: false // Don't create new user, just send OTP
+        }
+      })
+
+      if (otpError) {
+        return NextResponse.json(
+          { success: false, error: 'Failed to send OTP email' },
+          { status: 500 }
+        )
+      }
+
       return NextResponse.json({
         success: true,
-        message: 'Admin credentials verified. OTP will be sent.',
+        message: 'Admin credentials verified. OTP sent to your email.',
         data: { 
           email, 
           role: userRole,

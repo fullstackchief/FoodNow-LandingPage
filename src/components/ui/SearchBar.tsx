@@ -224,7 +224,7 @@ export default function SearchBar({
       {/* Search Input */}
       <div className="relative">
         <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-          <Search className="h-5 w-5 text-gray-400" />
+          <Search className="h-5 w-5 text-gray-500" />
         </div>
         
         <input
@@ -235,17 +235,19 @@ export default function SearchBar({
           onKeyDown={handleKeyDown}
           onFocus={() => showSuggestions && localQuery && setShowDropdown(true)}
           placeholder={placeholder}
-          className="w-full pl-12 pr-12 py-4 text-lg border border-gray-200 rounded-2xl 
+          className="w-full pl-12 pr-12 py-4 mobile-input border border-gray-200 rounded-2xl 
                    focus:ring-2 focus:ring-brand-500 focus:border-transparent 
                    bg-white shadow-sm transition-all duration-200
                    placeholder-gray-400 text-gray-900"
+          aria-label="Search restaurants and dishes"
         />
         
         {localQuery && (
           <button
             onClick={handleClear}
-            className="absolute inset-y-0 right-0 pr-4 flex items-center 
-                     text-gray-400 hover:text-gray-600 transition-colors"
+            className="absolute inset-y-0 right-0 pr-4 flex items-center mobile-touch-optimized
+                     text-gray-500 hover:text-gray-600 transition-colors"
+            aria-label="Clear search"
           >
             <X className="h-5 w-5" />
           </button>
@@ -288,13 +290,13 @@ export default function SearchBar({
                         />
                       </>
                     ) : suggestion.type === 'recent' ? (
-                      <Clock className="h-5 w-5 text-gray-400" />
+                      <Clock className="h-5 w-5 text-gray-500" />
                     ) : suggestion.type === 'popular' ? (
                       <TrendingUp className="h-5 w-5 text-brand-500" />
                     ) : suggestion.type === 'restaurant' ? (
-                      <MapPin className="h-5 w-5 text-gray-400" />
+                      <MapPin className="h-5 w-5 text-gray-500" />
                     ) : (
-                      <Search className="h-5 w-5 text-gray-400" />
+                      <Search className="h-5 w-5 text-gray-500" />
                     )}
                   </div>
                   
