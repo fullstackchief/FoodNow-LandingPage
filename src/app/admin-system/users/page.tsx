@@ -70,7 +70,7 @@ export default function AdminSystemUserManagement() {
     }
 
     // Check if user has permission to view admins
-    if (!isSuperAdmin && !adminUser?.permissions?.system?.includes('create_admins')) {
+    if (!isSuperAdmin && !adminUser?.permissions?.admins?.view) {
       router.push('/admin-system/dashboard')
       return
     }

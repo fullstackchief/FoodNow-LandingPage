@@ -27,8 +27,63 @@ export default function RiderDashboard() {
       fetchAvailableOrders()
       fetchRiderStats()
       fetchRecentDeliveries()
+      startLocationTracking()
     }
   }, [user])
+
+  // Auto-refresh data every 30 seconds when online
+  useEffect(() => {
+    if (!user || !isOnline) return
+
+    const interval = setInterval(() => {
+      fetchAvailableOrders()
+      fetchRiderStats()
+    }, 30000) // 30 seconds
+
+    return () => clearInterval(interval)
+  }, [user, isOnline])
+
+  const startLocationTracking = () => {
+    if (!navigator.geolocation) {
+      console.warn('Geolocation not supported')
+      return
+    }
+
+    // Update location every 2 minutes when online
+    const locationInterval = setInterval(() => {
+      if (isOnline) {
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            try {
+              await fetch('/api/riders/location', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  riderId: user?.id,
+                  latitude: position.coords.latitude,
+                  longitude: position.coords.longitude,
+                  accuracy: position.coords.accuracy
+                })
+              })
+            } catch (error) {
+              console.error('Failed to update location:', error)
+            }
+          },
+          (error) => {
+            console.warn('Location update failed:', error)
+          },
+          {
+            enableHighAccuracy: false,
+            timeout: 10000,
+            maximumAge: 60000 // Use cached location up to 1 minute
+          }
+        )
+      }
+    }, 120000) // 2 minutes
+
+    // Cleanup on unmount
+    return () => clearInterval(locationInterval)
+  }
 
   const fetchAvailableOrders = async () => {
     try {
@@ -43,27 +98,103 @@ export default function RiderDashboard() {
   }
 
   const fetchRiderStats = async () => {
-    // TODO: implement real API
-    setIsLoading(false)
+    try {
+      const response = await fetch(`/api/riders/performance?riderId=${user?.id}&timeframe=week&includeScore=true`)
+      if (response.ok) {
+        const data = await response.json()
+        if (data.success && data.data) {
+          updateStatsWithRealData(data.data)
+        }
+      }
+    } catch (error) {
+      console.error('Failed to fetch rider stats:', error)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const fetchRecentDeliveries = async () => {
-    // TODO: implement real API
+    try {
+      const response = await fetch(`/api/riders/orders/history?riderId=${user?.id}&limit=5`)
+      if (response.ok) {
+        const data = await response.json()
+        if (data.success && data.deliveries) {
+          setRecentDeliveries(data.deliveries)
+        }
+      }
+    } catch (error) {
+      console.error('Failed to fetch recent deliveries:', error)
+    }
+  }
+
+  const updateStatsWithRealData = (performanceData: any) => {
+    const metrics = performanceData.metrics
+    const score = performanceData.performanceScore
+
+    setRiderStats([
+      {
+        title: 'Today\'s Deliveries',
+        value: String(metrics?.deliveries_today || 0),
+        icon: TruckIcon,
+        color: 'bg-blue-500',
+        change: metrics?.deliveries_today > 0 ? `${metrics.deliveries_today} completed` : 'Start accepting orders'
+      },
+      {
+        title: 'Today\'s Earnings',
+        value: `₦${(metrics?.earnings_today || 0).toLocaleString()}`,
+        icon: BanknotesIcon,
+        color: 'bg-green-500',
+        change: metrics?.earnings_today > 0 ? 'Well done!' : 'Complete deliveries to earn'
+      },
+      {
+        title: 'Performance Score',
+        value: score?.overallScore ? `${score.overallScore}/100` : 'New',
+        icon: StarIcon,
+        color: 'bg-yellow-500',
+        change: score?.trends?.trendDirection === 'up' ? '↗️ Improving' : score?.trends?.trendDirection === 'down' ? '↘️ Needs attention' : 'Complete deliveries for rating'
+      },
+      {
+        title: 'This Week',
+        value: `₦${(metrics?.earnings_this_week || 0).toLocaleString()}`,
+        icon: ArrowTrendingUpIcon,
+        color: 'bg-purple-500',
+        change: 'Weekly earnings'
+      }
+    ])
   }
 
   const handleAcceptOrder = async (orderId: string) => {
     try {
+      // Get current location for better assignment
+      let latitude, longitude
+      if (navigator.geolocation) {
+        const position = await new Promise<GeolocationPosition>((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 5000 })
+        }).catch(() => null)
+        
+        if (position) {
+          latitude = position.coords.latitude
+          longitude = position.coords.longitude
+        }
+      }
+
       const response = await fetch('/api/riders/orders/accept', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ orderId, riderId: user?.id })
+        body: JSON.stringify({ 
+          orderId, 
+          riderId: user?.id,
+          latitude,
+          longitude
+        })
       })
 
       if (response.ok) {
         const result = await response.json()
         setAvailableOrders(prev => prev.filter(order => order.id !== orderId))
         fetchAvailableOrders()
-        alert(`Order ${result.order.order_number} accepted successfully!`)
+        fetchRiderStats() // Refresh stats after accepting order
+        alert(`Order ${result.order?.order_number || orderId} accepted successfully!`)
       } else {
         const error = await response.json()
         alert(`Failed to accept order: ${error.error}`)
@@ -71,6 +202,50 @@ export default function RiderDashboard() {
     } catch (error) {
       console.error('Error accepting order:', error)
       alert('Failed to accept order. Please try again.')
+    }
+  }
+
+  const handleToggleOnlineStatus = async () => {
+    try {
+      // Get current location
+      let latitude, longitude
+      if (navigator.geolocation) {
+        const position = await new Promise<GeolocationPosition>((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 5000 })
+        }).catch(() => null)
+        
+        if (position) {
+          latitude = position.coords.latitude
+          longitude = position.coords.longitude
+        }
+      }
+
+      const response = await fetch('/api/riders/status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          riderId: user?.id, 
+          isOnline: !isOnline,
+          latitude,
+          longitude
+        })
+      })
+
+      if (response.ok) {
+        const result = await response.json()
+        setIsOnline(!isOnline)
+        fetchAvailableOrders() // Refresh available orders
+        
+        if (result.warning) {
+          alert(result.warning)
+        }
+      } else {
+        const error = await response.json()
+        alert(`Failed to update status: ${error.error}`)
+      }
+    } catch (error) {
+      console.error('Error updating online status:', error)
+      alert('Failed to update status. Please try again.')
     }
   }
 
@@ -130,7 +305,7 @@ export default function RiderDashboard() {
             </div>
             
             <Button
-              onClick={() => setIsOnline(!isOnline)}
+              onClick={handleToggleOnlineStatus}
               theme="rider"
               variant={isOnline ? "outline" : "primary"}
               size="sm"
@@ -271,20 +446,24 @@ export default function RiderDashboard() {
         
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           <div className="text-center">
-            <p className="text-2xl font-bold text-gray-900">₦18,500</p>
+            <p className="text-2xl font-bold text-gray-900">
+              ₦{(riderStats.find(s => s.title.includes('Today'))?.value.replace(/[^0-9]/g, '') || '0')}
+            </p>
             <p className="text-gray-600">Today</p>
           </div>
           <div className="text-center">
-            <p className="text-2xl font-bold text-gray-900">₦125,000</p>
+            <p className="text-2xl font-bold text-gray-900">
+              ₦{(riderStats.find(s => s.title.includes('Week'))?.value.replace(/[^0-9]/g, '') || '0')}
+            </p>
             <p className="text-gray-600">This Week</p>
           </div>
           <div className="text-center">
-            <p className="text-2xl font-bold text-gray-900">₦487,000</p>
+            <p className="text-2xl font-bold text-gray-900">₦0</p>
             <p className="text-gray-600">This Month</p>
           </div>
           <div className="text-center">
-            <p className="text-2xl font-bold text-gray-900">1,847</p>
-            <p className="text-gray-600">Total Deliveries</p>
+            <p className="text-2xl font-bold text-gray-900">{recentDeliveries.length}</p>
+            <p className="text-gray-600">Recent Deliveries</p>
           </div>
         </div>
       </motion.div>

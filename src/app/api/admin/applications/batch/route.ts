@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Check admin permissions
-    if (!admin.permissions?.restaurants?.includes('approve_applications') && !admin.permissions?.riders?.includes('approve_applications') && admin.role !== 'super_admin') {
+    if (!admin.permissions?.restaurants?.approve && admin.role !== 'super_admin') {
       return NextResponse.json(
         { success: false, error: 'Insufficient permissions to update applications' },
         { status: 403 }

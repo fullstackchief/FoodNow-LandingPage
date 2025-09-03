@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: 'Order not found' }, { status: 404 })
       }
 
-      actualRestaurantId = order.restaurant_id
+      actualRestaurantId = (order as { restaurant_id: string }).restaurant_id
     }
 
     // Attempt automatic assignment
@@ -99,7 +99,7 @@ export async function PUT(request: NextRequest) {
       .eq('id', adminId)
       .single()
 
-    if (adminError || admin?.user_role !== 'admin') {
+    if (adminError || (admin as { user_role: string } | null)?.user_role !== 'admin') {
       return NextResponse.json({ error: 'Admin access required' }, { status: 403 })
     }
 
@@ -154,7 +154,7 @@ export async function GET(request: NextRequest) {
       .eq('id', adminId)
       .single()
 
-    if (adminError || admin?.user_role !== 'admin') {
+    if (adminError || (admin as { user_role: string } | null)?.user_role !== 'admin') {
       return NextResponse.json({ error: 'Admin access required' }, { status: 403 })
     }
 

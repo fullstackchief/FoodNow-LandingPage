@@ -22,7 +22,7 @@ export default function DeliverySettingsPage() {
     }
     
     // Check super admin permission for system settings
-    if (adminUser.role !== 'super_admin' && !adminUser.permissions?.system?.includes('system_settings')) {
+    if (adminUser.role !== 'super_admin' && !adminUser.permissions?.settings?.edit) {
       router.push('/admin-system/dashboard')
       return
     }

@@ -39,8 +39,8 @@ export async function POST(request: NextRequest) {
       updated_at: new Date().toISOString()
     }
 
-    const { error: profileError } = await supabaseServerClient
-      .from('rider_profiles')
+    const { error: profileError } = await (supabaseServerClient
+      .from('rider_profiles') as any)
       .update({
         current_location: locationData,
         updated_at: new Date().toISOString()
@@ -53,8 +53,8 @@ export async function POST(request: NextRequest) {
     }
 
     // Log location to history
-    const { error: historyError } = await supabaseServerClient
-      .from('rider_location_history')
+    const { error: historyError } = await (supabaseServerClient
+      .from('rider_location_history') as any)
       .insert({
         rider_id: riderId,
         latitude: lat,
@@ -104,8 +104,8 @@ export async function GET(request: NextRequest) {
     }
 
     return NextResponse.json({ 
-      location: riderProfile.current_location,
-      lastUpdated: riderProfile.updated_at
+      location: (riderProfile as any)?.current_location,
+      lastUpdated: (riderProfile as any)?.updated_at
     })
 
   } catch (error) {

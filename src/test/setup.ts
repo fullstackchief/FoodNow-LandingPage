@@ -79,5 +79,6 @@ Object.defineProperty(window, 'Notification', {
 // Mock environment variables for testing
 process.env.NEXT_PUBLIC_SUPABASE_URL = 'http://localhost:54321'
 process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'mock-anon-key-for-tests-only'
+process.env.SUPABASE_SERVICE_ROLE_KEY = 'mock-service-role-key-for-tests-only'
 process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY = 'mock-maps-key-for-tests-only'
 process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY = 'mock-paystack-key-for-tests'

@@ -22,7 +22,7 @@ import { devLog, prodLog } from '@/lib/logger'
 interface ApplicationData {
   id: string
   user_id: string
-  application_type: 'restaurant_owner' | 'rider'
+  application_type: 'restaurant' | 'rider'
   status: 'pending' | 'approved' | 'rejected' | 'under_review'
   
   // Restaurant fields
@@ -171,7 +171,7 @@ const ApplicationsManagement = () => {
       app.user?.last_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       app.user?.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       app.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (app.application_type === 'restaurant_owner' && app.restaurant_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (app.application_type === 'restaurant' && app.restaurant_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
       (app.application_type === 'rider' && app.vehicle_make?.toLowerCase().includes(searchTerm.toLowerCase()))
 
     // Status filter
@@ -205,13 +205,13 @@ const ApplicationsManagement = () => {
   }
 
   const getRoleIcon = (role: string) => {
-    return role === 'restaurant_owner' 
+    return role === 'restaurant' 
       ? <BuildingStorefrontIcon className="w-5 h-5 text-green-600" />
       : <TruckIcon className="w-5 h-5 text-blue-600" />
   }
 
   const formatRoleName = (role: string) => {
-    return role === 'restaurant_owner' ? 'Restaurant Owner' : 'Rider'
+    return role === 'restaurant' ? 'Restaurant Owner' : 'Rider'
   }
 
   // Handle review modal
@@ -319,7 +319,7 @@ const ApplicationsManagement = () => {
                     className="px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="all">All Roles</option>
-                    <option value="restaurant_owner">Restaurant Owner</option>
+                    <option value="restaurant">Restaurant Owner</option>
                     <option value="rider">Rider</option>
                   </select>
                 </div>
@@ -404,7 +404,7 @@ const ApplicationsManagement = () => {
                         </div>
 
                         {/* Restaurant-specific info */}
-                        {application.application_type === 'restaurant_owner' && application.restaurant_name && (
+                        {application.application_type === 'restaurant' && application.restaurant_name && (
                           <div className="mt-3 p-3 bg-green-50 rounded-lg">
                             <p className="text-sm text-gray-600">Business Name:</p>
                             <p className="font-medium text-green-900">{application.restaurant_name}</p>

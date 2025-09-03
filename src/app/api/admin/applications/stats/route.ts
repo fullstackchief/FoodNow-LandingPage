@@ -31,7 +31,7 @@ export async function GET(_request: NextRequest) {
     }
 
     // Check admin permissions
-    if (!admin.permissions?.system?.includes('financial_reports') && admin.role !== 'super_admin') {
+    if (!admin.permissions?.analytics?.view && admin.role !== 'super_admin') {
       return NextResponse.json(
         { success: false, error: 'Insufficient permissions to view statistics' },
         { status: 403 }

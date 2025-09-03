@@ -409,9 +409,59 @@ AND r.is_open = true;
 -- Grant access to the view
 GRANT SELECT ON available_orders_for_riders TO authenticated;
 
+-- Create rider_performance_scores table for detailed scoring
+CREATE TABLE IF NOT EXISTS rider_performance_scores (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  rider_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  
+  -- Overall score and breakdown
+  overall_score DECIMAL(5,2) NOT NULL,
+  reliability_score DECIMAL(5,2) NOT NULL,
+  speed_score DECIMAL(5,2) NOT NULL,
+  customer_service_score DECIMAL(5,2) NOT NULL,
+  efficiency_score DECIMAL(5,2) NOT NULL,
+  availability_score DECIMAL(5,2) NOT NULL,
+  
+  -- Ranking
+  rank INTEGER,
+  percentile INTEGER,
+  
+  -- Recommendations and trends
+  recommendations TEXT[],
+  trend_direction VARCHAR(10) CHECK (trend_direction IN ('up', 'down', 'stable')),
+  score_change DECIMAL(5,2),
+  
+  -- Metadata
+  calculated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  
+  UNIQUE(rider_id),
+  INDEX idx_rider_performance_scores_rider_id (rider_id),
+  INDEX idx_rider_performance_scores_overall_score (overall_score),
+  INDEX idx_rider_performance_scores_calculated_at (calculated_at)
+);
+
+-- Enable RLS for performance scores
+ALTER TABLE rider_performance_scores ENABLE ROW LEVEL SECURITY;
+
+-- RLS Policies for performance scores
+CREATE POLICY "Riders can view own performance scores" ON rider_performance_scores FOR SELECT USING (rider_id = auth.uid());
+CREATE POLICY "Admins can view all performance scores" ON rider_performance_scores FOR ALL USING (
+    EXISTS (
+        SELECT 1 FROM users 
+        WHERE users.id = auth.uid() 
+        AND users.user_role = 'admin'
+    )
+);
+
+-- Grant permissions
+GRANT ALL ON rider_performance_scores TO authenticated;
+
 COMMENT ON TABLE rider_profiles IS 'Extended rider information and preferences';
 COMMENT ON TABLE rider_assignment_logs IS 'Log of all rider assignments for analytics';
 COMMENT ON TABLE order_ratings IS 'Customer feedback and ratings for orders';
 COMMENT ON TABLE rider_performance_metrics IS 'Cached performance metrics for riders';
+COMMENT ON TABLE rider_performance_scores IS 'Detailed performance scoring and analytics for riders';
 COMMENT ON TABLE rider_location_history IS 'Historical location data for riders';
 COMMENT ON TABLE rider_zones IS 'Delivery zones configuration';

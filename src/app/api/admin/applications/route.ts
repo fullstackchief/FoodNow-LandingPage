@@ -21,8 +21,7 @@ export async function GET(request: NextRequest) {
 
     // Check admin permissions (super admin has all access)
     if (adminSession.role !== 'super_admin' && 
-        !adminSession.permissions?.restaurants?.includes('view_all') && 
-        !adminSession.permissions?.riders?.includes('view_all')) {
+        !adminSession.permissions?.restaurants?.view) {
       return NextResponse.json(
         { success: false, error: 'Insufficient permissions to view applications' },
         { status: 403 }
